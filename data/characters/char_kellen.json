@@ -1,0 +1,35 @@
+{
+  "id": "char_kellen",
+  "name": "Кэллен",
+  "portrait": "",
+  "race": "Human",
+  "class": "Fighter",
+  "level": 3,
+  "hp": { "current": 24, "max": 28 },
+  "abilityScores": {
+    "STR": 16,
+    "DEX": 12,
+    "CON": 14,
+    "INT": 10,
+    "WIS": 11,
+    "CHA": 13
+  },
+  "equipment": [
+    { "slot": "mainHand", "itemId": "longsword", "name": "Длинный меч" },
+    { "slot": "offHand", "itemId": "shield", "name": "Щит" },
+    { "slot": "armor", "itemId": "leather_armor", "name": "Кожаный доспех" },
+    { "slot": "head", "itemId": null, "name": null },
+    { "slot": "boots", "itemId": null, "name": null },
+    { "slot": "accessory", "itemId": null, "name": null }
+  ],
+  "inventory": [
+    { "itemId": "potion_healing", "name": "Зелье лечения", "qty": 2 },
+    { "itemId": "torch", "name": "Факел", "qty": 3 }
+  ],
+  "abilities": [
+    { "id": "power_attack", "name": "Мощный удар" },
+    { "id": "second_wind", "name": "Второе дыхание" }
+  ],
+  "hotbar": ["power_attack", "second_wind"],
+  "notes": ""
+}

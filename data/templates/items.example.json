@@ -1,0 +1,21 @@
+[
+  {
+    "id": "longsword",
+    "name": "Длинный меч",
+    "type": "weapon",
+    "damage": "1d8",
+    "damageType": "slashing",
+    "weight": 3,
+    "icon": "",
+    "description": ""
+  },
+  {
+    "id": "potion_healing",
+    "name": "Зелье лечения",
+    "type": "consumable",
+    "effect": { "heal": "2d4+2" },
+    "weight": 0.5,
+    "icon": "",
+    "description": ""
+  }
+]

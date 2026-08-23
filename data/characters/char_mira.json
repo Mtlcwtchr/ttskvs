@@ -1,0 +1,34 @@
+{
+  "id": "char_mira",
+  "name": "Мира",
+  "portrait": "",
+  "race": "Elf",
+  "class": "Wizard",
+  "level": 3,
+  "hp": { "current": 16, "max": 18 },
+  "abilityScores": {
+    "STR": 8,
+    "DEX": 10,
+    "CON": 12,
+    "INT": 17,
+    "WIS": 13,
+    "CHA": 10
+  },
+  "equipment": [
+    { "slot": "mainHand", "itemId": "quarterstaff", "name": "Посох" },
+    { "slot": "offHand", "itemId": null, "name": null },
+    { "slot": "armor", "itemId": null, "name": null },
+    { "slot": "head", "itemId": null, "name": null },
+    { "slot": "boots", "itemId": null, "name": null },
+    { "slot": "accessory", "itemId": "amulet_arcana", "name": "Амулет тайной силы" }
+  ],
+  "inventory": [
+    { "itemId": "potion_healing", "name": "Зелье лечения", "qty": 1 }
+  ],
+  "abilities": [
+    { "id": "firebolt", "name": "Огненный снаряд" },
+    { "id": "shield_spell", "name": "Щит (заклинание)" }
+  ],
+  "hotbar": ["firebolt", "shield_spell"],
+  "notes": ""
+}

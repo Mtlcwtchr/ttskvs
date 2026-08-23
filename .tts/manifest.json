@@ -1,0 +1,8 @@
+[
+  {
+    "guid": "-1",
+    "name": "Global",
+    "lua": ".tts/objects/Global.lua",
+    "xml": ".tts/objects/Global.xml"
+  }
+]

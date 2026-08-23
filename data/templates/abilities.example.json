@@ -1,0 +1,18 @@
+[
+  {
+    "id": "power_attack",
+    "name": "Мощный удар",
+    "type": "combat",
+    "cost": { "resource": "action", "amount": 1 },
+    "description": "",
+    "effects": []
+  },
+  {
+    "id": "second_wind",
+    "name": "Второе дыхание",
+    "type": "combat",
+    "cost": { "resource": "bonus_action", "amount": 1 },
+    "description": "",
+    "effects": [{ "type": "heal", "value": "1d10" }]
+  }
+]
