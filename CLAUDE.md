@@ -6,9 +6,14 @@
 
 - Редактор: VS Code + расширение `sebaestschjin.tts-editor` ("Tabletop Simulator Editor").
 - Команды: `Get Objects` (вытянуть скрипты из запущенного TTS в `.tts/objects/`), `Save and Play` (отправить `src/` обратно в TTS с автобандлингом `require()`/`<Include/>`, хот-релоад).
-- `includePath` = `src` (дефолт расширения).
+- `includePath` = `src` — **не дефолт**: дефолт расширения `.` (корень воркспейса), при нём `require("Global")` не резолвится (`Could not resolve module 'Global' required by '__root'`). Значение прописано в `.vscode/settings.json` (`ttsEditor.includePath`), файл должен быть в репозитории.
 - TTS должен быть запущен с загруженным сейвом (`Saves/KVS/`) — иначе Get Objects/Save and Play не с кем говорить (localhost:39999/39998).
 - Запасной инструмент: `tools/tts_bridge.py` (pull/push/watch) — тот же протокол напрямую, без VS Code. Не запускать одновременно с активным расширением — конфликт по порту 39998.
+
+**Капканы тулчейна (уже наступали, не повторять):**
+- Бандлер расширения (luabundle) резолвит модули **только** по `src/?.lua` и `src/?.ttslua`. `require("ui.templates.MainUI")` на `.xml`-файл он не найдёт (`Could not resolve module 'ui.templates.MainUI'`), хотя `tts_bridge.py` такое умеет. Поэтому XML-шаблоны в `src/ui/templates/` лежат как `.lua`-обёртки: `return [[ <сырой XML 1:1> ]]`. Новый шаблон — тоже `.lua`, не `.xml`.
+- `Get Objects` разбандливает скрипт из игры только если в нём есть метаданные luabundle. Бандл от `tts_bridge.py push` их не содержит, поэтому Get Objects после push кладёт **весь бандл целиком** в `.tts/objects/Global.lua`, затирая тонкий энтрипоинт `require("Global")`. Следующий `Save and Play` пытается бандлить бандл и падает на `require("Global")` в его последней строке (`... required by '__root' at 2119:0`). Лечится `git checkout -- .tts/objects/Global.lua`. Вывод: не смешивать push через bridge и Get Objects через расширение в одном цикле.
+- `.tts/objects/Global.lua` — тонкий энтрипоинт из одной строки `require("Global")`, весь код Global живёт в `src/Global.lua`. `.tts/bundled/` — кеш расширения, генерируемый, руками не править.
 
 ## Правило 1 — Data-driven, обязательно
 

@@ -1,3 +1,6 @@
+-- XML-шаблон как Lua-модуль: бандлер TTS Editor резолвит require() только
+-- по ?.lua / ?.ttslua, .xml он не видит. Внутри — сырой XML, 1:1.
+return [[
 <Panel id="character_sheet_root" rectAlignment="MiddleCenter" width="1320" height="900" color="rgba(0.078,0.063,0.039,0.96)">
   <VerticalLayout padding="16 16 16 16" spacing="10">
     <Panel width="1288" height="64" color="#141710">
@@ -109,3 +112,4 @@
     </HorizontalLayout>
   </VerticalLayout>
 </Panel>
+]]
