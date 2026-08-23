@@ -2,10 +2,17 @@
   "id": "char_kellen",
   "name": "Кэллен",
   "portrait": "",
+  "playerName": "Антон",
   "race": "Human",
   "class": "Fighter",
   "level": 3,
-  "hp": { "current": 24, "max": 28 },
+  "background": "Солдат",
+  "alignment": "Законно-добрый",
+  "experience": { "current": 900, "next": 2700 },
+  "hp": { "current": 24, "max": 28, "temp": 0 },
+  "speed": 30,
+  "hitDice": "3d10",
+  "deathSaves": { "successes": 0, "failures": 0 },
   "abilityScores": {
     "STR": 16,
     "DEX": 12,
@@ -14,22 +21,48 @@
     "WIS": 11,
     "CHA": 13
   },
+  "proficiencyBonus": 2,
+  "inspiration": false,
+  "savingThrowProficiencies": ["STR", "CON"],
+  "proficientSkills": ["athletics", "intimidation", "perception"],
+  "combat": { "armorClass": 17, "meleeBonus": 5, "rangedBonus": 2 },
+  "attacks": [
+    { "name": "Длинный меч", "atkBonus": "+5", "damage": "1d8+3 рубящий" },
+    { "name": "Короткий лук", "atkBonus": "+3", "damage": "1d6+1 колющий" }
+  ],
+  "carryWeight": { "current": 84, "max": 180 },
+  "attunement": { "used": 0, "max": 3 },
   "equipment": [
-    { "slot": "mainHand", "itemId": "longsword", "name": "Длинный меч" },
-    { "slot": "offHand", "itemId": "shield", "name": "Щит" },
-    { "slot": "armor", "itemId": "leather_armor", "name": "Кожаный доспех" },
-    { "slot": "head", "itemId": null, "name": null },
-    { "slot": "boots", "itemId": null, "name": null },
-    { "slot": "accessory", "itemId": null, "name": null }
+    { "slot": "helm", "itemId": null, "name": null },
+    { "slot": "cloak", "itemId": null, "name": null },
+    { "slot": "mail", "itemId": "leather_armor", "name": "Кожаный доспех" },
+    { "slot": "glove", "itemId": null, "name": null },
+    { "slot": "boot", "itemId": null, "name": null },
+    { "slot": "amulet", "itemId": null, "name": null },
+    { "slot": "ring1", "itemId": null, "name": null },
+    { "slot": "ring2", "itemId": null, "name": null },
+    { "slot": "belt", "itemId": null, "name": null },
+    { "slot": "charm", "itemId": null, "name": null }
   ],
   "inventory": [
     { "itemId": "potion_healing", "name": "Зелье лечения", "qty": 2 },
     { "itemId": "torch", "name": "Факел", "qty": 3 }
   ],
   "abilities": [
-    { "id": "power_attack", "name": "Мощный удар" },
-    { "id": "second_wind", "name": "Второе дыхание" }
+    { "id": "power_attack", "name": "Мощный удар", "actionType": "action" },
+    { "id": "second_wind", "name": "Второе дыхание", "actionType": "bonus_action" },
+    { "id": "opportunity_attack", "name": "Атака возможности", "actionType": "reaction" }
   ],
-  "hotbar": ["power_attack", "second_wind"],
+  "spellSlots": [],
+  "personality": {
+    "traits": "Всегда прикрывает спину товарищам.",
+    "ideals": "Долг превыше всего.",
+    "bonds": "Поклялся защищать деревню, где вырос.",
+    "flaws": "Слишком доверяет старшим по званию."
+  },
+  "otherProficiencies": [
+    "Языки: Общий",
+    "Владение: лёгкие и средние доспехи, щиты, простое и воинское оружие"
+  ],
   "notes": ""
 }

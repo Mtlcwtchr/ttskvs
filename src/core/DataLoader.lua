@@ -1,19 +1,14 @@
--- Единственное место, которое знает, откуда берутся данные.
--- Остальной код всегда зовёт DataLoader.loadParty(callback) и получает массив
--- персонажей — не важно, пришёл он по сети или из MockData (сгенерирован из
--- data/characters/*.json, см. tools/tts_bridge.py sync-mock).
-local MockData = require("core.MockData")
-
 local DataLoader = {}
 
--- TODO: когда JSON захостен (например GitHub raw), выставить USE_MOCK = false
--- и указать реальный PARTY_URL.
-local USE_MOCK = true
-local PARTY_URL = "https://example.com/kvs-data/characters.json"
+local PARTY_URL = nil
+
+function DataLoader.setPartyUrl(url)
+  PARTY_URL = url
+end
 
 function DataLoader.loadParty(callback)
-  if USE_MOCK then
-    callback(MockData)
+  if PARTY_URL == nil or PARTY_URL == "" then
+    callback({})
     return
   end
 

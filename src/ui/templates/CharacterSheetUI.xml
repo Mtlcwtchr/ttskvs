@@ -1,0 +1,111 @@
+<Panel id="character_sheet_root" rectAlignment="MiddleCenter" width="1320" height="900" color="rgba(0.078,0.063,0.039,0.96)">
+  <VerticalLayout padding="16 16 16 16" spacing="10">
+    <Panel width="1288" height="64" color="#141710">
+      <HorizontalLayout padding="10 10 10 10" spacing="10">
+        <Text fontSize="22" color="#e6cd85">Редактор персонажа</Text>
+        <Text fontSize="14" color="#a1966f">ID: {{CHARACTER_ID}}</Text>
+        <Button width="120" height="36" fontSize="14" color="#7f7752" onClick="closeSheet">Закрыть</Button>
+        <Button width="120" height="36" fontSize="14" color="#8e3b34" onClick="deleteCharacter">Удалить</Button>
+      </HorizontalLayout>
+    </Panel>
+
+    <HorizontalLayout spacing="10">
+      <VerticalLayout width="420" spacing="8">
+        <Panel width="420" height="306" color="#12150e">
+          <VerticalLayout padding="10 10 10 10" spacing="5">
+            <Text fontSize="12" color="#a89328">ОСНОВНОЕ</Text>
+            <Text fontSize="10" color="#a1966f">Имя</Text>
+            <InputField id="field_name" width="390" height="28" onEndEdit="onCharacterFieldChanged" interactable="true" readOnly="false" lineType="SingleLine" text="{{NAME}}" />
+            <Text fontSize="10" color="#a1966f">Раса</Text>
+            <InputField id="field_race" width="390" height="28" onEndEdit="onCharacterFieldChanged" interactable="true" readOnly="false" lineType="SingleLine" text="{{RACE}}" />
+            <Text fontSize="10" color="#a1966f">Класс</Text>
+            <InputField id="field_class" width="390" height="28" onEndEdit="onCharacterFieldChanged" interactable="true" readOnly="false" lineType="SingleLine" text="{{CLASS}}" />
+            <Text fontSize="10" color="#a1966f">Уровень</Text>
+            <InputField id="field_level" width="390" height="28" onEndEdit="onCharacterFieldChanged" characterValidation="Integer" interactable="true" readOnly="false" lineType="SingleLine" text="{{LEVEL}}" />
+            <Text fontSize="10" color="#a1966f">Игрок</Text>
+            <InputField id="field_player_name" width="390" height="28" onEndEdit="onCharacterFieldChanged" interactable="true" readOnly="false" lineType="SingleLine" text="{{PLAYER_NAME}}" />
+          </VerticalLayout>
+        </Panel>
+
+        <Panel width="420" height="220" color="#12150e">
+          <VerticalLayout padding="10 10 10 10" spacing="5">
+            <Text fontSize="12" color="#a89328">РЕСУРСЫ</Text>
+            <Text fontSize="10" color="#a1966f">HP текущие</Text>
+            <InputField id="field_hp_current" width="390" height="28" onEndEdit="onCharacterFieldChanged" characterValidation="Integer" interactable="true" readOnly="false" lineType="SingleLine" text="{{HP_CURRENT}}" />
+            <Text fontSize="10" color="#a1966f">HP максимум</Text>
+            <InputField id="field_hp_max" width="390" height="28" onEndEdit="onCharacterFieldChanged" characterValidation="Integer" interactable="true" readOnly="false" lineType="SingleLine" text="{{HP_MAX}}" />
+            <Text fontSize="10" color="#a1966f">Скорость</Text>
+            <InputField id="field_speed" width="390" height="28" onEndEdit="onCharacterFieldChanged" characterValidation="Integer" interactable="true" readOnly="false" lineType="SingleLine" text="{{SPEED}}" />
+          </VerticalLayout>
+        </Panel>
+      </VerticalLayout>
+
+      <VerticalLayout width="420" spacing="8">
+        <Panel width="420" height="306" color="#12150e">
+          <VerticalLayout padding="10 10 10 10" spacing="5">
+            <Text fontSize="12" color="#a89328">ХАРАКТЕРИСТИКИ</Text>
+            <Text fontSize="10" color="#a1966f">STR</Text>
+            <InputField id="field_ability_STR" width="390" height="28" onEndEdit="onCharacterFieldChanged" characterValidation="Integer" interactable="true" readOnly="false" lineType="SingleLine" text="{{STR}}" />
+            <Text fontSize="10" color="#a1966f">DEX</Text>
+            <InputField id="field_ability_DEX" width="390" height="28" onEndEdit="onCharacterFieldChanged" characterValidation="Integer" interactable="true" readOnly="false" lineType="SingleLine" text="{{DEX}}" />
+            <Text fontSize="10" color="#a1966f">CON</Text>
+            <InputField id="field_ability_CON" width="390" height="28" onEndEdit="onCharacterFieldChanged" characterValidation="Integer" interactable="true" readOnly="false" lineType="SingleLine" text="{{CON}}" />
+            <Text fontSize="10" color="#a1966f">INT</Text>
+            <InputField id="field_ability_INT" width="390" height="28" onEndEdit="onCharacterFieldChanged" characterValidation="Integer" interactable="true" readOnly="false" lineType="SingleLine" text="{{INT}}" />
+            <Text fontSize="10" color="#a1966f">WIS</Text>
+            <InputField id="field_ability_WIS" width="390" height="28" onEndEdit="onCharacterFieldChanged" characterValidation="Integer" interactable="true" readOnly="false" lineType="SingleLine" text="{{WIS}}" />
+            <Text fontSize="10" color="#a1966f">CHA</Text>
+            <InputField id="field_ability_CHA" width="390" height="28" onEndEdit="onCharacterFieldChanged" characterValidation="Integer" interactable="true" readOnly="false" lineType="SingleLine" text="{{CHA}}" />
+          </VerticalLayout>
+        </Panel>
+
+        <Panel width="420" height="220" color="#12150e">
+          <VerticalLayout padding="10 10 10 10" spacing="5">
+            <Text fontSize="12" color="#a89328">ЛОР</Text>
+            <Text fontSize="10" color="#a1966f">Бэкграунд</Text>
+            <InputField id="field_background" width="390" height="28" onEndEdit="onCharacterFieldChanged" interactable="true" readOnly="false" lineType="SingleLine" text="{{BACKGROUND}}" />
+            <Text fontSize="10" color="#a1966f">Мировоззрение</Text>
+            <InputField id="field_alignment" width="390" height="28" onEndEdit="onCharacterFieldChanged" interactable="true" readOnly="false" lineType="SingleLine" text="{{ALIGNMENT}}" />
+          </VerticalLayout>
+        </Panel>
+      </VerticalLayout>
+
+      <VerticalLayout width="420" spacing="8">
+        <Panel width="420" height="160" color="#12150e">
+          <VerticalLayout padding="10 10 10 10" spacing="5">
+            <Text fontSize="12" color="#a89328">НАВЫКИ (CSV)</Text>
+            <Text fontSize="10" color="#a1966f">Пример: athletics, perception, stealth</Text>
+            <InputField id="field_skills_csv" width="390" height="28" onEndEdit="onCharacterFieldChanged" interactable="true" readOnly="false" lineType="SingleLine" text="{{SKILLS_CSV}}" />
+          </VerticalLayout>
+        </Panel>
+
+        <Panel width="420" height="186" color="#12150e">
+          <VerticalLayout padding="10 10 10 10" spacing="5">
+            <Text fontSize="12" color="#a89328">ЭКВИП (имена)</Text>
+            <InputField id="field_equip_mail" width="390" height="28" onEndEdit="onCharacterFieldChanged" interactable="true" readOnly="false" lineType="SingleLine" text="{{EQUIP_MAIL}}" />
+            <InputField id="field_equip_helm" width="390" height="28" onEndEdit="onCharacterFieldChanged" interactable="true" readOnly="false" lineType="SingleLine" text="{{EQUIP_HELM}}" />
+            <InputField id="field_equip_glove" width="390" height="28" onEndEdit="onCharacterFieldChanged" interactable="true" readOnly="false" lineType="SingleLine" text="{{EQUIP_GLOVE}}" />
+            <InputField id="field_equip_boot" width="390" height="28" onEndEdit="onCharacterFieldChanged" interactable="true" readOnly="false" lineType="SingleLine" text="{{EQUIP_BOOT}}" />
+          </VerticalLayout>
+        </Panel>
+
+        <Panel width="420" height="164" color="#12150e">
+          <VerticalLayout padding="10 10 10 10" spacing="5">
+            <Text fontSize="12" color="#a89328">ОРУЖИЕ (первое)</Text>
+            <InputField id="field_weapon_name" width="390" height="28" onEndEdit="onCharacterFieldChanged" interactable="true" readOnly="false" lineType="SingleLine" text="{{WEAPON_NAME}}" />
+            <InputField id="field_weapon_bonus" width="390" height="28" onEndEdit="onCharacterFieldChanged" interactable="true" readOnly="false" lineType="SingleLine" text="{{WEAPON_BONUS}}" />
+            <InputField id="field_weapon_damage" width="390" height="28" onEndEdit="onCharacterFieldChanged" interactable="true" readOnly="false" lineType="SingleLine" text="{{WEAPON_DAMAGE}}" />
+          </VerticalLayout>
+        </Panel>
+
+        <Panel width="420" height="148" color="#12150e">
+          <VerticalLayout padding="10 10 10 10" spacing="5">
+            <Text fontSize="12" color="#a89328">АБИЛКА (первая)</Text>
+            <InputField id="field_ability_name" width="390" height="28" onEndEdit="onCharacterFieldChanged" interactable="true" readOnly="false" lineType="SingleLine" text="{{ABILITY_NAME}}" />
+            <InputField id="field_ability_type" width="390" height="28" onEndEdit="onCharacterFieldChanged" interactable="true" readOnly="false" lineType="SingleLine" text="{{ABILITY_TYPE}}" />
+          </VerticalLayout>
+        </Panel>
+      </VerticalLayout>
+    </HorizontalLayout>
+  </VerticalLayout>
+</Panel>

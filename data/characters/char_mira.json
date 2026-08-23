@@ -2,33 +2,68 @@
   "id": "char_mira",
   "name": "Мира",
   "portrait": "",
+  "playerName": "Анна",
   "race": "Elf",
   "class": "Wizard",
   "level": 3,
-  "hp": { "current": 16, "max": 18 },
+  "background": "Отшельница",
+  "alignment": "Нейтрально-добрый",
+  "experience": { "current": 900, "next": 2700 },
+  "hp": { "current": 16, "max": 18, "temp": 0 },
+  "speed": 30,
+  "hitDice": "3d6",
+  "deathSaves": { "successes": 0, "failures": 0 },
   "abilityScores": {
     "STR": 8,
-    "DEX": 10,
+    "DEX": 14,
     "CON": 12,
     "INT": 17,
     "WIS": 13,
     "CHA": 10
   },
+  "proficiencyBonus": 2,
+  "inspiration": true,
+  "savingThrowProficiencies": ["INT", "WIS"],
+  "proficientSkills": ["arcana", "investigation", "insight"],
+  "combat": { "armorClass": 12, "meleeBonus": 1, "rangedBonus": 5 },
+  "attacks": [
+    { "name": "Посох", "atkBonus": "+1", "damage": "1d6-1 дробящий" },
+    { "name": "Огненный снаряд", "atkBonus": "+5", "damage": "2d10 огонь" }
+  ],
+  "carryWeight": { "current": 32, "max": 90 },
+  "attunement": { "used": 1, "max": 3 },
   "equipment": [
-    { "slot": "mainHand", "itemId": "quarterstaff", "name": "Посох" },
-    { "slot": "offHand", "itemId": null, "name": null },
-    { "slot": "armor", "itemId": null, "name": null },
-    { "slot": "head", "itemId": null, "name": null },
-    { "slot": "boots", "itemId": null, "name": null },
-    { "slot": "accessory", "itemId": "amulet_arcana", "name": "Амулет тайной силы" }
+    { "slot": "helm", "itemId": null, "name": null },
+    { "slot": "cloak", "itemId": null, "name": null },
+    { "slot": "mail", "itemId": null, "name": null },
+    { "slot": "glove", "itemId": null, "name": null },
+    { "slot": "boot", "itemId": null, "name": null },
+    { "slot": "amulet", "itemId": "amulet_arcana", "name": "Амулет тайной силы" },
+    { "slot": "ring1", "itemId": null, "name": null },
+    { "slot": "ring2", "itemId": null, "name": null },
+    { "slot": "belt", "itemId": null, "name": null },
+    { "slot": "charm", "itemId": null, "name": null }
   ],
   "inventory": [
     { "itemId": "potion_healing", "name": "Зелье лечения", "qty": 1 }
   ],
   "abilities": [
-    { "id": "firebolt", "name": "Огненный снаряд" },
-    { "id": "shield_spell", "name": "Щит (заклинание)" }
+    { "id": "firebolt", "name": "Огненный снаряд", "actionType": "action", "usesSpellSlot": false, "spellLevel": 0 },
+    { "id": "shield_spell", "name": "Щит (заклинание)", "actionType": "reaction", "usesSpellSlot": true, "spellLevel": 1 }
   ],
-  "hotbar": ["firebolt", "shield_spell"],
+  "spellSlots": [
+    { "level": 1, "max": 4, "used": 2 },
+    { "level": 2, "max": 3, "used": 2 }
+  ],
+  "personality": {
+    "traits": "Записывает каждую находку в дневник.",
+    "ideals": "Знание должно быть свободным.",
+    "bonds": "Ищет утраченный гримуар наставницы.",
+    "flaws": "Не может пройти мимо неразгаданной тайны."
+  },
+  "otherProficiencies": [
+    "Языки: Общий, Эльфийский, Драконий",
+    "Владение: посохи, кинжалы, воровские инструменты"
+  ],
   "notes": ""
 }

@@ -1,0 +1,6 @@
+<Panel>
+  <Panel rectAlignment="MiddleLeft" offsetX="90" width="140" height="800">
+    {{PARTY_PORTRAITS}}
+  </Panel>
+  {{CHARACTER_SHEET}}
+</Panel>

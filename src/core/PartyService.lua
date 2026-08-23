@@ -9,7 +9,6 @@ local store = Store.new({
   partyById = {},
   selectedCharacterId = nil,
   openCharacterId = nil,
-  activeTab = "stats",
   lastPlayerColor = "White",
 })
 
@@ -46,17 +45,12 @@ function PartyService.openCharacterSheet(playerColor)
   if state.selectedCharacterId == nil then return end
   store:setState({
     openCharacterId = state.selectedCharacterId,
-    activeTab = "stats",
     lastPlayerColor = playerColor,
   })
 end
 
 function PartyService.closeCharacterSheet()
   store:setState({ openCharacterId = Store.NULL })
-end
-
-function PartyService.setActiveTab(tabId)
-  store:setState({ activeTab = tabId })
 end
 
 -- Реальной системы эффектов способностей пока нет — заглушка, чтобы UI-слой
