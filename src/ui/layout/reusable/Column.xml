@@ -1,0 +1,4 @@
+<!-- Колонка: Panel задаёт размер, VerticalLayout раскладывает. -->
+<Panel width="{{WIDTH}}" height="{{HEIGHT}}" color="{{COLOR}}">
+  <VerticalLayout padding="{{PADDING}}" spacing="{{SPACING}}" childAlignment="{{CHILD_ALIGNMENT}}">{{CONTENT}}</VerticalLayout>
+</Panel>

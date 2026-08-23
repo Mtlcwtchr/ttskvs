@@ -58,6 +58,35 @@ local function validateAbility(item)
   return true, nil
 end
 
+local function validateCustomGroup(item)
+  if type(item) ~= "table" then
+    return false, "customGroup должен быть таблицей"
+  end
+  if item.title ~= nil and not isString(item.title) then
+    return false, "customGroup.title должен быть строкой"
+  end
+  if item.description ~= nil and not isString(item.description) then
+    return false, "customGroup.description должен быть строкой"
+  end
+  return true, nil
+end
+
+local function validateSkill(item)
+  if type(item) ~= "table" then
+    return false, "skill должен быть таблицей"
+  end
+  if not isString(item.name) or item.name == "" then
+    return false, "skill.name обязателен"
+  end
+  if not isString(item.ability) or item.ability == "" then
+    return false, "skill.ability обязателен"
+  end
+  if not isNumber(item.bonus) then
+    return false, "skill.bonus должен быть числом"
+  end
+  return true, nil
+end
+
 function ModelValidators.validateCharacter(character)
   if type(character) ~= "table" then
     return false, "character должен быть таблицей"
@@ -95,6 +124,18 @@ function ModelValidators.validateCharacter(character)
     local aOk, aErr = validateAbility(ability)
     if not aOk then
       return false, string.format("abilities[%d]: %s", index, aErr)
+    end
+  end
+  for index, customGroup in ipairs(character.customGroups or {}) do
+    local cOk, cErr = validateCustomGroup(customGroup)
+    if not cOk then
+      return false, string.format("customGroups[%d]: %s", index, cErr)
+    end
+  end
+  for index, skill in ipairs(character.skills or {}) do
+    local sOk, sErr = validateSkill(skill)
+    if not sOk then
+      return false, string.format("skills[%d]: %s", index, sErr)
     end
   end
 

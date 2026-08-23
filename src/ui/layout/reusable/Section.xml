@@ -1,0 +1,13 @@
+<!-- Секция листа: фиксированный заголовок + контентная зона на остаток высоты. -->
+<Box width="{{WIDTH}}" height="{{HEIGHT}}" color="{{COLOR}}">
+  <Column fit="fixed" width="{{WIDTH}}" height="{{HEIGHT}}" spacing="{{HEADER_SPACING}}" childAlignment="UpperLeft">
+    <Box width="{{WIDTH}}" height="{{TITLE_HEIGHT}}" color="{{COLOR}}">
+      <Caption fontSize="{{TITLE_FONT_SIZE}}" alignment="{{TITLE_ALIGNMENT}}" color="{{TITLE_COLOR}}">{{TITLE}}</Caption>
+    </Box>
+    <Box width="{{WIDTH}}" height="{{CONTENT_HEIGHT}}" color="{{COLOR}}">
+      <Stack fit="fixed" padding="{{CONTENT_PADDING}}" spacing="{{CONTENT_SPACING}}" childAlignment="UpperLeft">
+        {{CONTENT}}
+      </Stack>
+    </Box>
+  </Column>
+</Box>

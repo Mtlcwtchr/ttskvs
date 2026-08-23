@@ -1,0 +1,3 @@
+<!-- characterValidation="None" — валидное значение по умолчанию у TTS, так что
+     числовые поля просто передают VALIDATION="Integer", а остальные ничего. -->
+<InputField id="{{ID}}" width="{{WIDTH}}" height="{{HEIGHT}}" onEndEdit="{{ON_END_EDIT}}" characterValidation="{{VALIDATION}}" interactable="true" readOnly="false" lineType="{{LINE_TYPE}}" text="{{VALUE}}" />

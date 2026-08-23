@@ -27,10 +27,31 @@ Theme.textMuted2 = "#7f7752"
 -- принимал, и фон панели оставался полностью прозрачным (виден стол под UI).
 Theme.overlayDark = "rgba(0.047,0.043,0.039,0.6)"
 Theme.sheetBg = "rgba(0.078,0.063,0.039,0.96)"
+Theme.railBg = "rgba(0.078,0.063,0.039,0.92)"
+-- Прозрачный фон нужен явным значением: у Panel без color свой дефолт.
+Theme.transparent = "rgba(0,0,0,0)"
+
+-- Роли для компонентов ui/components/: фон кнопки, фон выбранной кнопки,
+-- акцентная рамка (кнопка "+"), нейтральная и опасная кнопка.
+Theme.buttonBg = "rgba(0.141, 0.141, 0.110, 0.8)"
+Theme.buttonBgSelected = "rgba(0.231, 0.318, 0.176, 0.8)"
+Theme.frameAccent = "#b08a2e"
+Theme.buttonNeutral = "#7f7752"
+Theme.dangerRed = "#8e3b34"
 
 Theme.hpRed = "#cf5136"
 Theme.hpRedDark = "#3a140f"
 Theme.positiveGreen = "#8fbfa8"
 Theme.positiveGreenBright = "#a8d6bf"
+
+-- Разметка называет цвет ролью (color="sheetBg"), а не хексом: палитра
+-- остаётся единственным местом, где цвета заданы. Незнакомое значение
+-- пропускаем как есть — это литерал вида "#c9a94a" или "rgba(...)".
+function Theme.resolve(value)
+  if type(value) ~= "string" then
+    return value
+  end
+  return Theme[value] or value
+end
 
 return Theme

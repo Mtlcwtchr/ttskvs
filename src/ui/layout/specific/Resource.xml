@@ -1,0 +1,1 @@
+<StatBar title="{{TITLE}}" width="{{WIDTH}}" height="{{HEIGHT}}" ratio="{{RATIO}}" fillColor="{{FILL_COLOR}}" trackColor="{{TRACK_COLOR}}">{{VALUE}}</StatBar>

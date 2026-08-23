@@ -1,0 +1,12 @@
+<!-- Ресурс с полоской: хиты, стамина, мана. Ширина заливки приходит числом —
+     процентов TTS XML не понимает. Дорожка — сырой Panel без width: ширину
+     ей задаёт родительская раскладка. -->
+<Box width="{{WIDTH}}" height="{{HEIGHT}}" color="{{COLOR}}">
+  <Stack padding="8 8 8 8" spacing="6">
+    <Caption color="{{TITLE_COLOR}}">{{TITLE}}</Caption>
+    {{VALUE}}
+    <Panel height="12" color="{{TRACK_COLOR}}">
+      <Panel rectAlignment="MiddleLeft" width="{{FILL_WIDTH}}" height="12" color="{{FILL_COLOR}}" />
+    </Panel>
+  </Stack>
+</Box>

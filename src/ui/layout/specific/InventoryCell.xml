@@ -1,0 +1,5 @@
+<Box width="{{WIDTH}}" height="{{HEIGHT}}" color="bgDeepest">
+  <Stack fit="fixed" padding="4 4 4 4" spacing="2" childAlignment="UpperLeft">
+    {{VALUE}}
+  </Stack>
+</Box>

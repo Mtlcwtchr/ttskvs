@@ -1,65 +1,206 @@
--- Модель партии + вся логика взаимодействия с ней. UI не мутирует это
--- состояние напрямую нигде — только через методы этого сервиса. UI-слой
--- узнаёт об изменениях через store:subscribe (см. ui/HUDView.lua).
+-- Централизованный сервис UI-состояния и операций над партией/персонажем.
+-- Global.lua только проксирует события TTS сюда.
+local CharacterFields = require("core.CharacterFields")
+local PersistenceService = require("core.PersistenceService")
 local Store = require("core.Store")
-local DataLoader = require("core.DataLoader")
+
+local SHEET_VIEW = "view"
+local SHEET_WIZARD = "wizard"
 
 local store = Store.new({
   party = {},
-  partyById = {},
   selectedCharacterId = nil,
-  openCharacterId = nil,
-  lastPlayerColor = "White",
+  sheetVisible = false,
+  sheetMode = SHEET_VIEW,
 })
 
 local PartyService = {}
+
+local function findById(characters, id)
+  for _, character in ipairs(characters or {}) do
+    if character.id == id then
+      return character
+    end
+  end
+  return nil
+end
+
+local function currentState()
+  return store:getState()
+end
+
+local function decodeXmlEntities(raw)
+  local s = tostring(raw or "")
+  for _ = 1, 3 do
+    local prev = s
+    s = s:gsub("&lt;", "<")
+      :gsub("&gt;", ">")
+      :gsub("&quot;", "\"")
+      :gsub("&apos;", "'")
+      :gsub("&amp;", "&")
+    if s == prev then
+      break
+    end
+  end
+  return s
+end
+
+local function refreshParty()
+  local state = currentState()
+  local party = PersistenceService.getParty()
+  local selectedCharacterId = state.selectedCharacterId
+  local sheetVisible = state.sheetVisible
+  local sheetMode = state.sheetMode
+
+  if selectedCharacterId ~= nil and findById(party, selectedCharacterId) == nil then
+    selectedCharacterId = nil
+    sheetVisible = false
+    sheetMode = SHEET_VIEW
+  end
+
+  store:setState({
+    party = party,
+    selectedCharacterId = selectedCharacterId,
+    sheetVisible = sheetVisible,
+    sheetMode = sheetMode,
+  })
+end
 
 function PartyService.subscribe(listener)
   store:subscribe(listener)
 end
 
 function PartyService.getState()
-  return store:getState()
+  return currentState()
 end
 
--- Событие "данные загружены" (из WebRequest или моков) — наполняет модель.
 function PartyService.load(onLoaded)
-  DataLoader.loadParty(function(party)
-    local partyById = {}
-    for _, character in ipairs(party) do
-      partyById[character.id] = character
+  PersistenceService.loadParty(function(loadedParty)
+    local selectedCharacterId = nil
+    if #loadedParty > 0 then
+      selectedCharacterId = loadedParty[1].id
     end
-    store:setState({ party = party, partyById = partyById })
-    if onLoaded ~= nil then onLoaded() end
+    store:setState({
+      party = loadedParty,
+      selectedCharacterId = selectedCharacterId,
+      sheetVisible = false,
+      sheetMode = SHEET_VIEW,
+    })
+    if onLoaded ~= nil then
+      onLoaded(currentState())
+    end
   end)
 end
 
--- Намерение "выбрать персонажа" (клик по портрету). Не трогает openCharacterId.
-function PartyService.selectCharacter(playerColor, characterId)
-  store:setState({ selectedCharacterId = characterId, lastPlayerColor = playerColor })
-end
-
--- Намерение "открыть полную панель для выбранного персонажа".
-function PartyService.openCharacterSheet(playerColor)
-  local state = store:getState()
-  if state.selectedCharacterId == nil then return end
+function PartyService.selectCharacter(rawId)
+  local characterId = tostring(rawId or ""):gsub("^character_", "")
+  if characterId == "" then
+    printToAll("[Character] Пустой id персонажа в selectCharacter", { 1, 0.3, 0.3 })
+    return
+  end
+  local state = currentState()
+  if findById(state.party, characterId) == nil then
+    printToAll("[Character] Персонаж не найден в партии: " .. tostring(characterId), { 1, 0.3, 0.3 })
+    return
+  end
   store:setState({
-    openCharacterId = state.selectedCharacterId,
-    lastPlayerColor = playerColor,
+    selectedCharacterId = characterId,
+    sheetVisible = true,
+    sheetMode = SHEET_VIEW,
   })
 end
 
-function PartyService.closeCharacterSheet()
-  store:setState({ openCharacterId = Store.NULL })
+function PartyService.createCharacter()
+  local ok, characterIdOrError = PersistenceService.createCharacter({}, true)
+  if not ok then
+    printToAll("[Character] Не удалось создать персонажа: " .. tostring(characterIdOrError), { 1, 0.3, 0.3 })
+    return
+  end
+  store:setState({
+    selectedCharacterId = characterIdOrError,
+    sheetVisible = true,
+    sheetMode = SHEET_WIZARD,
+  })
+  refreshParty()
 end
 
--- Реальной системы эффектов способностей пока нет — заглушка, чтобы UI-слой
--- уже сейчас звал сервис, а не решал сам, что значит "использовать способность".
-function PartyService.useAbility(abilityId)
-  local state = store:getState()
-  local character = state.partyById[state.selectedCharacterId]
-  if character == nil then return end
-  printToAll(string.format("%s использует способность: %s", character.name, abilityId), { 0.8, 0.8, 0.4 })
+function PartyService.startWizard()
+  local state = currentState()
+  if state.selectedCharacterId == nil then
+    printToAll("[Character] Нельзя открыть редактор: персонаж не выбран", { 1, 0.8, 0.3 })
+    return
+  end
+  store:setState({ sheetMode = SHEET_WIZARD })
+end
+
+function PartyService.finishWizard()
+  local state = currentState()
+  if state.selectedCharacterId == nil then
+    printToAll("[Character] Нельзя завершить редактор: персонаж не выбран", { 1, 0.8, 0.3 })
+    return
+  end
+  store:setState({ sheetMode = SHEET_VIEW })
+end
+
+function PartyService.closeSheet()
+  store:setState({
+    sheetVisible = false,
+    sheetMode = SHEET_VIEW,
+  })
+end
+
+function PartyService.deleteCharacter()
+  local state = currentState()
+  if state.selectedCharacterId == nil then
+    printToAll("[Character] Нельзя удалить: персонаж не выбран", { 1, 0.8, 0.3 })
+    return
+  end
+
+  local ok, err = PersistenceService.removeCharacter(state.selectedCharacterId)
+  if not ok then
+    printToAll("[Character] Не удалось удалить персонажа: " .. tostring(err), { 1, 0.3, 0.3 })
+    return
+  end
+
+  local party = PersistenceService.getParty()
+  local selectedCharacterId = nil
+  if #party > 0 then
+    selectedCharacterId = party[1].id
+  end
+  store:setState({
+    party = party,
+    selectedCharacterId = selectedCharacterId,
+    sheetVisible = false,
+    sheetMode = SHEET_VIEW,
+  })
+end
+
+function PartyService.updateCharacterField(fieldId, value)
+  local state = currentState()
+  if state.selectedCharacterId == nil then
+    printToAll("[Character] Нельзя сохранить поле: персонаж не выбран", { 1, 0.8, 0.3 })
+    return
+  end
+
+  local character = PersistenceService.getCharacter(state.selectedCharacterId)
+  if character == nil then
+    printToAll("[Character] Персонаж не найден: " .. tostring(state.selectedCharacterId), { 1, 0.3, 0.3 })
+    return
+  end
+
+  local normalizedValue = decodeXmlEntities(value)
+  if not CharacterFields.set(character, fieldId, normalizedValue) then
+    printToAll("[Character] Неизвестное поле листа: " .. tostring(fieldId), { 1, 0.8, 0.3 })
+    return
+  end
+
+  local ok, err = PersistenceService.updateCharacter(character)
+  if not ok then
+    printToAll("[Character] Не удалось сохранить поле: " .. tostring(err), { 1, 0.3, 0.3 })
+    return
+  end
+
+  refreshParty()
 end
 
 return PartyService

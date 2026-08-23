@@ -1,0 +1,4 @@
+<Line fit="fixed" spacing="6">
+  {{TITLE_FIELD}}
+  {{DESC_FIELD}}
+</Line>

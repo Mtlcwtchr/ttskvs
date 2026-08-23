@@ -1,0 +1,1 @@
+<Button id="{{ID}}" width="{{WIDTH}}" height="{{HEIGHT}}" color="{{COLOR}}" fontSize="14" onClick="{{ON_CLICK}}">{{LABEL}}</Button>

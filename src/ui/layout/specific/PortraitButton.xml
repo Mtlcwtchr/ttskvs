@@ -1,0 +1,7 @@
+<!-- Портрет персонажа в рейке. Цвета рамки и фона приходят props: выделенный
+     портрет отличается только ими. -->
+<Frame width="120" height="120" borderColor="{{BORDER_COLOR}}">
+  <Button id="{{ID}}" width="114" height="114" color="{{BG_COLOR}}" fontSize="14" onClick="{{ON_CLICK}}">
+    <PortraitContent initial="{{INITIAL}}" hp="{{HP}}"/>
+  </Button>
+</Frame>

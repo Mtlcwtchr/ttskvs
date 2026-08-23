@@ -1,0 +1,4 @@
+<Stack fit="fixed" spacing="1">
+  <Text fontSize="13" alignment="MiddleLeft" color="textCream">• {{NAME}}</Text>
+  <Text fontSize="11" alignment="MiddleLeft" color="textMuted">{{DESC}}</Text>
+</Stack>

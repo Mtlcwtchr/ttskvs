@@ -1,0 +1,2 @@
+<!-- Плитка характеристики: подпись, значение, модификатор. -->
+<Tile label="{{LABEL}}" sub="{{SUB}}" width="{{WIDTH}}" height="{{HEIGHT}}">{{VALUE}}</Tile>

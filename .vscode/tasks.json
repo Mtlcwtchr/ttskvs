@@ -1,0 +1,17 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      // Держит .lua-обёртки рядом с src/**/*.xml в актуальном состоянии, чтобы
+      // Save and Play всегда отправлял свежий XML. Сокетов не открывает —
+      // с расширением за порт 39998 не воюет.
+      "label": "TTS: watch XML templates",
+      "type": "shell",
+      "command": "python3 tools/tts_bridge.py watch-xml",
+      "isBackground": true,
+      "runOptions": { "runOn": "folderOpen" },
+      "presentation": { "reveal": "silent", "panel": "dedicated" },
+      "problemMatcher": []
+    }
+  ]
+}

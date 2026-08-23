@@ -78,6 +78,155 @@ def sync_mock_data(_args=None) -> None:
           f"{', '.join(f.name for f in files)}")
 
 
+AUTOGEN_MARKER = "-- AUTO-GENERATED from "
+COMMENT_RE = re.compile(r"<!--.*?-->\s*", re.S)
+LAYOUT_DIR = "layout"      # .xml-исходники, которые правит человек
+GENERATED_DIR = "generated"  # .lua-обёртки, которые пишет этот скрипт
+
+
+LAYOUT_GROUPS = ("VerticalLayout", "HorizontalLayout", "GridLayout", "TableLayout")
+# Сырые layout-группы разрешены только в разметке самих раскладочных
+# компонентов: там ровно две проверенные в TTS конфигурации — «fluid» (только
+# padding/spacing/childAlignment) и «fixed» (плюс все четыре child*-флага
+# false). Любая третья комбинация ломает вёрстку: childControlWidth по
+# умолчанию true, и группа переопределяет width/height детей.
+LAYOUT_COMPONENTS = {"Stack", "StackFixed", "Line", "LineFixed", "Column", "ColumnFixed", "Anchor"}
+RAW_GROUP_RE = re.compile(r"<(" + "|".join(("VerticalLayout", "HorizontalLayout")) + r")\b")
+SIZED_GROUP_RE = re.compile(
+    r"<(" + "|".join(LAYOUT_GROUPS) + r")\b[^>]*\b(width|height|color)\s*=",
+    re.S,
+)
+
+
+def lint_layout(path: Path, markup: str) -> int:
+    """Ругается на размер/цвет, повешенный прямо на layout-группу.
+
+    Из документации TTS (api.tabletopsimulator.com/ui/layoutgrouping) у групп
+    есть только padding/spacing/childAlignment: color рисуется ПОВЕРХ детей, а
+    width на <VerticalLayout> — то, из-за чего лист персонажа развалился.
+    Размер и фон живут на Panel (компоненты Box/Column/Section)."""
+    problems = 0
+
+    if path.stem not in LAYOUT_COMPONENTS:
+        for match in RAW_GROUP_RE.finditer(markup):
+            line = markup[: match.start()].count("\n") + 1
+            print(
+                f"  ERROR: {path.relative_to(ROOT)}:{line} — сырой <{match.group(1)}>: "
+                "используйте <Stack>/<Line>/<Column> (fit=\"fixed\" для детей со своим размером)",
+                file=sys.stderr,
+            )
+            problems += 1
+
+    for match in SIZED_GROUP_RE.finditer(markup):
+        line = markup[: match.start()].count("\n") + 1
+        print(
+            f"  ERROR: {path.relative_to(ROOT)}:{line} — <{match.group(1)} {match.group(2)}=...>: "
+            "размер и фон только на Panel (Box/Column/Section)",
+            file=sys.stderr,
+        )
+        problems += 1
+    return problems
+
+
+def sync_xml_templates(_args=None) -> int:
+    """Собирает всю разметку из ui/layout/**/*.xml в ОДИН модуль ui/generated/Templates.lua.
+
+    Почему один файл, а не обёртка на каждый .xml: обёрток было по файлу на
+    компонент, и они оказывались тёзками контрактов (components/Box.lua и
+    components/generated/Box.lua) — в дереве это читалось как дубликаты.
+    Теперь генерируемый артефакт ровно один, и его имя ни с чем не пересекается.
+
+    Зачем он вообще нужен: песочница TTS не читает файлы в рантайме, скрипт
+    объекта в сейве — одна плоская строка, а бандлер расширения резолвит только
+    src/?.lua — то есть текст XML обязан лежать внутри отправляемого Lua.
+
+    Возвращает 1, если файл изменился, чтобы watch-xml молчал впустую."""
+    changed, problems = 0, 0
+
+    layout_roots = sorted([x for x in SRC.rglob(LAYOUT_DIR) if x.is_dir()])
+    if not layout_roots:
+        return changed
+
+    def under_layout_root(path: Path) -> bool:
+        for root in layout_roots:
+            try:
+                path.relative_to(root)
+                return True
+            except ValueError:
+                pass
+        return False
+
+    strays = [x for x in sorted(SRC.rglob("*.xml")) if not under_layout_root(x)]
+    for stray in strays:
+        print(
+            f"  WARNING: {stray.relative_to(ROOT)} лежит вне {LAYOUT_DIR}/** — "
+            "в Templates.lua он не попадёт",
+            file=sys.stderr,
+        )
+
+    for layout_root in layout_roots:
+        target = layout_root.parent / GENERATED_DIR / "Templates.lua"
+        target.parent.mkdir(parents=True, exist_ok=True)
+
+        xml_files = sorted(layout_root.rglob("*.xml"))
+        entries = []
+        seen_names = {}
+        for xml in xml_files:
+            # Комментарии — документация для того, кто правит разметку; в игру
+            # их гнать незачем: строка XML парсится заново на каждый setXml, а
+            # шапка атома вроде InputField.xml размножилась бы по инстансам.
+            markup = COMMENT_RE.sub("", xml.read_text(encoding="utf-8")).strip()
+            problems += lint_layout(xml, markup)
+            if xml.stem in seen_names:
+                print(
+                    f"  ERROR: дублируется имя шаблона {xml.stem}: "
+                    f"{seen_names[xml.stem].relative_to(ROOT)} и {xml.relative_to(ROOT)}",
+                    file=sys.stderr,
+                )
+                problems += 1
+                continue
+            seen_names[xml.stem] = xml
+            entries.append((xml.stem, markup))
+
+        body = [
+            f"-- AUTO-GENERATED из {layout_root.relative_to(ROOT)}/**/*.xml "
+            "командой `python3 tools/tts_bridge.py sync-xml`.",
+            "-- Не редактировать руками — правьте .xml, файл пересобирается.",
+            "-- Внутри — та же разметка без XML-комментариев.",
+            "local Templates = {}",
+            "",
+        ]
+        for name, markup in entries:
+            body.append(f'Templates["{name}"] = {lua_long_string(markup)}')
+            body.append("")
+        body.append("return Templates")
+        output = "\n".join(body) + "\n"
+
+        if not target.exists() or target.read_text(encoding="utf-8") != output:
+            target.write_text(output, encoding="utf-8")
+            print(f"  {len(entries)} шаблон(ов) -> {target.relative_to(ROOT)}")
+            changed = 1
+
+    if problems:
+        print(f"  {problems} проблем(ы) в разметке — см. ERROR выше", file=sys.stderr)
+    return changed
+
+
+def watch_xml(_args=None) -> None:
+    """Poll src/**/*.xml and keep the generated .lua wrappers in sync.
+
+    Touches no sockets, so it is safe to run alongside the VS Code extension
+    (unlike `watch`/`push`, which fight it for port 39998)."""
+    print("Watching src/**/*.xml -> .lua wrappers (Ctrl+C to stop)...")
+    sync_xml_templates()
+    try:
+        while True:
+            time.sleep(0.5)
+            sync_xml_templates()
+    except KeyboardInterrupt:
+        pass
+
+
 def resolve_module_file(name: str) -> Path:
     base = SRC / name.replace(".", "/")
     lua_path = base.with_suffix(".lua")
@@ -263,6 +412,7 @@ def push(args) -> None:
 
     if args.sync_mock:
         sync_mock_data()
+    sync_xml_templates()
 
     manifest = json.loads(MANIFEST.read_text(encoding="utf-8"))
     script_states = []
@@ -341,9 +491,18 @@ def main():
     )
     sub.add_parser("watch", help="print live print()/error messages from the game")
     sub.add_parser("sync-mock", help="regenerate src/data/MockData.lua from data/characters/*.json")
+    sub.add_parser("sync-xml", help="rebuild ui/generated/Templates.lua from ui/layout/**/*.xml")
+    sub.add_parser("watch-xml", help="keep Templates.lua in sync while you edit layout/**/*.xml")
 
     args = parser.parse_args()
-    {"pull": pull, "push": push, "watch": watch, "sync-mock": sync_mock_data}[args.command](args)
+    {
+        "pull": pull,
+        "push": push,
+        "watch": watch,
+        "sync-mock": sync_mock_data,
+        "sync-xml": sync_xml_templates,
+        "watch-xml": watch_xml,
+    }[args.command](args)
 
 
 if __name__ == "__main__":

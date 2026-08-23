@@ -1,0 +1,4 @@
+<Slot width="{{WIDTH}}" height="{{HEIGHT}}">
+  <Caption fontSize="9" alignment="MiddleLeft" color="textMuted2">{{LABEL}}</Caption>
+  {{VALUE}}
+</Slot>

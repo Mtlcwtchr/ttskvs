@@ -1,0 +1,7 @@
+<Box width="272" height="24" color="transparent">
+  <Line fit="fixed" spacing="6" childAlignment="MiddleLeft">
+    <Text fontSize="12" alignment="MiddleLeft" color="goldBright" width="34">{{BONUS}}</Text>
+    <Text fontSize="12" alignment="MiddleLeft" color="textCream" width="194">{{NAME}}</Text>
+    <Text fontSize="11" alignment="MiddleRight" color="textMuted" width="32">{{ABILITY}}</Text>
+  </Line>
+</Box>

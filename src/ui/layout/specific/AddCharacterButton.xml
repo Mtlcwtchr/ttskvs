@@ -1,0 +1,5 @@
+<!-- Кнопка "+" в рейке: создаёт заготовку и сразу открывает визард. Данных не
+     требует, поэтому вся целиком описана разметкой. -->
+<Frame width="120" height="120" borderColor="frameAccent">
+  <Button id="create_character" width="114" height="114" color="buttonBg" fontSize="44" onClick="createCharacter">+</Button>
+</Frame>

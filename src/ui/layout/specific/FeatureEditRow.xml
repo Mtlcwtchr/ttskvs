@@ -1,0 +1,4 @@
+<Stack fit="fixed" spacing="3">
+  <Line fit="fixed" spacing="6">{{NAME}}{{TYPE}}</Line>
+  {{DESC}}
+</Stack>

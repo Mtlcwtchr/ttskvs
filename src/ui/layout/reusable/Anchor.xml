@@ -1,0 +1,3 @@
+<!-- Позиционированный блок поверх стола. offsetXY — документированный атрибут
+     («x y» одной строкой); отдельных offsetX/offsetY в TTS нет. -->
+<Panel rectAlignment="{{ALIGNMENT}}" offsetXY="{{OFFSET}}" width="{{WIDTH}}" height="{{HEIGHT}}" color="{{COLOR}}">{{CONTENT}}</Panel>

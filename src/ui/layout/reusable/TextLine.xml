@@ -1,0 +1,3 @@
+<!-- Одна строка текста. Три компонента используют её с разными дефолтами:
+     Caption (подпись), Note (приписка), Label (обычная строка). -->
+<Text fontSize="{{FONT_SIZE}}" alignment="{{ALIGNMENT}}" color="{{COLOR}}">{{CONTENT}}</Text>

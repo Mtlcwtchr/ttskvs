@@ -1,0 +1,1 @@
+<HorizontalLayout padding="{{PADDING}}" spacing="{{SPACING}}" childAlignment="{{CHILD_ALIGNMENT}}">{{CONTENT}}</HorizontalLayout>

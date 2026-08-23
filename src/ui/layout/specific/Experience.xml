@@ -1,0 +1,1 @@
+<Text fontSize="{{FONT_SIZE}}" alignment="MiddleCenter" color="{{COLOR}}">{{CURRENT}} / {{NEXT}}</Text>

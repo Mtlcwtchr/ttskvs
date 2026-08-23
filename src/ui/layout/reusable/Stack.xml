@@ -1,0 +1,4 @@
+<!-- Вертикальная раскладка для содержимого, которое должно тянуться по ширине
+     родителя (тексты, поля). Ровно тот набор атрибутов, что рисовался в TTS в
+     первом рабочем варианте: только padding/spacing/childAlignment. -->
+<VerticalLayout padding="{{PADDING}}" spacing="{{SPACING}}" childAlignment="{{CHILD_ALIGNMENT}}">{{CONTENT}}</VerticalLayout>

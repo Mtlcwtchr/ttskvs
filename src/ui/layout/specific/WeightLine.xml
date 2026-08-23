@@ -1,0 +1,1 @@
+<Text fontSize="11" alignment="MiddleLeft" color="textMuted2">Вес: {{CURRENT}} / {{MAX}}</Text>

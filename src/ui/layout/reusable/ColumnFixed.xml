@@ -1,0 +1,4 @@
+<!-- Колонка для детей с собственным размером (секции листа). -->
+<Panel width="{{WIDTH}}" height="{{HEIGHT}}" color="{{COLOR}}">
+  <VerticalLayout padding="{{PADDING}}" spacing="{{SPACING}}" childAlignment="{{CHILD_ALIGNMENT}}" childControlWidth="false" childControlHeight="false" childForceExpandWidth="false" childForceExpandHeight="false">{{CONTENT}}</VerticalLayout>
+</Panel>

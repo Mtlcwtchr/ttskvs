@@ -1,0 +1,2 @@
+<!-- Строка спасброска: закрашенный кружок = есть владение. -->
+<Text fontSize="{{FONT_SIZE}}" alignment="MiddleLeft" color="{{COLOR}}">{{MARK}} {{BONUS}} {{LABEL}}</Text>

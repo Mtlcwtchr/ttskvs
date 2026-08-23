@@ -44,6 +44,25 @@ local function defaultAbility()
   }
 end
 
+local function defaultSkills()
+  return {
+    { name = "Perception", ability = "Wis", bonus = 7 },
+    { name = "Survival", ability = "Wis", bonus = 7 },
+    { name = "Insight", ability = "Wis", bonus = 7 },
+    { name = "Animal Handling", ability = "Wis", bonus = 7 },
+    { name = "Intimidation", ability = "Cha", bonus = 5 },
+    { name = "Acrobatics", ability = "Dex", bonus = 3 },
+    { name = "Stealth", ability = "Dex", bonus = 3 },
+    { name = "Sleight of Hand", ability = "Dex", bonus = 6 },
+    { name = "Athletics", ability = "Str", bonus = 1 },
+    { name = "Medicine", ability = "Wis", bonus = 4 },
+    { name = "Arcana", ability = "Int", bonus = 0 },
+    { name = "Investigation", ability = "Int", bonus = 0 },
+    { name = "Persuasion", ability = "Cha", bonus = 2 },
+    { name = "Deception", ability = "Cha", bonus = 2 },
+  }
+end
+
 local function defaultCharacter()
   local equipment = {}
   for _, slot in ipairs(EQUIPMENT_SLOTS) do
@@ -52,10 +71,11 @@ local function defaultCharacter()
 
   return {
     id = "",
-    name = "Новый герой",
+    name = "New Hero",
     portrait = "",
     playerName = "",
     race = "",
+    age = "",
     class = "",
     level = 1,
     background = "",
@@ -72,6 +92,7 @@ local function defaultCharacter()
     inspiration = false,
     savingThrowProficiencies = {},
     proficientSkills = {},
+    skills = defaultSkills(),
     combat = { armorClass = 10, meleeBonus = 0, rangedBonus = 0 },
     attacks = { defaultWeapon() },
     carryWeight = { current = 0, max = 0 },
@@ -85,6 +106,7 @@ local function defaultCharacter()
     abilities = { defaultAbility() },
     inventory = {},
     otherProficiencies = {},
+    customGroups = {},
     personality = {
       traits = "",
       ideals = "",
@@ -159,6 +181,32 @@ function ModelTemplates.newCharacter(partial)
     table.insert(abilities, defaultAbility())
   end
   character.abilities = abilities
+
+  local customGroups = {}
+  for _, item in ipairs(character.customGroups or {}) do
+    if type(item) == "table" then
+      table.insert(customGroups, {
+        title = tostring(item.title or ""),
+        description = tostring(item.description or ""),
+      })
+    end
+  end
+  character.customGroups = customGroups
+
+  local skills = {}
+  for _, item in ipairs(character.skills or {}) do
+    if type(item) == "table" then
+      table.insert(skills, {
+        name = tostring(item.name or ""),
+        ability = tostring(item.ability or ""),
+        bonus = tonumber(item.bonus) or 0,
+      })
+    end
+  end
+  if #skills == 0 then
+    skills = defaultSkills()
+  end
+  character.skills = skills
 
   return character
 end

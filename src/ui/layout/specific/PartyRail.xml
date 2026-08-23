@@ -1,0 +1,9 @@
+<!-- Полоска портретов партии (в духе Divinity/BG3), CLAUDE.md правило 3.
+     {{PORTRAITS}} — единственный допустимый вид слота: результат цикла по
+     партии, длину которого разметка знать не может. -->
+<Box width="{{WIDTH}}" height="{{HEIGHT}}" color="{{COLOR}}">
+  <Stack fit="fixed" padding="10 10 10 10" spacing="10" childAlignment="UpperCenter">
+    {{PORTRAITS}}
+    <AddCharacterButton/>
+  </Stack>
+</Box>

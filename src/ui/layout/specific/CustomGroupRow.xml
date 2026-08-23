@@ -1,0 +1,4 @@
+<Column fit="fixed" width="460" height="56" spacing="1">
+  <Caption alignment="MiddleLeft" color="goldDim">{{TITLE}}</Caption>
+  <Text fontSize="12" alignment="UpperLeft" color="textBody">{{DESCRIPTION}}</Text>
+</Column>

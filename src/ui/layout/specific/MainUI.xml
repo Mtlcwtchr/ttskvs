@@ -1,0 +1,8 @@
+<!-- Корень Global UI: рейка партии слева, лист персонажа поверх стола.
+     <CharacterSheet/> сам решает, рисоваться ли — по контексту рендера. -->
+<Panel>
+  <Anchor alignment="MiddleLeft" offset="90 0" width="140" height="800">
+    <PartyRail/>
+  </Anchor>
+  <CharacterSheet/>
+</Panel>
