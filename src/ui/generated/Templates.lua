@@ -54,7 +54,7 @@ Templates["StatBar"] = [[<Col width="{{WIDTH}}" height="{{HEIGHT}}" color="{{COL
   </Box>
 </Col>]]
 
-Templates["TextLine"] = [[<Text width="{{WIDTH}}" height="{{HEIGHT}}" fontSize="{{FONT_SIZE}}" alignment="{{ALIGNMENT}}"
+Templates["TextLine"] = [[<Text width="{{WIDTH}}" height="{{HEIGHT}}" font="{{FONT}}" fontSize="{{FONT_SIZE}}" alignment="{{ALIGNMENT}}"
       color="{{COLOR}}" horizontalOverflow="{{OVERFLOW}}">{{CONTENT}}</Text>]]
 
 Templates["Tile"] = [[<Col width="{{WIDTH}}" height="{{HEIGHT}}" color="{{COLOR}}" padding="{{PADDING}}" gap="1" align="topleft">
@@ -92,18 +92,18 @@ Templates["CharacterSheet"] = [[<Anchor id="character_sheet_root" at="topleft" x
         </Box>
         <Box width="150" height="fill">
           <ViewOnly>
-            <SheetButton id="sheet_edit" label="Редактировать" tone="gold"/>
+            <SheetButton id="sheet_edit" label="Редактировать" tone="gold" onClick="startWizard"/>
           </ViewOnly>
           <WizardOnly>
-            <SheetButton id="sheet_finish" label="Готово" tone="gold"/>
+            <SheetButton id="sheet_finish" label="Готово" tone="gold" onClick="finishWizard"/>
           </WizardOnly>
         </Box>
         <Box width="96" height="fill">
-          <SheetButton id="sheet_close" label="Закрыть" tone="quiet"/>
+          <SheetButton id="sheet_close" label="Закрыть" tone="quiet" onClick="closeSheet"/>
         </Box>
         <WizardOnly>
           <Box width="120" height="fill">
-            <SheetButton id="sheet_delete" label="Удалить" tone="danger"/>
+            <SheetButton id="sheet_delete" label="Удалить" tone="danger" onClick="deleteCharacter"/>
           </Box>
         </WizardOnly>
       </Row>
@@ -133,9 +133,9 @@ Templates["CharacterSheet"] = [[<Anchor id="character_sheet_root" at="topleft" x
 
           <Col width="fill" height="fill" gap="10" align="topleft">
             <Section title="НАВЫКИ" titleAt="bottom" height="fill">
-              <Scroll width="fill" height="fill" gap="1">
+              <Col width="fill" height="fill" gap="1" align="topleft">
                 <SkillList/>
-              </Scroll>
+              </Col>
             </Section>
             <WizardOnly>
               <Col width="fill" height="98" gap="6" align="topleft">
@@ -317,9 +317,11 @@ Templates["InventoryRow"] = [[<Text fontSize="13" alignment="MiddleLeft" color="
 
 Templates["MainUI"] = [[<Box width="fill" height="fill">
   <Defaults>
-    <Text color="textBody" horizontalOverflow="Overflow" verticalOverflow="Truncate"/>
-    <Button colors="buttonStates" textColor="buttonText" textAlignment="MiddleCenter" transition="ColorTint"/>
-    <InputField colors="inputStates" textColor="inputText" caretColor="caret"/>
+    <Text color="textBody" font="CormorantGaramond" horizontalOverflow="Overflow" verticalOverflow="Truncate"
+          resizeTextForBestFit="false"/>
+    <Button colors="buttonStates" font="CormorantGaramond" textColor="buttonText" textAlignment="MiddleCenter"
+            transition="ColorTint"/>
+    <InputField colors="inputStates" font="CormorantGaramond" textColor="inputText" caretColor="caret"/>
   </Defaults>
 
   <Anchor at="topleft" x="22" y="130" width="100" height="auto">

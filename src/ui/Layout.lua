@@ -720,15 +720,11 @@ local function emitKids(node, out)
   end
 end
 
--- Текст, который не влезает в свою ячейку, TTS по умолчанию (horizontalOverflow
--- = Overflow) выпускает за границы — соседи оказываются перечёркнуты чужой
--- строкой. Особенно заметно на русском: он на 15-20% длиннее английского, и
--- подписи вроде «МИРОВОЗЗРЕНИЕ» вылезали из своей клетки.
--- Поэтому каждому <Text> дописываем автоподбор кегля: расти выше заданного
--- fontSize он не может (resizeTextMaxSize = fontSize), а сжаться, чтобы
--- поместиться, — может.
+-- Автоподбор кегля включаем только если его ЯВНО попросили атрибутом
+-- resizeTextForBestFit="true". Принудительное сжатие по умолчанию в ряде случаев
+-- уродует кириллицу в TTS (визуально «ломаные» буквы).
 local function textFit(node, extra)
-  if node.attrs.resizeTextForBestFit ~= nil then
+  if tostring(node.attrs.resizeTextForBestFit) ~= "true" then
     return
   end
   local fontSize = tonumber(node.attrs.fontSize) or 14

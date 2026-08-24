@@ -15,7 +15,7 @@ SkillList.defaults = {}
 local SKILLS = {
   { key = "perception", name = "Внимание", ability = "WIS" },
   { key = "survival", name = "Выживание", ability = "WIS" },
-  { key = "insight", name = "Проница-ть", ability = "WIS" },
+  { key = "insight", name = "Проницат.", ability = "WIS" },
   { key = "animal_handling", name = "Животные", ability = "WIS" },
   { key = "medicine", name = "Медицина", ability = "WIS" },
   { key = "intimidation", name = "Запугивание", ability = "CHA" },
@@ -53,7 +53,7 @@ function SkillList.render()
       + (hasProficiency and proficiencyBonus or 0)
 
     table.insert(rows, Component.render(Templates.SkillRow, {
-      HEIGHT = 19,
+      HEIGHT = 17,
       BONUS = Common.signed(bonus),
       NAME = Component.escape(skill.name),
       ABILITY = ABILITY_SHORT[skill.ability] or skill.ability,

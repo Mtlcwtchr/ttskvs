@@ -21,18 +21,18 @@
         </Box>
         <Box width="150" height="fill">
           <ViewOnly>
-            <SheetButton id="sheet_edit" label="Редактировать" tone="gold"/>
+            <SheetButton id="sheet_edit" label="Редактировать" tone="gold" onClick="startWizard"/>
           </ViewOnly>
           <WizardOnly>
-            <SheetButton id="sheet_finish" label="Готово" tone="gold"/>
+            <SheetButton id="sheet_finish" label="Готово" tone="gold" onClick="finishWizard"/>
           </WizardOnly>
         </Box>
         <Box width="96" height="fill">
-          <SheetButton id="sheet_close" label="Закрыть" tone="quiet"/>
+          <SheetButton id="sheet_close" label="Закрыть" tone="quiet" onClick="closeSheet"/>
         </Box>
         <WizardOnly>
           <Box width="120" height="fill">
-            <SheetButton id="sheet_delete" label="Удалить" tone="danger"/>
+            <SheetButton id="sheet_delete" label="Удалить" tone="danger" onClick="deleteCharacter"/>
           </Box>
         </WizardOnly>
       </Row>
@@ -65,9 +65,9 @@
 
           <Col width="fill" height="fill" gap="10" align="topleft">
             <Section title="НАВЫКИ" titleAt="bottom" height="fill">
-              <Scroll width="fill" height="fill" gap="1">
+              <Col width="fill" height="fill" gap="1" align="topleft">
                 <SkillList/>
-              </Scroll>
+              </Col>
             </Section>
             <WizardOnly>
               <Col width="fill" height="98" gap="6" align="topleft">
