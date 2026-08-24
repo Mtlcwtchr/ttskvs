@@ -6,11 +6,11 @@ local HUDView = require("ui.HUDView")
 local CUSTOM_ASSETS = {
   {
     name = "CormorantSC",
-    url = "https://raw.githubusercontent.com/Mtlcwtchr/ttskvs/main/assets/fonts/bundles/osx/kvs_font_cormorant_sc.unity3d",
+    url = "https://raw.githubusercontent.com/Mtlcwtchr/ttskvs/master/assets/fonts/bundles/osx/kvs_font_cormorant_sc.unity3d",
   },
   {
     name = "CormorantGaramond",
-    url = "https://raw.githubusercontent.com/Mtlcwtchr/ttskvs/main/assets/fonts/bundles/osx/kvs_font_cormorant_garamond.unity3d",
+    url = "https://raw.githubusercontent.com/Mtlcwtchr/ttskvs/master/assets/fonts/bundles/osx/kvs_font_cormorant_garamond.unity3d",
   },
 }
 
