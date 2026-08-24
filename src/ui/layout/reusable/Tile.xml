@@ -1,9 +1,9 @@
 <!-- Плитка характеристики (4A, колонка 1): подпись капсом, крупное значение,
-     пилюля модификатора снизу. -->
+     пилюля модификатора снизу. Row вместо Box для подписи, чтобы избежать rectAlignment. -->
 <Col width="{{WIDTH}}" height="{{HEIGHT}}" color="{{COLOR}}" padding="{{PADDING}}" gap="1" align="topleft">
-  <Box width="fill" height="{{LABEL_HEIGHT}}">
-    <Caption height="fill" fontSize="{{LABEL_FONT_SIZE}}" alignment="MiddleCenter" color="{{LABEL_COLOR}}">{{LABEL}}</Caption>
-  </Box>
+  <Row width="fill" height="{{LABEL_HEIGHT}}" gap="0" align="center">
+    <Caption height="fill" width="fill" fontSize="{{LABEL_FONT_SIZE}}" alignment="MiddleCenter" color="{{LABEL_COLOR}}">{{LABEL}}</Caption>
+  </Row>
   <Box width="fill" height="fill">{{VALUE}}</Box>
   {{SUB_BLOCK}}
 </Col>

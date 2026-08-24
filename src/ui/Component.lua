@@ -67,8 +67,6 @@ function Component.join(parts)
   return table.concat(parts)
 end
 
--- Данные (имена, бэкграунды) уходят в XML-атрибуты и текстовые узлы.
--- Кириллица не экранируется (это валидный UTF-8 в XML).
 function Component.escape(text)
   return text
 end

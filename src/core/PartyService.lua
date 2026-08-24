@@ -139,7 +139,9 @@ function PartyService.finishWizard()
     printToAll("[Character] Нельзя завершить редактор: персонаж не выбран", { 1, 0.8, 0.3 })
     return
   end
-  store:setState({ sheetMode = SHEET_VIEW })
+  -- Обновляем партию и переключаем режим одним setState — один ре-рендер.
+  local party = PersistenceService.getParty()
+  store:setState({ party = party, sheetMode = SHEET_VIEW })
 end
 
 function PartyService.closeSheet()
@@ -200,7 +202,13 @@ function PartyService.updateCharacterField(fieldId, value)
     return
   end
 
-  refreshParty()
+  -- В режиме визарда не перерисовываем весь UI после каждого нажатия клавиши:
+  -- InputField уже отображает актуальное значение (TTS держит его в своём
+  -- состоянии), а перерисовка сбрасывала бы фокус и видимый текст.
+  -- Единый ре-рендер произойдёт на finishWizard.
+  if state.sheetMode ~= SHEET_WIZARD then
+    refreshParty()
+  end
 end
 
 return PartyService

@@ -17,10 +17,11 @@ InputField.defaults = {
   -- "None" — дефолтное валидное значение characterValidation у TTS, так что
   -- нечисловым полям ничего передавать не надо.
   validation = "None",
-  -- Только SingleLine / MultiLineSubmit / MultiLineNewLine: другого значения у
+  -- Tолько SingleLine / MultiLineSubmit / MultiLineNewLine: другого значения у
   -- TTS нет, и невалидное он молча игнорирует.
   lineType = "SingleLine",
   onEndEdit = "",
+  onValueChanged = "",
 }
 
 function InputField.render(props)
@@ -36,6 +37,7 @@ function InputField.render(props)
     VALIDATION = p.validation,
     LINE_TYPE = p.lineType,
     ON_END_EDIT = p.onEndEdit,
+    ON_VALUE_CHANGED = p.onValueChanged,
   })
 end
 

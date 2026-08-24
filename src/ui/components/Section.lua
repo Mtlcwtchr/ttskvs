@@ -14,6 +14,7 @@ Section.defaults = {
   color = Theme.bgPanel,
   titleColor = Theme.labelGold,
   titleFontSize = 9,
+  titleFont = "Arial",  -- Arial поддерживает кириллицу, CormorantSC нет
   titleAlignment = "MiddleLeft",
   titleHeight = 14,
   titleAt = "top",
@@ -37,6 +38,7 @@ function Section.render(props)
     COLOR = Component.color(p.color),
     TITLE_COLOR = Component.color(p.titleColor),
     TITLE_FONT_SIZE = p.titleFontSize,
+    TITLE_FONT = p.titleFont,
     TITLE_ALIGNMENT = p.titleAlignment,
     CONTENT = p.content,
   })

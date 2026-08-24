@@ -1,8 +1,10 @@
 <!-- Секция листа: заголовок сверху (4A — блоки ABILITIES & OATHS,
-     PROFICIENCIES & LORE), контент на весь остаток. -->
+     PROFICIENCIES & LORE), контент на весь остаток.
+     font передаётся через TITLE_FONT (Arial для кириллицы).
+     Row/Col вместо Box для заголовка, чтобы избежать rectAlignment обрезания. -->
 <Col width="{{WIDTH}}" height="{{HEIGHT}}" color="{{COLOR}}" padding="{{PADDING}}" gap="{{HEADER_GAP}}" align="topleft">
-  <Box width="fill" height="{{TITLE_HEIGHT}}">
-    <Caption height="fill" fontSize="{{TITLE_FONT_SIZE}}" alignment="{{TITLE_ALIGNMENT}}" color="{{TITLE_COLOR}}">{{TITLE}}</Caption>
-  </Box>
+  <Row width="fill" height="{{TITLE_HEIGHT}}" gap="0" align="left">
+    <Caption height="fill" width="fill" fontSize="{{TITLE_FONT_SIZE}}" font="{{TITLE_FONT}}" alignment="{{TITLE_ALIGNMENT}}" color="{{TITLE_COLOR}}">{{TITLE}}</Caption>
+  </Row>
   <Col width="fill" height="fill" gap="{{CONTENT_GAP}}" align="topleft">{{CONTENT}}</Col>
 </Col>

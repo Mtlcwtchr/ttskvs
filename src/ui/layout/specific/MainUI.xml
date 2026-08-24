@@ -7,11 +7,12 @@
      и лог (этих элементов у нас пока нет). -->
 <Box width="fill" height="fill">
   <Defaults>
-    <Text color="textBody" font="CormorantGaramond" horizontalOverflow="Overflow" verticalOverflow="Truncate"
-          resizeTextForBestFit="false"/>
-    <Button colors="buttonStates" font="CormorantGaramond" textColor="buttonText" textAlignment="MiddleCenter"
+    <Text color="textBody" font="Arial" horizontalOverflow="Overflow" verticalOverflow="Overflow"/>
+    <Button colors="buttonStates" font="Arial" textColor="buttonText" textAlignment="MiddleCenter"
             transition="ColorTint"/>
-    <InputField colors="inputStates" font="CormorantGaramond" textColor="inputText" caretColor="caret"/>
+    <!-- InputField: используем Arial (встроенный TTS-шрифт с кириллицей).
+         CormorantGaramond — только латинский, поэтому кириллица невидима. -->
+    <InputField colors="inputStates" font="Arial" textColor="inputText" caretColor="caret"/>
   </Defaults>
 
   <Anchor at="topleft" x="22" y="130" width="100" height="auto">

@@ -18,10 +18,10 @@ local GROUPS = {
     { title = "ПРОИСХОЖДЕНИЕ", field = "field_background" },
   },
   notes = {
-    { title = "ЧЕРТЫ", field = "field_traits" },
+    { title = "ЧЕРTЫ", field = "field_traits" },
     { title = "ИДЕАЛЫ", field = "field_ideals" },
-    { title = "ПРИВЯЗАННОСТИ", field = "field_bonds" },
-    { title = "СЛАБОСТИ", field = "field_flaws" },
+    { title = "ПРИВЯЗАННОСTИ", field = "field_bonds" },
+    { title = "СЛАБОСTИ", field = "field_flaws" },
   },
 }
 
@@ -88,7 +88,7 @@ function CustomGroups.render(props)
     for _, item in ipairs(character.customGroups or {}) do
       local text = tostring(item.description or "")
       if text ~= "" then
-        table.insert(rows, row(item.title or "ЗАМЕТКА", text))
+        table.insert(rows, row(item.title or "ЗАМЕTКА", text))
       end
     end
   end

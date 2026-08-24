@@ -51,7 +51,8 @@ function Field.render(props)
     fontSize = p.fontSize,
     validation = (kind == "integer") and "Integer" or "None",
     lineType = (kind == "multiline") and "MultiLineNewLine" or "SingleLine",
-    onEndEdit = p.onEndEdit,
+    onEndEdit = "",
+    onValueChanged = p.onEndEdit,
   })
 end
 

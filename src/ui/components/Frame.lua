@@ -1,4 +1,4 @@
--- Рамка вокруг ребёнка. Толщина — отступ, а не «ребёнок меньше на 6»:
+-- Рамка вокруг ребёнка. Tолщина — отступ, а не «ребёнок меньше на 6»:
 -- ребёнок объявляет width="fill" и подстраивается сам.
 local Component = require("ui.Component")
 local Templates = require("ui.generated.Templates")

@@ -1,4 +1,4 @@
--- Точка входа для TTS onClick/onEndEdit: переводит событие в намерение сервиса.
+-- Tочка входа для TTS onClick/onEndEdit: переводит событие в намерение сервиса.
 local PartyService = require("core.PartyService")
 
 local HUDEvents = {}

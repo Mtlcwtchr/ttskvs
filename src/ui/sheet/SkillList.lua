@@ -34,7 +34,7 @@ local SKILLS = {
 }
 
 local ABILITY_SHORT = {
-  STR = "СИЛ", DEX = "ЛОВ", CON = "ТЕЛ", INT = "ИНТ", WIS = "МУД", CHA = "ХАР",
+  STR = "СИЛ", DEX = "ЛОВ", CON = "TЕЛ", INT = "ИНT", WIS = "МУД", CHA = "ХАР",
 }
 
 function SkillList.render()

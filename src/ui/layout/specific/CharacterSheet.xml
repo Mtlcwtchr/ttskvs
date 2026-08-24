@@ -1,14 +1,14 @@
-<!-- Лист персонажа — окно «Ashgrave Codex» из референса 4A.
-     Место и размер окна те же, что в мокапе: 1004×620 при отступе 126/120 от
-     левого верхнего угла (сверху остаётся полоса под «порядок хода», справа —
-     под панель броска и лог; этих элементов у нас пока нет).
+<!-- Лист персонажа — окно «Ashgrave Codex» из референса 4A, увеличено на 25%.
+     Место и размер окна: 1255×850 при отступе 158/150 от левого верхнего угла.
+     Оригинальные размеры из мокапа: 1004×620 при 126/120 (сверху полоса под
+     «порядок хода», справа — под панель броска и лог).
 
      Единственные абсолютные числа страницы — width/height у <Anchor>. Всё
      внутри выражено через fill/Nfr/% и пересчитывается само.
 
      Обрамление окна как в 4A: латунный кант 2px, за ним тёмная фаска 4px,
      внутри сама страница. -->
-<Anchor id="character_sheet_root" at="topleft" x="126" y="120" width="1004" height="620" color="brass" padding="2">
+<Anchor id="character_sheet_root" at="topleft" x="158" y="150" width="1255" height="850" color="brass" padding="2">
   <Box width="fill" height="fill" color="bgDeepest" padding="4">
     <Col width="fill" height="fill" color="sheetBg" padding="14" gap="8" align="topleft">
 
@@ -37,34 +37,36 @@
         </WizardOnly>
       </Row>
 
-      <!-- Вторая строка шапки: сведения о персонаже. -->
-      <Row width="fill" height="34" gap="8" align="left">
+      <!-- Вторая строка шапки: сведения о персонаже.
+           height=38 для InputField-ов в wizard: при малой высоте (<22px)
+           Unity InputField не рендерит текст корректно. -->
+      <Row width="fill" height="38" gap="8" align="left">
         <HeaderChip label="РАСА" name="field_race" width="2fr"/>
         <HeaderChip label="КЛАСС" name="field_class" width="2fr"/>
         <HeaderChip label="УРОВЕНЬ" name="field_level" width="1fr"/>
-        <HeaderChip label="ВОЗРАСТ" name="field_age" width="1fr"/>
+        <HeaderChip label="ВОЗРАСT" name="field_age" width="1fr"/>
         <HeaderChip label="МИРОВОЗЗРЕНИЕ" name="field_alignment" width="2fr"/>
         <HeaderChip label="ИГРОК" name="field_player_name" width="2fr"/>
       </Row>
 
       <Box width="fill" height="1" color="divider"/>
 
-      <!-- ТЕЛО ОКНА: три колонки 4A — характеристики, кукла, сумка. -->
+      <!-- TЕЛО ОКНА: три колонки 4A — характеристики, кукла, сумка. -->
       <Row width="fill" height="fill" gap="14" align="topleft">
 
-        <!-- КОЛОНКА 1: столбик характеристик + список навыков -->
-        <Row width="304" height="fill" gap="10" align="topleft">
+        <!-- КОЛОНКА 1: столбик характеристик + список навыков (уменьшена с 340 до 320) -->
+        <Row width="320" height="fill" gap="10" align="topleft">
           <Col width="82" height="fill" gap="6" align="topleft">
             <AbilityTile label="СИЛА" name="field_ability_STR"/>
-            <AbilityTile label="ЛОВКОСТЬ" name="field_ability_DEX"/>
-            <AbilityTile label="ТЕЛОСЛОЖ." name="field_ability_CON"/>
-            <AbilityTile label="ИНТЕЛЛЕКТ" name="field_ability_INT"/>
-            <AbilityTile label="МУДРОСТЬ" name="field_ability_WIS"/>
+            <AbilityTile label="ЛОВКОСTЬ" name="field_ability_DEX"/>
+            <AbilityTile label="TЕЛОСЛОЖ." name="field_ability_CON"/>
+            <AbilityTile label="ИНTЕЛЛЕКT" name="field_ability_INT"/>
+            <AbilityTile label="МУДРОСTЬ" name="field_ability_WIS"/>
             <AbilityTile label="ХАРИЗМА" name="field_ability_CHA"/>
           </Col>
 
           <Col width="fill" height="fill" gap="10" align="topleft">
-            <Section title="НАВЫКИ" titleAt="bottom" height="fill">
+            <Section title="НАВЫКИ" titleAt="bottom" titleHeight="16" titleFontSize="8" height="fill">
               <Col width="fill" height="fill" gap="1" align="topleft">
                 <SkillList/>
               </Col>
@@ -78,8 +80,8 @@
           </Col>
         </Row>
 
-        <!-- КОЛОНКА 2: кукла со снаряжением + ресурсы -->
-        <Col width="250" height="fill" gap="12" align="topleft">
+        <!-- КОЛОНКА 2: кукла со снаряжением + ресурсы (уменьшена с 310 до 270) -->
+        <Col width="270" height="fill" gap="12" align="topleft">
           <Box width="fill" height="fill" color="borderDim" padding="1">
             <Col width="fill" height="fill" color="bgPanel" padding="8" gap="6" align="topleft">
 
@@ -102,7 +104,7 @@
                 </Box>
 
                 <Col width="44" height="fill" gap="5" align="topleft">
-                  <EquipSlot slot="amulet" label="АМУЛЕТ"/>
+                  <EquipSlot slot="amulet" label="АМУЛЕT"/>
                   <EquipSlot slot="ring1" label="КОЛЬЦО"/>
                   <EquipSlot slot="ring2" label="КОЛЬЦО"/>
                   <EquipSlot slot="belt" label="ПОЯС"/>
@@ -120,16 +122,16 @@
           </Box>
 
           <Col width="fill" height="auto" gap="6" align="topleft">
-            <Resource title="ХИТЫ" current="field_hp_current" max="field_hp_max" height="46"/>
-            <Resource title="ВЫНОСЛИВОСТЬ" current="field_stamina_current" max="field_stamina_max" height="46"
+            <Resource title="ХИTЫ" current="field_hp_current" max="field_hp_max" height="46"/>
+            <Resource title="ВЫНОСЛИВОСTЬ" current="field_stamina_current" max="field_stamina_max" height="46"
                       fillColor="staminaGold"/>
             <Resource title="МАНА" current="field_mana_current" max="field_mana_max" height="46"
                       fillColor="manaBlue"/>
             <ViewOnly>
               <Row width="fill" height="26" gap="8" align="left">
-                <HeaderChip label="ВРЕМ. ХИТЫ" name="field_hp_temp" width="1fr" fontSize="12"/>
-                <HeaderChip label="КОСТИ ХИТОВ" name="field_hit_dice" width="1fr" fontSize="12"/>
-                <HeaderChip label="СКОРОСТЬ" name="field_speed" width="1fr" fontSize="12"/>
+                <HeaderChip label="ВРЕМ. ХИTЫ" name="field_hp_temp" width="1fr" fontSize="12"/>
+                <HeaderChip label="КОСTИ ХИTОВ" name="field_hit_dice" width="1fr" fontSize="12"/>
+                <HeaderChip label="СКОРОСTЬ" name="field_speed" width="1fr" fontSize="12"/>
               </Row>
             </ViewOnly>
             <WizardOnly>
@@ -153,7 +155,7 @@
           </Box>
 
           <Box width="fill" height="fill" color="borderDim" padding="1">
-            <Section title="СПОСОБНОСТИ И ОБЕТЫ" color="bgPanel">
+            <Section title="СПОСОБНОСTИ И ОБЕTЫ" titleHeight="18" titleFontSize="8" color="bgPanel">
               <Scroll width="fill" height="fill" gap="7">
                 <Features/>
               </Scroll>
@@ -162,14 +164,14 @@
 
           <Row width="fill" height="fill" gap="10" align="topleft">
             <Box width="fill" height="fill" color="borderDim" padding="1">
-              <Section title="ВЛАДЕНИЯ И ЗНАНИЯ" color="bgPanel">
+            <Section title="ВЛАДЕНИЯ И ЗНАНИЯ" titleHeight="16" titleFontSize="8" color="bgPanel">
                 <Scroll width="fill" height="fill" gap="6">
                   <CustomGroups group="lore"/>
                 </Scroll>
               </Section>
             </Box>
             <Box width="fill" height="fill" color="borderDim" padding="1">
-              <Section title="ЗАМЕТКИ ЗА СТОЛОМ" color="bgPanel">
+              <Section title="ЗАМЕTКИ ЗА СTОЛОМ" titleHeight="16" titleFontSize="8" color="bgPanel">
                 <Scroll width="fill" height="fill" gap="6">
                   <CustomGroups group="notes"/>
                 </Scroll>
