@@ -8,7 +8,7 @@
 
      Обрамление окна как в 4A: латунный кант 2px, за ним тёмная фаска 4px,
      внутри сама страница. -->
-<Anchor id="character_sheet_root" at="topleft" x="158" y="150" width="1255" height="850" color="brass" padding="2">
+<Anchor id="character_sheet_root" at="topleft" x="158" y="75" width="1255" height="930" color="brass" padding="2">
   <Box width="fill" height="fill" color="bgDeepest" padding="4">
     <Col width="fill" height="fill" color="sheetBg" padding="14" gap="8" align="topleft">
 
@@ -37,16 +37,9 @@
         </WizardOnly>
       </Row>
 
-      <!-- Вторая строка шапки: сведения о персонаже.
-           height=38 для InputField-ов в wizard: при малой высоте (<22px)
-           Unity InputField не рендерит текст корректно. -->
+      <!-- Вторая строка шапки: раса. -->
       <Row width="fill" height="38" gap="8" align="left">
-        <HeaderChip label="РАСА" name="field_race" width="2fr"/>
-        <HeaderChip label="КЛАСС" name="field_class" width="2fr"/>
-        <HeaderChip label="УРОВЕНЬ" name="field_level" width="1fr"/>
-        <HeaderChip label="ВОЗРАСT" name="field_age" width="1fr"/>
-        <HeaderChip label="МИРОВОЗЗРЕНИЕ" name="field_alignment" width="2fr"/>
-        <HeaderChip label="ИГРОК" name="field_player_name" width="2fr"/>
+        <HeaderChip label="РАСА" name="field_race" width="fill"/>
       </Row>
 
       <Box width="fill" height="1" color="divider"/>
@@ -129,12 +122,13 @@
 
         <!-- КОЛОНКА 3: сумка, способности, заметки -->
         <Col width="fill" height="fill" gap="10" align="topleft">
-          <!-- Сумка: сетка 7 в ряд (4A). Строки — это <Col>, а не <Box>:
-               в блоке без потока дети легли бы друг на друга. -->
+          <!-- Сумка: сетка 7 в ряд (4A). -->
           <Box width="fill" height="auto" color="borderDim" padding="1">
-            <Col width="fill" height="auto" color="bgPanel" padding="8" gap="5" align="topleft">
-              <InventoryList/>
-            </Col>
+            <Section title="ИНВЕНTАРЬ" titleHeight="16" titleFontSize="8" color="bgPanel">
+              <Col width="fill" height="auto" gap="5" align="topleft">
+                <InventoryList/>
+              </Col>
+            </Section>
           </Box>
 
           <Box width="fill" height="fill" color="borderDim" padding="1">
@@ -145,22 +139,13 @@
             </Section>
           </Box>
 
-          <Row width="fill" height="fill" gap="10" align="topleft">
-            <Box width="fill" height="fill" color="borderDim" padding="1">
-            <Section title="ВЛАДЕНИЯ И ЗНАНИЯ" titleHeight="16" titleFontSize="8" color="bgPanel">
-                <Scroll width="fill" height="fill" gap="6">
-                  <CustomGroups group="lore"/>
-                </Scroll>
-              </Section>
-            </Box>
-            <Box width="fill" height="fill" color="borderDim" padding="1">
-              <Section title="ЗАМЕTКИ ЗА СTОЛОМ" titleHeight="16" titleFontSize="8" color="bgPanel">
-                <Scroll width="fill" height="fill" gap="6">
-                  <CustomGroups group="notes"/>
-                </Scroll>
-              </Section>
-            </Box>
-          </Row>
+          <Box width="fill" height="fill" color="borderDim" padding="1">
+            <Section title="ЗАМЕTКИ" titleHeight="16" titleFontSize="8" color="bgPanel">
+              <Scroll width="fill" height="fill" gap="6">
+                <CustomGroups group="notes"/>
+              </Scroll>
+            </Section>
+          </Box>
         </Col>
 
       </Row>

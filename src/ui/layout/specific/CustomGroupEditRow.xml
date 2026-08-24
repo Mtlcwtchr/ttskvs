@@ -1,6 +1,8 @@
-<!-- Правка заметки: подпись над полем. В узкой колонке 4A подпись слева
-     оставляла полю совсем немного места. -->
-<Col width="fill" height="{{HEIGHT}}" gap="1" align="topleft">
-  <Box width="fill" height="12">{{TITLE_FIELD}}</Box>
-  <Box width="fill" height="fill">{{DESC_FIELD}}</Box>
-</Col>
+<!-- Правка заметки: название + описание + кнопка удаления. -->
+<Row width="fill" height="{{HEIGHT}}" gap="4" padding="4 4 2 2" align="topleft">
+  <Col width="fill" height="fill" gap="6" align="topleft">
+    <Box width="fill" height="16">{{TITLE_FIELD}}</Box>
+    <Box width="fill" height="fill">{{DESC_FIELD}}</Box>
+  </Col>
+  <Box width="22" height="22" at="right">{{DELETE_BUTTON}}</Box>
+</Row>

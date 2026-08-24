@@ -484,6 +484,20 @@ def push(args) -> None:
         )
 
     manifest = json.loads(MANIFEST.read_text(encoding="utf-8"))
+
+    # Запрашиваем текущий script_state через Execute Lua (вызываем onSave)
+    saved_state = ""
+    try:
+        send_message({"messageID": 3, "guid": "-1",
+                      "script": "return onSave and onSave() or ''"})
+        msg = wait_for_message(expected_id=4, timeout=5)
+        returned = msg.get("returnValue", "")
+        if returned and returned != "null" and returned != "nil":
+            saved_state = returned
+            print(f"  Preserved script_state ({len(saved_state)} bytes)")
+    except (TimeoutError, OSError):
+        pass  # TTS не ответил — пушим без state
+
     script_states = []
     for entry in manifest:
         lua_path = ROOT / entry["lua"]
@@ -491,9 +505,10 @@ def push(args) -> None:
         script = lua_path.read_text(encoding="utf-8") if lua_path.exists() else ""
         script = bundle_lua(script)
         ui = xml_path.read_text(encoding="utf-8") if xml_path.exists() else ""
-        script_states.append(
-            {"guid": entry["guid"], "script": script, "ui": ui}
-        )
+        obj = {"guid": entry["guid"], "script": script, "ui": ui}
+        if entry["guid"] == "-1" and saved_state:
+            obj["script_state"] = saved_state
+        script_states.append(obj)
 
     print(f"Pushing {len(script_states)} object(s) to TTS (Save & Play)...")
     send_message({"messageID": 1, "scriptStates": script_states})

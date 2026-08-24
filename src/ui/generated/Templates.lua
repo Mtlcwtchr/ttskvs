@@ -84,7 +84,7 @@ Templates["AttackEditRow"] = [[<Row width="fill" height="{{HEIGHT}}" gap="6" ali
 
 Templates["AttackRow"] = [[<Text fontSize="13" alignment="MiddleLeft" color="textBody">• {{NAME}}   {{BONUS}}   {{DAMAGE}}</Text>]]
 
-Templates["CharacterSheet"] = [[<Anchor id="character_sheet_root" at="topleft" x="158" y="150" width="1255" height="850" color="brass" padding="2">
+Templates["CharacterSheet"] = [[<Anchor id="character_sheet_root" at="topleft" x="158" y="75" width="1255" height="930" color="brass" padding="2">
   <Box width="fill" height="fill" color="bgDeepest" padding="4">
     <Col width="fill" height="fill" color="sheetBg" padding="14" gap="8" align="topleft">
 
@@ -113,12 +113,7 @@ Templates["CharacterSheet"] = [[<Anchor id="character_sheet_root" at="topleft" x
       </Row>
 
       <Row width="fill" height="38" gap="8" align="left">
-        <HeaderChip label="РАСА" name="field_race" width="2fr"/>
-        <HeaderChip label="КЛАСС" name="field_class" width="2fr"/>
-        <HeaderChip label="УРОВЕНЬ" name="field_level" width="1fr"/>
-        <HeaderChip label="ВОЗРАСT" name="field_age" width="1fr"/>
-        <HeaderChip label="МИРОВОЗЗРЕНИЕ" name="field_alignment" width="2fr"/>
-        <HeaderChip label="ИГРОК" name="field_player_name" width="2fr"/>
+        <HeaderChip label="РАСА" name="field_race" width="fill"/>
       </Row>
 
       <Box width="fill" height="1" color="divider"/>
@@ -195,9 +190,11 @@ Templates["CharacterSheet"] = [[<Anchor id="character_sheet_root" at="topleft" x
 
         <Col width="fill" height="fill" gap="10" align="topleft">
           <Box width="fill" height="auto" color="borderDim" padding="1">
-            <Col width="fill" height="auto" color="bgPanel" padding="8" gap="5" align="topleft">
-              <InventoryList/>
-            </Col>
+            <Section title="ИНВЕНTАРЬ" titleHeight="16" titleFontSize="8" color="bgPanel">
+              <Col width="fill" height="auto" gap="5" align="topleft">
+                <InventoryList/>
+              </Col>
+            </Section>
           </Box>
 
           <Box width="fill" height="fill" color="borderDim" padding="1">
@@ -208,22 +205,13 @@ Templates["CharacterSheet"] = [[<Anchor id="character_sheet_root" at="topleft" x
             </Section>
           </Box>
 
-          <Row width="fill" height="fill" gap="10" align="topleft">
-            <Box width="fill" height="fill" color="borderDim" padding="1">
-            <Section title="ВЛАДЕНИЯ И ЗНАНИЯ" titleHeight="16" titleFontSize="8" color="bgPanel">
-                <Scroll width="fill" height="fill" gap="6">
-                  <CustomGroups group="lore"/>
-                </Scroll>
-              </Section>
-            </Box>
-            <Box width="fill" height="fill" color="borderDim" padding="1">
-              <Section title="ЗАМЕTКИ ЗА СTОЛОМ" titleHeight="16" titleFontSize="8" color="bgPanel">
-                <Scroll width="fill" height="fill" gap="6">
-                  <CustomGroups group="notes"/>
-                </Scroll>
-              </Section>
-            </Box>
-          </Row>
+          <Box width="fill" height="fill" color="borderDim" padding="1">
+            <Section title="ЗАМЕTКИ" titleHeight="16" titleFontSize="8" color="bgPanel">
+              <Scroll width="fill" height="fill" gap="6">
+                <CustomGroups group="notes"/>
+              </Scroll>
+            </Section>
+          </Box>
         </Col>
 
       </Row>
@@ -239,18 +227,22 @@ Templates["CombatTile"] = [[<Box width="{{WIDTH}}" height="{{HEIGHT}}" color="{{
   <Tile label="{{LABEL}}" color="{{COLOR}}" padding="2 2 3 3">{{VALUE}}</Tile>
 </Box>]]
 
-Templates["CustomGroupEditRow"] = [[<Col width="fill" height="{{HEIGHT}}" gap="1" align="topleft">
-  <Box width="fill" height="12">{{TITLE_FIELD}}</Box>
-  <Box width="fill" height="fill">{{DESC_FIELD}}</Box>
-</Col>]]
+Templates["CustomGroupEditRow"] = [[<Row width="fill" height="{{HEIGHT}}" gap="4" padding="4 4 2 2" align="topleft">
+  <Col width="fill" height="fill" gap="6" align="topleft">
+    <Box width="fill" height="16">{{TITLE_FIELD}}</Box>
+    <Box width="fill" height="fill">{{DESC_FIELD}}</Box>
+  </Col>
+  <Box width="22" height="22" at="right">{{DELETE_BUTTON}}</Box>
+</Row>]]
 
-Templates["CustomGroupRow"] = [[<Col width="fill" height="auto" gap="1" align="topleft">
-  <Box width="fill" height="13">
+Templates["CustomGroupRow"] = [[<Col width="fill" height="auto" gap="2" padding="4 4 2 2" align="topleft">
+  <Box width="fill" height="14">
     <Caption height="fill" alignment="MiddleLeft" fontSize="9" color="textMuted">{{TITLE}}</Caption>
   </Box>
   <Box width="fill" height="{{TEXT_HEIGHT}}">
     <Note height="fill" fontSize="12" alignment="UpperLeft" color="textBody" wrap="true">{{DESCRIPTION}}</Note>
   </Box>
+  <Box width="fill" height="1" color="divider"/>
 </Col>]]
 
 Templates["EquipSlot"] = [[<Box width="{{WIDTH}}" height="{{HEIGHT}}" color="{{BORDER_COLOR}}" padding="1">

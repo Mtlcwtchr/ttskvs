@@ -263,4 +263,35 @@ function PartyService.toggleSaveProficiency(ability)
   refreshParty()
 end
 
+-- Добавить пустую заметку.
+function PartyService.addNote()
+  local state = currentState()
+  if state.selectedCharacterId == nil then return end
+
+  local character = PersistenceService.getCharacter(state.selectedCharacterId)
+  if character == nil then return end
+
+  if type(character.customGroups) ~= "table" then
+    character.customGroups = {}
+  end
+  table.insert(character.customGroups, { title = "", description = "" })
+  PersistenceService.updateCharacter(character)
+  refreshParty()
+end
+
+-- Удалить заметку по индексу.
+function PartyService.deleteNote(index)
+  local state = currentState()
+  if state.selectedCharacterId == nil then return end
+
+  local character = PersistenceService.getCharacter(state.selectedCharacterId)
+  if character == nil then return end
+
+  if type(character.customGroups) ~= "table" then return end
+  if index < 1 or index > #character.customGroups then return end
+  table.remove(character.customGroups, index)
+  PersistenceService.updateCharacter(character)
+  refreshParty()
+end
+
 return PartyService

@@ -43,6 +43,17 @@ function HUDEvents.toggleSave(_player, _value, id)
   end
 end
 
+function HUDEvents.addNote()
+  PartyService.addNote()
+end
+
+function HUDEvents.deleteNote(_player, _value, id)
+  local index = tonumber(id:match("^delete_note_(%d+)$"))
+  if index then
+    PartyService.deleteNote(index)
+  end
+end
+
 function HUDEvents.onCharacterFieldChanged(_player, value, id)
   PartyService.updateCharacterField(id, value)
 end
