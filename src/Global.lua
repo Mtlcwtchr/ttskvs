@@ -3,20 +3,7 @@ local PartyService = require("core.PartyService")
 local HUDEvents = require("ui.HUDEvents")
 local HUDView = require("ui.HUDView")
 
--- ВРЕМЕННО ОTКЛЮЧЕНО: проверяем, не ломают ли бандлы рендер кириллицы
--- local CUSTOM_ASSETS = {
---   {
---     name = "CormorantSC",
---     url = "https://raw.githubusercontent.com/Mtlcwtchr/ttskvs/master/assets/fonts/bundles/osx/kvs_font_cormorant_sc.unity3d",
---   },
---   {
---     name = "CormorantGaramond",
---     url = "https://raw.githubusercontent.com/Mtlcwtchr/ttskvs/master/assets/fonts/bundles/osx/kvs_font_cormorant_garamond.unity3d",
---   },
--- }
-
 function onLoad()
-  -- UI.setCustomAssets(CUSTOM_ASSETS)  -- ВРЕМЕННО ОTКЛЮЧЕНО
   HUDView.mount()
   PartyService.load(function()
     HUDView.renderNow()
@@ -45,6 +32,14 @@ end
 
 function deleteCharacter(player, value, id)
   HUDEvents.deleteCharacter(player, value, id)
+end
+
+function toggleSkill(player, value, id)
+  HUDEvents.toggleSkill(player, value, id)
+end
+
+function toggleSave(player, value, id)
+  HUDEvents.toggleSave(player, value, id)
 end
 
 function onCharacterFieldChanged(player, value, id)

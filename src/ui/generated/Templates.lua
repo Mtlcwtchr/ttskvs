@@ -141,41 +141,25 @@ Templates["CharacterSheet"] = [[<Anchor id="character_sheet_root" at="topleft" x
                 <SkillList/>
               </Col>
             </Section>
-            <WizardOnly>
-              <Col width="fill" height="98" gap="6" align="topleft">
-                <LabeledField label="Спасброски (CSV)" name="field_saves_csv"/>
-                <LabeledField label="Владение навыками (CSV)" name="field_skills_csv"/>
-              </Col>
-            </WizardOnly>
           </Col>
         </Row>
 
-        <Col width="270" height="fill" gap="12" align="topleft">
+        <Col width="340" height="fill" gap="12" align="topleft">
           <Box width="fill" height="fill" color="borderDim" padding="1">
             <Col width="fill" height="fill" color="bgPanel" padding="8" gap="6" align="topleft">
 
-              <Row width="fill" height="fill" gap="6" align="topleft">
-                <Col width="44" height="fill" gap="5" align="topleft">
-                  <EquipSlot slot="helm" label="ШЛЕМ"/>
-                  <EquipSlot slot="cloak" label="ПЛАЩ"/>
-                  <EquipSlot slot="mail" label="ДОСПЕХ"/>
-                  <EquipSlot slot="glove" label="ПЕРЧ."/>
-                  <EquipSlot slot="boot" label="САПОГИ"/>
-                </Col>
-
-                <Box width="fill" height="fill" color="brassDim" padding="1">
-                  <Box width="fill" height="fill" color="bgTileDeep">
-                    <PortraitLetter fontSize="44"/>
-                  </Box>
+              <Box width="fill" height="fill" color="brassDim" padding="1">
+                <Box width="fill" height="fill" color="bgTileDeep">
+                  <PortraitLetter fontSize="44"/>
                 </Box>
+              </Box>
 
-                <Col width="44" height="fill" gap="5" align="topleft">
-                  <EquipSlot slot="amulet" label="АМУЛЕT"/>
-                  <EquipSlot slot="ring1" label="КОЛЬЦО"/>
-                  <EquipSlot slot="ring2" label="КОЛЬЦО"/>
-                  <EquipSlot slot="belt" label="ПОЯС"/>
-                  <EquipSlot slot="charm" label="ОБЕРЕГ"/>
-                </Col>
+              <Row width="fill" height="60" gap="5" align="topleft">
+                <EquipSlot slot="armor" label="СНАРЯЖ."/>
+                <EquipSlot slot="accessory1" label="АКСЕСС. 1"/>
+                <EquipSlot slot="accessory2" label="АКСЕСС. 2"/>
+                <EquipSlot slot="hand_r" label="ПРАВАЯ"/>
+                <EquipSlot slot="hand_l" label="ЛЕВАЯ"/>
               </Row>
 
               <Row width="fill" height="72" gap="10" align="bottom">
@@ -340,10 +324,7 @@ Templates["PartyRail"] = [[<Col width="fill" height="auto" color="{{COLOR}}" pad
 </Col>]]
 
 Templates["PortraitButton"] = [[<Col width="{{SIZE}}" height="auto" gap="0" align="top">
-  <Box width="{{SIZE}}" height="{{SIZE}}" color="{{BORDER_COLOR}}" padding="{{BORDER}}">
-    <Button id="{{ID}}" width="fill" height="fill" colors="{{COLORS}}" textColor="{{INITIAL_COLOR}}"
-            textAlignment="MiddleCenter" fontSize="{{INITIAL_FONT_SIZE}}" onClick="{{ON_CLICK}}">{{INITIAL}}</Button>
-  </Box>
+  <Box width="{{SIZE}}" height="{{SIZE}}" color="{{BORDER_COLOR}}" padding="{{BORDER}}">{{BUTTON}}</Box>
   <Box width="{{SIZE}}" height="18" color="{{HP_BORDER_COLOR}}" padding="1">
     <Box width="fill" height="fill" color="bgWindow">
       <Note height="fill" fontSize="11" color="{{HP_COLOR}}">{{HP}}</Note>
@@ -360,7 +341,12 @@ Templates["ResourceEditRow"] = [[<Row width="fill" height="fill" gap="4" align="
   <Box width="fill" height="{{FIELD_HEIGHT}}">{{MAX}}</Box>
 </Row>]]
 
-Templates["SaveRow"] = [[<Text fontSize="{{FONT_SIZE}}" alignment="MiddleLeft" color="{{COLOR}}">{{MARK}} {{BONUS}} {{LABEL}}</Text>]]
+Templates["SaveRow"] = [[<Row width="fill" height="fill" gap="4" align="left">
+  <Box width="9" height="9" color="{{DOT_BORDER}}" padding="1" at="center">
+    <Button id="{{DOT_ID}}" width="fill" height="fill" colors="{{DOT_COLORS}}" onClick="toggleSave"/>
+  </Box>
+  <Note height="fill" fontSize="{{FONT_SIZE}}" alignment="MiddleLeft" color="{{COLOR}}">{{BONUS}} {{LABEL}}</Note>
+</Row>]]
 
 Templates["SheetButton"] = [[<Button id="{{ID}}" width="{{WIDTH}}" height="{{HEIGHT}}" colors="{{COLORS}}"
         textColor="{{TEXT_COLOR}}" textAlignment="MiddleCenter" fontSize="{{FONT_SIZE}}"
@@ -368,7 +354,7 @@ Templates["SheetButton"] = [[<Button id="{{ID}}" width="{{WIDTH}}" height="{{HEI
 
 Templates["SkillRow"] = [[<Row width="fill" height="{{HEIGHT}}" gap="6" align="left">
   <Box width="9" height="9" color="{{DOT_BORDER}}" padding="1" at="center">
-    <Box width="fill" height="fill" color="{{DOT_COLOR}}"/>
+    <Button id="{{DOT_ID}}" width="fill" height="fill" colors="{{DOT_COLORS}}" onClick="toggleSkill"/>
   </Box>
   <Box width="26" height="fill">
     <Note height="fill" fontSize="13" alignment="MiddleRight" color="{{BONUS_COLOR}}">{{BONUS}}</Note>

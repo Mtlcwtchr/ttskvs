@@ -1,2 +1,7 @@
-<!-- Строка спасброска: закрашенный кружок = есть владение. -->
-<Text fontSize="{{FONT_SIZE}}" alignment="MiddleLeft" color="{{COLOR}}">{{MARK}} {{BONUS}} {{LABEL}}</Text>
+<!-- Строка спасброска: кликабельный кружок владения + бонус + название. -->
+<Row width="fill" height="fill" gap="4" align="left">
+  <Box width="9" height="9" color="{{DOT_BORDER}}" padding="1" at="center">
+    <Button id="{{DOT_ID}}" width="fill" height="fill" colors="{{DOT_COLORS}}" onClick="toggleSave"/>
+  </Box>
+  <Note height="fill" fontSize="{{FONT_SIZE}}" alignment="MiddleLeft" color="{{COLOR}}">{{BONUS}} {{LABEL}}</Note>
+</Row>

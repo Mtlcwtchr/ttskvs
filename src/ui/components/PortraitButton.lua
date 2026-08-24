@@ -8,6 +8,7 @@ local PortraitButton = {}
 PortraitButton.defaults = {
   characterId = "",
   initial = "?",
+  portraitImage = "",
   hp = "",
   hpLow = false,
   selected = false,
@@ -23,17 +24,31 @@ function PortraitButton.render(props)
   local selected = p.selected == true or p.selected == "true"
   local low = p.hpLow == true or p.hpLow == "true"
 
+  -- Кнопку собираем в Lua: image="" ломает TTS, поэтому атрибут условный
+  local btnId = "character_" .. p.characterId
+  local colors = Component.color(selected and "portraitSelectedStates" or "portraitStates")
+  local textColor = Component.color(selected and "goldPale" or "textBody")
+  local fontSize = selected and 30 or 26
+  local imageAttr = ""
+  if p.portraitImage ~= "" then
+    imageAttr = ' image="' .. p.portraitImage .. '"'
+  end
+  local button = '<Button id="' .. btnId .. '" width="fill" height="fill"'
+    .. ' colors="' .. colors .. '"'
+    .. ' textColor="' .. textColor .. '"'
+    .. imageAttr
+    .. ' textAlignment="MiddleCenter"'
+    .. ' fontSize="' .. fontSize .. '"'
+    .. ' onClick="' .. p.onClick .. '"'
+    .. '>' .. (p.portraitImage ~= "" and "" or p.initial) .. '</Button>'
+
   return Component.render(Templates.PortraitButton, {
-    ID = "character_" .. p.characterId,
-    INITIAL = p.initial,
+    BUTTON = button,
     HP = p.hp,
     SIZE = selected and p.selectedSize or p.size,
     BORDER = selected and p.selectedBorder or p.border,
-    INITIAL_FONT_SIZE = selected and 30 or 26,
     ON_CLICK = p.onClick,
     BORDER_COLOR = Component.color(selected and "gold" or "brassDim"),
-    COLORS = Component.color(selected and "portraitSelectedStates" or "portraitStates"),
-    INITIAL_COLOR = Component.color(selected and "goldPale" or "textBody"),
     HP_BORDER_COLOR = Component.color(low and "hostileRed" or "brass"),
     HP_COLOR = Component.color(low and "warmOrange" or "textCream"),
   })

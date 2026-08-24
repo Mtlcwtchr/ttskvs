@@ -33,16 +33,11 @@
   "carryWeight": { "current": 84, "max": 180 },
   "attunement": { "used": 0, "max": 3 },
   "equipment": [
-    { "slot": "helm", "itemId": null, "name": null },
-    { "slot": "cloak", "itemId": null, "name": null },
-    { "slot": "mail", "itemId": "leather_armor", "name": "Кожаный доспех" },
-    { "slot": "glove", "itemId": null, "name": null },
-    { "slot": "boot", "itemId": null, "name": null },
-    { "slot": "amulet", "itemId": null, "name": null },
-    { "slot": "ring1", "itemId": null, "name": null },
-    { "slot": "ring2", "itemId": null, "name": null },
-    { "slot": "belt", "itemId": null, "name": null },
-    { "slot": "charm", "itemId": null, "name": null }
+    { "slot": "armor", "itemId": "leather_armor", "name": "Кожаный доспех" },
+    { "slot": "accessory1", "itemId": null, "name": null },
+    { "slot": "accessory2", "itemId": null, "name": null },
+    { "slot": "hand_r", "itemId": null, "name": "Длинный меч" },
+    { "slot": "hand_l", "itemId": null, "name": null }
   ],
   "inventory": [
     { "itemId": "potion_healing", "name": "Зелье лечения", "qty": 2 },

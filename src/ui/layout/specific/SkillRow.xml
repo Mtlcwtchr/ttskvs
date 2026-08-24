@@ -1,7 +1,7 @@
-<!-- Строка навыка (4A): точка владения, бонус, название, характеристика. -->
+<!-- Строка навыка (4A): точка владения (кликабельная), бонус, название, характеристика. -->
 <Row width="fill" height="{{HEIGHT}}" gap="6" align="left">
   <Box width="9" height="9" color="{{DOT_BORDER}}" padding="1" at="center">
-    <Box width="fill" height="fill" color="{{DOT_COLOR}}"/>
+    <Button id="{{DOT_ID}}" width="fill" height="fill" colors="{{DOT_COLORS}}" onClick="toggleSkill"/>
   </Box>
   <Box width="26" height="fill">
     <Note height="fill" fontSize="13" alignment="MiddleRight" color="{{BONUS_COLOR}}">{{BONUS}}</Note>

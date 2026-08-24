@@ -33,16 +33,11 @@
   "carryWeight": { "current": 32, "max": 90 },
   "attunement": { "used": 1, "max": 3 },
   "equipment": [
-    { "slot": "helm", "itemId": null, "name": null },
-    { "slot": "cloak", "itemId": null, "name": null },
-    { "slot": "mail", "itemId": null, "name": null },
-    { "slot": "glove", "itemId": null, "name": null },
-    { "slot": "boot", "itemId": null, "name": null },
-    { "slot": "amulet", "itemId": "amulet_arcana", "name": "Амулет тайной силы" },
-    { "slot": "ring1", "itemId": null, "name": null },
-    { "slot": "ring2", "itemId": null, "name": null },
-    { "slot": "belt", "itemId": null, "name": null },
-    { "slot": "charm", "itemId": null, "name": null }
+    { "slot": "armor", "itemId": null, "name": null },
+    { "slot": "accessory1", "itemId": "amulet_arcana", "name": "Амулет тайной силы" },
+    { "slot": "accessory2", "itemId": null, "name": null },
+    { "slot": "hand_r", "itemId": null, "name": "Посох" },
+    { "slot": "hand_l", "itemId": null, "name": null }
   ],
   "inventory": [
     { "itemId": "potion_healing", "name": "Зелье лечения", "qty": 1 }

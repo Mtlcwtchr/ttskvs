@@ -27,6 +27,22 @@ function HUDEvents.deleteCharacter()
   PartyService.deleteCharacter()
 end
 
+function HUDEvents.toggleSkill(_player, _value, id)
+  -- id = "skill_perception", "skill_arcana", etc.
+  local key = id:match("^skill_(.+)$")
+  if key then
+    PartyService.toggleSkillProficiency(key)
+  end
+end
+
+function HUDEvents.toggleSave(_player, _value, id)
+  -- id = "save_STR", "save_DEX", etc.
+  local ability = id:match("^save_(.+)$")
+  if ability then
+    PartyService.toggleSaveProficiency(ability)
+  end
+end
+
 function HUDEvents.onCharacterFieldChanged(_player, value, id)
   PartyService.updateCharacterField(id, value)
 end

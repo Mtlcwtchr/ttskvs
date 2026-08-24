@@ -71,45 +71,28 @@
                 <SkillList/>
               </Col>
             </Section>
-            <WizardOnly>
-              <Col width="fill" height="98" gap="6" align="topleft">
-                <LabeledField label="Спасброски (CSV)" name="field_saves_csv"/>
-                <LabeledField label="Владение навыками (CSV)" name="field_skills_csv"/>
-              </Col>
-            </WizardOnly>
           </Col>
         </Row>
 
-        <!-- КОЛОНКА 2: кукла со снаряжением + ресурсы (уменьшена с 310 до 270) -->
-        <Col width="270" height="fill" gap="12" align="topleft">
+        <!-- КОЛОНКА 2: портрет, экипировка, ресурсы (расширена до 340) -->
+        <Col width="340" height="fill" gap="12" align="topleft">
           <Box width="fill" height="fill" color="borderDim" padding="1">
             <Col width="fill" height="fill" color="bgPanel" padding="8" gap="6" align="topleft">
 
-              <!-- Кукла: слоты слева, портрет посередине, слоты справа.
-                   Высоту слоты делят сами (height="fill"), поэтому кукла
-                   сжимается и растягивается вместе с окном. -->
-              <Row width="fill" height="fill" gap="6" align="topleft">
-                <Col width="44" height="fill" gap="5" align="topleft">
-                  <EquipSlot slot="helm" label="ШЛЕМ"/>
-                  <EquipSlot slot="cloak" label="ПЛАЩ"/>
-                  <EquipSlot slot="mail" label="ДОСПЕХ"/>
-                  <EquipSlot slot="glove" label="ПЕРЧ."/>
-                  <EquipSlot slot="boot" label="САПОГИ"/>
-                </Col>
-
-                <Box width="fill" height="fill" color="brassDim" padding="1">
-                  <Box width="fill" height="fill" color="bgTileDeep">
-                    <PortraitLetter fontSize="44"/>
-                  </Box>
+              <!-- Портрет персонажа по центру -->
+              <Box width="fill" height="fill" color="brassDim" padding="1">
+                <Box width="fill" height="fill" color="bgTileDeep">
+                  <PortraitLetter fontSize="44"/>
                 </Box>
+              </Box>
 
-                <Col width="44" height="fill" gap="5" align="topleft">
-                  <EquipSlot slot="amulet" label="АМУЛЕT"/>
-                  <EquipSlot slot="ring1" label="КОЛЬЦО"/>
-                  <EquipSlot slot="ring2" label="КОЛЬЦО"/>
-                  <EquipSlot slot="belt" label="ПОЯС"/>
-                  <EquipSlot slot="charm" label="ОБЕРЕГ"/>
-                </Col>
+              <!-- Экипировка: 5 слотов в ряд -->
+              <Row width="fill" height="60" gap="5" align="topleft">
+                <EquipSlot slot="armor" label="СНАРЯЖ."/>
+                <EquipSlot slot="accessory1" label="АКСЕСС. 1"/>
+                <EquipSlot slot="accessory2" label="АКСЕСС. 2"/>
+                <EquipSlot slot="hand_r" label="ПРАВАЯ"/>
+                <EquipSlot slot="hand_l" label="ЛЕВАЯ"/>
               </Row>
 
               <!-- Ближний бой / броня / дальний бой — как в 4A, под куклой. -->

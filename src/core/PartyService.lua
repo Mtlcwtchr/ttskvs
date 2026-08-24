@@ -211,4 +211,56 @@ function PartyService.updateCharacterField(fieldId, value)
   end
 end
 
+-- Переключить владение навыком (клик по точке в списке навыков).
+function PartyService.toggleSkillProficiency(skillKey)
+  local state = currentState()
+  if state.selectedCharacterId == nil then return end
+
+  local character = PersistenceService.getCharacter(state.selectedCharacterId)
+  if character == nil then return end
+
+  local skills = character.proficientSkills or {}
+  local found = false
+  local newSkills = {}
+  for _, key in ipairs(skills) do
+    if tostring(key):lower() == skillKey then
+      found = true
+    else
+      table.insert(newSkills, key)
+    end
+  end
+  if not found then
+    table.insert(newSkills, skillKey)
+  end
+  character.proficientSkills = newSkills
+  PersistenceService.updateCharacter(character)
+  refreshParty()
+end
+
+-- Переключить владение спасброском.
+function PartyService.toggleSaveProficiency(ability)
+  local state = currentState()
+  if state.selectedCharacterId == nil then return end
+
+  local character = PersistenceService.getCharacter(state.selectedCharacterId)
+  if character == nil then return end
+
+  local saves = character.savingThrowProficiencies or {}
+  local found = false
+  local newSaves = {}
+  for _, key in ipairs(saves) do
+    if key == ability then
+      found = true
+    else
+      table.insert(newSaves, key)
+    end
+  end
+  if not found then
+    table.insert(newSaves, ability)
+  end
+  character.savingThrowProficiencies = newSaves
+  PersistenceService.updateCharacter(character)
+  refreshParty()
+end
+
 return PartyService

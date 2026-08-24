@@ -125,6 +125,12 @@ local SCALARS = {
   field_player_name = { kind = "text",
     get = function(c) return c.playerName or "" end,
     set = function(c, v) c.playerName = v end },
+  field_portrait = { kind = "text",
+    get = function(c) return c.portrait or "" end,
+    set = function(c, v) c.portrait = v end },
+  field_silhouette = { kind = "text",
+    get = function(c) return c.silhouette or "" end,
+    set = function(c, v) c.silhouette = v end },
 
   field_xp_current = { kind = "integer",
     get = function(c) return sub(c, "experience", { current = 0, next = 300 }).current end,
@@ -197,12 +203,6 @@ local SCALARS = {
     set = function(c, v) local w = sub(c, "carryWeight", { current = 0, max = 0 })
       w.max = clampInteger(v, w.max, 0) end },
 
-  field_saves_csv = { kind = "csv",
-    get = function(c) return joinCsv(c.savingThrowProficiencies) end,
-    set = function(c, v) c.savingThrowProficiencies = splitCsv(v) end },
-  field_skills_csv = { kind = "csv",
-    get = function(c) return joinCsv(c.proficientSkills) end,
-    set = function(c, v) c.proficientSkills = splitCsv(v) end },
   field_other_proficiencies = { kind = "multiline",
     get = function(c) return table.concat(c.otherProficiencies or {}, "\n") end,
     set = function(c, v)

@@ -31,9 +31,11 @@ function PartyRail.render(props)
   for _, character in ipairs(context.party or {}) do
     local hp = character.hp or {}
     local current, max = hp.current or 0, hp.max or 0
+    local portraitUrl = character.portrait or ""
     table.insert(portraits, PortraitButton.render({
       characterId = character.id,
       initial = Component.escape(firstCharacter(character.name)),
+      portraitImage = portraitUrl ~= "" and ("portrait_" .. character.id) or "",
       hp = string.format("%d/%d", current, max),
       hpLow = max > 0 and (current / max) <= 0.5,
       selected = character.id == context.selectedCharacterId,
