@@ -139,6 +139,8 @@ function PartyService.finishWizard()
     printToAll("[Character] Нельзя завершить редактор: персонаж не выбран", { 1, 0.8, 0.3 })
     return
   end
+  -- Сохраняем в бэг (один раз, не на каждый keystroke)
+  PersistenceService.saveCharacterToBag(state.selectedCharacterId)
   -- Обновляем партию и переключаем режим одним setState — один ре-рендер.
   local party = PersistenceService.getParty()
   store:setState({ party = party, sheetMode = SHEET_VIEW })
@@ -175,6 +177,18 @@ function PartyService.deleteCharacter()
     sheetVisible = false,
     sheetMode = SHEET_VIEW,
   })
+end
+
+function PartyService.deployPawn()
+  local state = currentState()
+  if state.selectedCharacterId == nil then
+    printToAll("[Character] Нельзя ввести в игру: персонаж не выбран", { 1, 0.8, 0.3 })
+    return
+  end
+  local ok, err = PersistenceService.deployPawn(state.selectedCharacterId)
+  if not ok then
+    printToAll("[Character] " .. tostring(err), { 1, 0.3, 0.3 })
+  end
 end
 
 function PartyService.updateCharacterField(fieldId, value)

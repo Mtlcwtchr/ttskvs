@@ -94,6 +94,11 @@ Templates["CharacterSheet"] = [[<Anchor id="character_sheet_root" at="topleft" x
             <Field name="field_name" fontSize="24" color="goldPale" alignment="MiddleLeft" height="fill"/>
           </Box>
         </Box>
+        <ViewOnly>
+          <Box width="130" height="fill">
+            <SheetButton id="deploy_pawn" label="Ввести в игру" tone="gold" onClick="deployPawn"/>
+          </Box>
+        </ViewOnly>
         <Box width="150" height="fill">
           <ViewOnly>
             <SheetButton id="sheet_edit" label="Редактировать" tone="gold" onClick="startWizard"/>

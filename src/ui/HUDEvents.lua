@@ -27,6 +27,10 @@ function HUDEvents.deleteCharacter()
   PartyService.deleteCharacter()
 end
 
+function HUDEvents.deployPawn()
+  PartyService.deployPawn()
+end
+
 function HUDEvents.toggleSkill(_player, _value, id)
   -- id = "skill_perception", "skill_arcana", etc.
   local key = id:match("^skill_(.+)$")
