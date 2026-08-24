@@ -1,14 +1,17 @@
 local Component = require("ui.Component")
 local Field = require("ui.sheet.Field")
 local Templates = require("ui.generated.Templates")
+local Theme = require("ui.Theme")
 
 local EquipSlot = {}
 
 EquipSlot.defaults = {
   slot = "",
   label = "",
-  width = 196,
-  height = 42,
+  width = "fill",
+  height = "fill",
+  color = Theme.bgTile,
+  borderColor = Theme.brass,
 }
 
 function EquipSlot.render(props)
@@ -17,11 +20,14 @@ function EquipSlot.render(props)
     LABEL = Component.escape(p.label),
     WIDTH = p.width,
     HEIGHT = p.height,
+    COLOR = Component.color(p.color),
+    BORDER_COLOR = Component.color(p.borderColor),
     VALUE = Field.render({
       name = "field_equip_" .. p.slot,
-      fontSize = 12,
-      width = p.width - 10,
-      height = 22,
+      fontSize = 9,
+      color = "textCream",
+      alignment = "MiddleCenter",
+      height = "fill",
       placeholder = "—",
     }),
   })

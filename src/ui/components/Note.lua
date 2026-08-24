@@ -11,6 +11,11 @@ Note.defaults = {
   alignment = "MiddleCenter",
   fontSize = 11,
   color = Theme.textMuted,
+  width = "fill",
+  height = "auto",
+  -- true — длинный текст переносится по словам (описания способностей,
+  -- заметки). false — одна строка; влезть ей помогает автоподбор кегля.
+  wrap = false,
 }
 
 function Note.render(props)
@@ -20,6 +25,9 @@ function Note.render(props)
     ALIGNMENT = p.alignment,
     FONT_SIZE = p.fontSize,
     COLOR = Component.color(p.color),
+    WIDTH = p.width,
+    HEIGHT = p.height,
+    OVERFLOW = (p.wrap == true or p.wrap == "true") and "Wrap" or "Overflow",
   })
 end
 

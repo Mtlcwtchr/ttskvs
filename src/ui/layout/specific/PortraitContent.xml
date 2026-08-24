@@ -1,6 +1,0 @@
-<!-- Внутренность портрета: инициал сверху, хиты снизу. Пока это буква —
-     настоящие изображения требуют хостинга (CLAUDE.md, "Дизайн-референс"). -->
-<Stack padding="4 4 4 4" spacing="2">
-  <Text alignment="UpperCenter" fontSize="40" color="{{INITIAL_COLOR}}">{{INITIAL}}</Text>
-  <Text alignment="LowerCenter" fontSize="14" color="{{HP_COLOR}}">{{HP}}</Text>
-</Stack>

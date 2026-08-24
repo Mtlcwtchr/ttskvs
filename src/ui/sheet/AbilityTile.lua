@@ -1,3 +1,5 @@
+-- Плитка характеристики (4A, колонка 1): подпись, значение, модификатор
+-- пилюлей снизу.
 local Common = require("ui.sheet.Common")
 local Component = require("ui.Component")
 local Field = require("ui.sheet.Field")
@@ -8,8 +10,8 @@ local AbilityTile = {}
 AbilityTile.defaults = {
   label = "",
   name = "",
-  width = 61,
-  height = 62,
+  width = "fill",
+  height = "fill",
 }
 
 function AbilityTile.render(props)
@@ -23,7 +25,13 @@ function AbilityTile.render(props)
     SUB = sub,
     WIDTH = p.width,
     HEIGHT = p.height,
-    VALUE = Field.render({ name = p.name, fontSize = 20, color = "textBright", width = 52, height = 24 }),
+    VALUE = Field.render({
+      name = p.name,
+      fontSize = 22,
+      color = "goldLight",
+      alignment = "MiddleCenter",
+      height = "fill",
+    }),
   })
 end
 

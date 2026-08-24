@@ -1,4 +1,0 @@
-<!-- Вертикальная раскладка для детей с собственным размером (плитки, секции,
-     портреты). Все четыре child*-флага false — иначе группа переопределяет
-     width/height детей, и вся вёрстка разъезжается (наступали). -->
-<VerticalLayout padding="{{PADDING}}" spacing="{{SPACING}}" childAlignment="{{CHILD_ALIGNMENT}}" childControlWidth="false" childControlHeight="false" childForceExpandWidth="false" childForceExpandHeight="false">{{CONTENT}}</VerticalLayout>

@@ -1,1 +1,1 @@
-<Text fontSize="{{FONT_SIZE}}" alignment="MiddleCenter" color="{{COLOR}}">{{VALUE}}</Text>
+<Text width="{{WIDTH}}" height="{{HEIGHT}}" fontSize="{{FONT_SIZE}}" alignment="MiddleCenter" color="{{COLOR}}">{{VALUE}}</Text>

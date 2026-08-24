@@ -1,0 +1,5 @@
+<!-- Правка ресурса: текущее и максимум делят место пополам. -->
+<Row width="fill" height="fill" gap="4" align="center">
+  <Box width="fill" height="{{FIELD_HEIGHT}}">{{CURRENT}}</Box>
+  <Box width="fill" height="{{FIELD_HEIGHT}}">{{MAX}}</Box>
+</Row>

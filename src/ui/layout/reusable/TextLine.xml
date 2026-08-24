@@ -1,3 +1,8 @@
 <!-- Одна строка текста. Три компонента используют её с разными дефолтами:
-     Caption (подпись), Note (приписка), Label (обычная строка). -->
-<Text fontSize="{{FONT_SIZE}}" alignment="{{ALIGNMENT}}" color="{{COLOR}}">{{CONTENT}}</Text>
+     Caption (подпись), Note (приписка), Label (обычная строка).
+     height="auto" = высота строки по кеглю (Layout.metrics.lineFactor).
+     wrap: horizontalOverflow="Wrap" — для многострочных описаний. По умолчанию
+     Overflow, как у TTS: одна строка не переносится, а автоподбор кегля
+     (его дописывает Layout) не даёт ей вылезти из ячейки. -->
+<Text width="{{WIDTH}}" height="{{HEIGHT}}" fontSize="{{FONT_SIZE}}" alignment="{{ALIGNMENT}}"
+      color="{{COLOR}}" horizontalOverflow="{{OVERFLOW}}">{{CONTENT}}</Text>

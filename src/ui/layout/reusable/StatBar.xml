@@ -1,12 +1,13 @@
-<!-- Ресурс с полоской: хиты, стамина, мана. Ширина заливки приходит числом —
-     процентов TTS XML не понимает. Дорожка — сырой Panel без width: ширину
-     ей задаёт родительская раскладка. -->
-<Box width="{{WIDTH}}" height="{{HEIGHT}}" color="{{COLOR}}">
-  <Stack padding="8 8 8 8" spacing="6">
-    <Caption color="{{TITLE_COLOR}}">{{TITLE}}</Caption>
-    {{VALUE}}
-    <Panel height="12" color="{{TRACK_COLOR}}">
-      <Panel rectAlignment="MiddleLeft" width="{{FILL_WIDTH}}" height="12" color="{{FILL_COLOR}}" />
-    </Panel>
-  </Stack>
-</Box>
+<!-- Ресурс (4A, блок HIT POINTS): подпись слева, значение справа, полоска под
+     ними. Заливка — процент от дорожки, поэтому ширину считать не надо. -->
+<Col width="{{WIDTH}}" height="{{HEIGHT}}" color="{{COLOR}}" padding="{{PADDING}}" gap="5" align="topleft">
+  <Row width="fill" height="{{TITLE_HEIGHT}}" gap="6" align="left">
+    <Box width="fill" height="fill">
+      <Caption height="fill" alignment="MiddleLeft" fontSize="{{TITLE_FONT_SIZE}}" color="{{TITLE_COLOR}}">{{TITLE}}</Caption>
+    </Box>
+    <Box width="{{VALUE_WIDTH}}" height="fill">{{VALUE}}</Box>
+  </Row>
+  <Box width="fill" height="{{TRACK_HEIGHT}}" color="{{TRACK_COLOR}}" padding="1">
+    <Box width="{{FILL_PERCENT}}" height="fill" at="left" color="{{FILL_COLOR}}"/>
+  </Box>
+</Col>

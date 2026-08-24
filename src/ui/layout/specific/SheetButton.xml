@@ -1,1 +1,6 @@
-<Button id="{{ID}}" width="{{WIDTH}}" height="{{HEIGHT}}" color="{{COLOR}}" fontSize="14" onClick="{{ON_CLICK}}">{{LABEL}}</Button>
+<!-- Кнопка листа. colors — четыре состояния (normal|highlighted|pressed|disabled),
+     textColor и textAlignment обязательны: по умолчанию TTS красит текст кнопки
+     в #323232 и прижимает его в левый верхний угол. -->
+<Button id="{{ID}}" width="{{WIDTH}}" height="{{HEIGHT}}" colors="{{COLORS}}"
+        textColor="{{TEXT_COLOR}}" textAlignment="MiddleCenter" fontSize="{{FONT_SIZE}}"
+        onClick="{{ON_CLICK}}">{{LABEL}}</Button>

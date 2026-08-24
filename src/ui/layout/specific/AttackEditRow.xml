@@ -1,1 +1,5 @@
-<Line fit="fixed" spacing="6">{{NAME}}{{BONUS}}{{DAMAGE}}</Line>
+<Row width="fill" height="{{HEIGHT}}" gap="6" align="left">
+  <Box width="3fr" height="fill">{{NAME}}</Box>
+  <Box width="70" height="fill">{{BONUS}}</Box>
+  <Box width="2fr" height="fill">{{DAMAGE}}</Box>
+</Row>

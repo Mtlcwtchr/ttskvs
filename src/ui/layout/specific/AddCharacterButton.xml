@@ -1,5 +1,6 @@
-<!-- Кнопка "+" в рейке: создаёт заготовку и сразу открывает визард. Данных не
-     требует, поэтому вся целиком описана разметкой. -->
-<Frame width="120" height="120" borderColor="frameAccent">
-  <Button id="create_character" width="114" height="114" color="buttonBg" fontSize="44" onClick="createCharacter">+</Button>
-</Frame>
+<!-- «Открытое место» в рейке (4A: open seat): создаёт заготовку и сразу
+     открывает визард. Данных не требует, поэтому вся описана разметкой. -->
+<Box width="{{SIZE}}" height="{{SIZE}}" color="emptySeatBorder" padding="1">
+  <Button id="create_character" width="fill" height="fill" colors="seatStates" textColor="seatText"
+          textAlignment="MiddleCenter" fontSize="30" onClick="createCharacter">+</Button>
+</Box>

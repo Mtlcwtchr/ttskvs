@@ -40,6 +40,21 @@ function Common.modifier(score)
   return math.floor(((tonumber(score) or 10) - 10) / 2)
 end
 
+-- Сколько строк займёт текст в клетке, где помещается charsPerLine символов.
+-- Меряем СИМВОЛЫ, а не байты: в кириллице символ — два байта, и #text врал бы
+-- вдвое. Это оценка: точную ширину строки в песочнице не измерить, поэтому
+-- ошибку добирает автоподбор кегля (Layout дописывает его каждому <Text>).
+function Common.textLines(text, charsPerLine)
+  local characters = 0
+  for _ in tostring(text or ""):gmatch("[\1-\127\194-\244][\128-\191]*") do
+    characters = characters + 1
+  end
+  if characters == 0 then
+    return 1
+  end
+  return math.max(1, math.ceil(characters / math.max(1, charsPerLine)))
+end
+
 function Common.hasProficiency(list, key)
   for _, item in ipairs(list or {}) do
     if item == key then

@@ -1,7 +1,14 @@
-<!-- Портрет персонажа в рейке. Цвета рамки и фона приходят props: выделенный
-     портрет отличается только ими. -->
-<Frame width="120" height="120" borderColor="{{BORDER_COLOR}}">
-  <Button id="{{ID}}" width="114" height="114" color="{{BG_COLOR}}" fontSize="14" onClick="{{ON_CLICK}}">
-    <PortraitContent initial="{{INITIAL}}" hp="{{HP}}"/>
-  </Button>
-</Frame>
+<!-- Портрет партии (4A, рейка у левого края): плитка с инициалом и табличка
+     хитов под ней. Выделенный портрет крупнее и в светлой рамке — этим он и
+     отличается, отдельной разметки для него нет. -->
+<Col width="{{SIZE}}" height="auto" gap="0" align="top">
+  <Box width="{{SIZE}}" height="{{SIZE}}" color="{{BORDER_COLOR}}" padding="{{BORDER}}">
+    <Button id="{{ID}}" width="fill" height="fill" colors="{{COLORS}}" textColor="{{INITIAL_COLOR}}"
+            textAlignment="MiddleCenter" fontSize="{{INITIAL_FONT_SIZE}}" onClick="{{ON_CLICK}}">{{INITIAL}}</Button>
+  </Box>
+  <Box width="{{SIZE}}" height="18" color="{{HP_BORDER_COLOR}}" padding="1">
+    <Box width="fill" height="fill" color="bgWindow">
+      <Note height="fill" fontSize="11" color="{{HP_COLOR}}">{{HP}}</Note>
+    </Box>
+  </Box>
+</Col>

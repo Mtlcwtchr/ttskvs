@@ -1,9 +1,9 @@
-<!-- Плитка: подпись, значение (слот — текст в просмотре, поле в визарде),
-     приписка. Характеристики, броня, бонусы атаки. -->
-<Box width="{{WIDTH}}" height="{{HEIGHT}}" color="{{COLOR}}">
-  <Stack padding="4 4 4 4" spacing="0">
-    <Caption fontSize="8" alignment="MiddleCenter" color="{{LABEL_COLOR}}">{{LABEL}}</Caption>
-    {{VALUE}}
-    {{SUB_BLOCK}}
-  </Stack>
-</Box>
+<!-- Плитка характеристики (4A, колонка 1): подпись капсом, крупное значение,
+     пилюля модификатора снизу. -->
+<Col width="{{WIDTH}}" height="{{HEIGHT}}" color="{{COLOR}}" padding="{{PADDING}}" gap="1" align="topleft">
+  <Box width="fill" height="{{LABEL_HEIGHT}}">
+    <Caption height="fill" fontSize="{{LABEL_FONT_SIZE}}" alignment="MiddleCenter" color="{{LABEL_COLOR}}">{{LABEL}}</Caption>
+  </Box>
+  <Box width="fill" height="fill">{{VALUE}}</Box>
+  {{SUB_BLOCK}}
+</Col>

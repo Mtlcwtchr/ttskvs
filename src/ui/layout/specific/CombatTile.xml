@@ -1,1 +1,4 @@
-<Tile label="{{LABEL}}" width="{{WIDTH}}" height="{{HEIGHT}}">{{VALUE}}</Tile>
+<!-- Плитка боя: латунная рамка, внутри плитка с подписью и значением. -->
+<Box width="{{WIDTH}}" height="{{HEIGHT}}" color="{{BORDER_COLOR}}" padding="1">
+  <Tile label="{{LABEL}}" color="{{COLOR}}" padding="2 2 3 3">{{VALUE}}</Tile>
+</Box>

@@ -1,0 +1,2 @@
+<!-- Строка сетки сумки: ячейки делят ширину поровну (width="fill" у каждой). -->
+<Row width="fill" height="{{HEIGHT}}" gap="{{GAP}}" align="topleft">{{CELLS}}</Row>

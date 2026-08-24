@@ -1,7 +1,15 @@
-<Box width="272" height="24" color="transparent">
-  <Line fit="fixed" spacing="6" childAlignment="MiddleLeft">
-    <Text fontSize="12" alignment="MiddleLeft" color="goldBright" width="34">{{BONUS}}</Text>
-    <Text fontSize="12" alignment="MiddleLeft" color="textCream" width="194">{{NAME}}</Text>
-    <Text fontSize="11" alignment="MiddleRight" color="textMuted" width="32">{{ABILITY}}</Text>
-  </Line>
-</Box>
+<!-- Строка навыка (4A): точка владения, бонус, название, характеристика. -->
+<Row width="fill" height="{{HEIGHT}}" gap="6" align="left">
+  <Box width="9" height="9" color="{{DOT_BORDER}}" padding="1" at="center">
+    <Box width="fill" height="fill" color="{{DOT_COLOR}}"/>
+  </Box>
+  <Box width="26" height="fill">
+    <Note height="fill" fontSize="13" alignment="MiddleRight" color="{{BONUS_COLOR}}">{{BONUS}}</Note>
+  </Box>
+  <Box width="fill" height="fill">
+    <Note height="fill" fontSize="12" alignment="MiddleLeft" color="{{NAME_COLOR}}">{{NAME}}</Note>
+  </Box>
+  <Box width="30" height="fill">
+    <Note height="fill" fontSize="10" alignment="MiddleRight" color="{{ABILITY_COLOR}}">{{ABILITY}}</Note>
+  </Box>
+</Row>

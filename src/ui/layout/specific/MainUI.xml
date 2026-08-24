@@ -1,8 +1,20 @@
-<!-- Корень Global UI: рейка партии слева, лист персонажа поверх стола.
-     <CharacterSheet/> сам решает, рисоваться ли — по контексту рендера. -->
-<Panel>
-  <Anchor alignment="MiddleLeft" offset="90 0" width="140" height="800">
+<!-- Корень Global UI. <Defaults> идёт первым и задаёт базу для всех элементов
+     ниже (api.tabletopsimulator.com/ui/defaults): без него TTS красит текст
+     кнопок и полей в #323232 и прижимает его в левый верхний угол.
+
+     Раскладка 4A: рейка партии у левого края, окно листа правее и ниже —
+     сверху остаётся полоса под «порядок хода», справа место под панель броска
+     и лог (этих элементов у нас пока нет). -->
+<Box width="fill" height="fill">
+  <Defaults>
+    <Text color="textBody" horizontalOverflow="Overflow" verticalOverflow="Truncate"/>
+    <Button colors="buttonStates" textColor="buttonText" textAlignment="MiddleCenter" transition="ColorTint"/>
+    <InputField colors="inputStates" textColor="inputText" caretColor="caret"/>
+  </Defaults>
+
+  <Anchor at="topleft" x="22" y="130" width="100" height="auto">
     <PartyRail/>
   </Anchor>
+
   <CharacterSheet/>
-</Panel>
+</Box>

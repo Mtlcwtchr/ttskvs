@@ -1,4 +1,2 @@
-<!-- Слот: тёмная плитка под содержимое (предмет экипировки, портрет). -->
-<Box width="{{WIDTH}}" height="{{HEIGHT}}" color="{{COLOR}}">
-  <Stack padding="6 6 2 2" spacing="0">{{CONTENT}}</Stack>
-</Box>
+<!-- Слот: тёмная плитка под содержимое (предмет экипировки, ячейка сумки). -->
+<Col width="{{WIDTH}}" height="{{HEIGHT}}" color="{{COLOR}}" padding="{{PADDING}}" gap="{{GAP}}" align="topleft">{{CONTENT}}</Col>

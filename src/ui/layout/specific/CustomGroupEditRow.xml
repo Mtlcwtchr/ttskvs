@@ -1,4 +1,6 @@
-<Line fit="fixed" spacing="6">
-  {{TITLE_FIELD}}
-  {{DESC_FIELD}}
-</Line>
+<!-- Правка заметки: подпись над полем. В узкой колонке 4A подпись слева
+     оставляла полю совсем немного места. -->
+<Col width="fill" height="{{HEIGHT}}" gap="1" align="topleft">
+  <Box width="fill" height="12">{{TITLE_FIELD}}</Box>
+  <Box width="fill" height="fill">{{DESC_FIELD}}</Box>
+</Col>

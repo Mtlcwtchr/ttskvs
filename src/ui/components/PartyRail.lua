@@ -1,5 +1,6 @@
 -- Рейка партии. Портреты — цикл по контексту рендера: длину списка разметка
--- знать не может, поэтому это единственный слот в PartyRail.xml.
+-- знать не может, поэтому это единственный слот в PartyRail.xml. Размер рейки
+-- задаёт <Anchor> в MainUI.xml, здесь только цвет, отступы и данные.
 local Component = require("ui.Component")
 local Markup = require("ui.Markup")
 local PortraitButton = require("ui.components.PortraitButton")
@@ -8,9 +9,8 @@ local Templates = require("ui.generated.Templates")
 local PartyRail = {}
 
 PartyRail.defaults = {
-  width = 140,
-  height = 800,
   color = "railBg",
+  seatSize = 72,
 }
 
 -- Строка в Lua — байты: name:sub(1, 1) от «Мира» вернул бы половину буквы и
@@ -30,18 +30,19 @@ function PartyRail.render(props)
 
   for _, character in ipairs(context.party or {}) do
     local hp = character.hp or {}
+    local current, max = hp.current or 0, hp.max or 0
     table.insert(portraits, PortraitButton.render({
       characterId = character.id,
       initial = Component.escape(firstCharacter(character.name)),
-      hp = string.format("%d/%d", hp.current or 0, hp.max or 0),
+      hp = string.format("%d/%d", current, max),
+      hpLow = max > 0 and (current / max) <= 0.5,
       selected = character.id == context.selectedCharacterId,
     }))
   end
 
   return Component.render(Templates.PartyRail, {
-    WIDTH = p.width,
-    HEIGHT = p.height,
     COLOR = Component.color(p.color),
+    SEAT_SIZE = p.seatSize,
     PORTRAITS = Component.join(portraits),
   })
 end

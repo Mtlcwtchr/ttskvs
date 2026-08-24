@@ -1,4 +1,7 @@
-<Stack fit="fixed" spacing="3">
-  <Line fit="fixed" spacing="6">{{NAME}}{{TYPE}}</Line>
-  {{DESC}}
-</Stack>
+<Col width="fill" height="{{HEIGHT}}" gap="3" align="topleft">
+  <Row width="fill" height="fill" gap="6" align="left">
+    <Box width="2fr" height="fill">{{NAME}}</Box>
+    <Box width="110" height="fill">{{TYPE}}</Box>
+  </Row>
+  <Box width="fill" height="fill">{{DESC}}</Box>
+</Col>

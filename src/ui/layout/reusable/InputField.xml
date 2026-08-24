@@ -1,3 +1,8 @@
-<!-- characterValidation="None" — валидное значение по умолчанию у TTS, так что
-     числовые поля просто передают VALIDATION="Integer", а остальные ничего. -->
-<InputField id="{{ID}}" width="{{WIDTH}}" height="{{HEIGHT}}" onEndEdit="{{ON_END_EDIT}}" characterValidation="{{VALIDATION}}" interactable="true" readOnly="false" lineType="{{LINE_TYPE}}" text="{{VALUE}}" />
+<!-- Поле правки. colors/textColor обязательны: по умолчанию TTS рисует поле
+     БЕЛЫМ с тёмно-серым текстом (#323232) — на тёмном листе это белая заплатка.
+     lineType — только SingleLine/MultiLineSubmit/MultiLineNewLine; прежнее
+     "MultiLine" было невалидным значением и молча игнорировалось. -->
+<InputField id="{{ID}}" width="{{WIDTH}}" height="{{HEIGHT}}" fontSize="{{FONT_SIZE}}"
+            colors="{{COLORS}}" textColor="{{TEXT_COLOR}}" caretColor="caret"
+            onEndEdit="{{ON_END_EDIT}}" characterValidation="{{VALIDATION}}"
+            interactable="true" readOnly="false" lineType="{{LINE_TYPE}}" text="{{VALUE}}" />

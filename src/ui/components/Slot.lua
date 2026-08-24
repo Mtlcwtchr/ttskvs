@@ -5,9 +5,11 @@ local Theme = require("ui.Theme")
 local Slot = {}
 
 Slot.defaults = {
-  width = 196,
-  height = 30,
+  width = "fill",
+  height = "fill",
   color = Theme.bgPanelLight,
+  padding = "6 6 4 4",
+  gap = 2,
   content = "",
 }
 
@@ -17,6 +19,8 @@ function Slot.render(props)
     WIDTH = p.width,
     HEIGHT = p.height,
     COLOR = Component.color(p.color),
+    PADDING = p.padding,
+    GAP = p.gap,
     CONTENT = p.content,
   })
 end

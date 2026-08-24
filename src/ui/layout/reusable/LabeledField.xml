@@ -1,0 +1,8 @@
+<!-- Подпись над полем. Пара обёрнута в Col: два соседних элемента внутри Row
+     выстроились бы в линию [подпись][поле][подпись][поле] вместо двух пар. -->
+<Col width="{{WIDTH}}" height="{{HEIGHT}}" gap="2" align="topleft">
+  <Box width="fill" height="{{LABEL_HEIGHT}}">
+    <Caption height="fill" fontSize="{{LABEL_FONT_SIZE}}" alignment="MiddleLeft" color="{{LABEL_COLOR}}">{{LABEL}}</Caption>
+  </Box>
+  <Box width="fill" height="{{FIELD_HEIGHT}}" color="{{FIELD_COLOR}}">{{FIELD}}</Box>
+</Col>

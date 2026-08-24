@@ -3,322 +3,378 @@
 -- Внутри — та же разметка без XML-комментариев.
 local Templates = {}
 
-Templates["Anchor"] = [[<Panel rectAlignment="{{ALIGNMENT}}" offsetXY="{{OFFSET}}" width="{{WIDTH}}" height="{{HEIGHT}}" color="{{COLOR}}">{{CONTENT}}</Panel>]]
+Templates["Badge"] = [[<Box width="{{WIDTH}}" height="{{HEIGHT}}" color="{{BORDER_COLOR}}" padding="1" at="{{AT}}">
+  <Box width="fill" height="fill" color="{{COLOR}}">
+    <Note height="fill" fontSize="{{FONT_SIZE}}" color="{{TEXT_COLOR}}">{{VALUE}}</Note>
+  </Box>
+</Box>]]
 
-Templates["Box"] = [[<Panel width="{{WIDTH}}" height="{{HEIGHT}}" color="{{COLOR}}">{{CONTENT}}</Panel>]]
+Templates["Frame"] = [[<Box width="{{WIDTH}}" height="{{HEIGHT}}" color="{{BORDER_COLOR}}" padding="{{BORDER}}">{{CONTENT}}</Box>]]
 
-Templates["Column"] = [[<Panel width="{{WIDTH}}" height="{{HEIGHT}}" color="{{COLOR}}">
-  <VerticalLayout padding="{{PADDING}}" spacing="{{SPACING}}" childAlignment="{{CHILD_ALIGNMENT}}">{{CONTENT}}</VerticalLayout>
-</Panel>]]
+Templates["InputField"] = [[<InputField id="{{ID}}" width="{{WIDTH}}" height="{{HEIGHT}}" fontSize="{{FONT_SIZE}}"
+            colors="{{COLORS}}" textColor="{{TEXT_COLOR}}" caretColor="caret"
+            onEndEdit="{{ON_END_EDIT}}" characterValidation="{{VALIDATION}}"
+            interactable="true" readOnly="false" lineType="{{LINE_TYPE}}" text="{{VALUE}}" />]]
 
-Templates["ColumnFixed"] = [[<Panel width="{{WIDTH}}" height="{{HEIGHT}}" color="{{COLOR}}">
-  <VerticalLayout padding="{{PADDING}}" spacing="{{SPACING}}" childAlignment="{{CHILD_ALIGNMENT}}" childControlWidth="false" childControlHeight="false" childForceExpandWidth="false" childForceExpandHeight="false">{{CONTENT}}</VerticalLayout>
-</Panel>]]
+Templates["LabeledField"] = [[<Col width="{{WIDTH}}" height="{{HEIGHT}}" gap="2" align="topleft">
+  <Box width="fill" height="{{LABEL_HEIGHT}}">
+    <Caption height="fill" fontSize="{{LABEL_FONT_SIZE}}" alignment="MiddleLeft" color="{{LABEL_COLOR}}">{{LABEL}}</Caption>
+  </Box>
+  <Box width="fill" height="{{FIELD_HEIGHT}}" color="{{FIELD_COLOR}}">{{FIELD}}</Box>
+</Col>]]
 
-Templates["Frame"] = [[<Panel width="{{WIDTH}}" height="{{HEIGHT}}" color="{{BORDER_COLOR}}">{{CONTENT}}</Panel>]]
+Templates["Section"] = [[<Col width="{{WIDTH}}" height="{{HEIGHT}}" color="{{COLOR}}" padding="{{PADDING}}" gap="{{HEADER_GAP}}" align="topleft">
+  <Box width="fill" height="{{TITLE_HEIGHT}}">
+    <Caption height="fill" fontSize="{{TITLE_FONT_SIZE}}" alignment="{{TITLE_ALIGNMENT}}" color="{{TITLE_COLOR}}">{{TITLE}}</Caption>
+  </Box>
+  <Col width="fill" height="fill" gap="{{CONTENT_GAP}}" align="topleft">{{CONTENT}}</Col>
+</Col>]]
 
-Templates["InputField"] = [[<InputField id="{{ID}}" width="{{WIDTH}}" height="{{HEIGHT}}" onEndEdit="{{ON_END_EDIT}}" characterValidation="{{VALIDATION}}" interactable="true" readOnly="false" lineType="{{LINE_TYPE}}" text="{{VALUE}}" />]]
+Templates["SectionFooter"] = [[<Col width="{{WIDTH}}" height="{{HEIGHT}}" color="{{COLOR}}" padding="{{PADDING}}" gap="{{HEADER_GAP}}" align="topleft">
+  <Col width="fill" height="fill" gap="{{CONTENT_GAP}}" align="topleft">{{CONTENT}}</Col>
+  <Box width="fill" height="1" color="divider"/>
+  <Box width="fill" height="{{TITLE_HEIGHT}}">
+    <Caption height="fill" fontSize="{{TITLE_FONT_SIZE}}" alignment="{{TITLE_ALIGNMENT}}" color="{{TITLE_COLOR}}">{{TITLE}}</Caption>
+  </Box>
+</Col>]]
 
-Templates["Line"] = [[<HorizontalLayout padding="{{PADDING}}" spacing="{{SPACING}}" childAlignment="{{CHILD_ALIGNMENT}}">{{CONTENT}}</HorizontalLayout>]]
+Templates["SignedValue"] = [[<Text width="{{WIDTH}}" height="{{HEIGHT}}" fontSize="{{FONT_SIZE}}" alignment="MiddleCenter" color="{{COLOR}}">{{VALUE}}</Text>]]
 
-Templates["LineFixed"] = [[<HorizontalLayout padding="{{PADDING}}" spacing="{{SPACING}}" childAlignment="{{CHILD_ALIGNMENT}}" childControlWidth="false" childControlHeight="false" childForceExpandWidth="false" childForceExpandHeight="false">{{CONTENT}}</HorizontalLayout>]]
+Templates["Slot"] = [[<Col width="{{WIDTH}}" height="{{HEIGHT}}" color="{{COLOR}}" padding="{{PADDING}}" gap="{{GAP}}" align="topleft">{{CONTENT}}</Col>]]
 
-Templates["Section"] = [[<Box width="{{WIDTH}}" height="{{HEIGHT}}" color="{{COLOR}}">
-  <Column fit="fixed" width="{{WIDTH}}" height="{{HEIGHT}}" spacing="{{HEADER_SPACING}}" childAlignment="UpperLeft">
-    <Box width="{{WIDTH}}" height="{{TITLE_HEIGHT}}" color="{{COLOR}}">
-      <Caption fontSize="{{TITLE_FONT_SIZE}}" alignment="{{TITLE_ALIGNMENT}}" color="{{TITLE_COLOR}}">{{TITLE}}</Caption>
+Templates["StatBar"] = [[<Col width="{{WIDTH}}" height="{{HEIGHT}}" color="{{COLOR}}" padding="{{PADDING}}" gap="5" align="topleft">
+  <Row width="fill" height="{{TITLE_HEIGHT}}" gap="6" align="left">
+    <Box width="fill" height="fill">
+      <Caption height="fill" alignment="MiddleLeft" fontSize="{{TITLE_FONT_SIZE}}" color="{{TITLE_COLOR}}">{{TITLE}}</Caption>
     </Box>
-    <Box width="{{WIDTH}}" height="{{CONTENT_HEIGHT}}" color="{{COLOR}}">
-      <Stack fit="fixed" padding="{{CONTENT_PADDING}}" spacing="{{CONTENT_SPACING}}" childAlignment="UpperLeft">
-        {{CONTENT}}
-      </Stack>
-    </Box>
-  </Column>
-</Box>]]
+    <Box width="{{VALUE_WIDTH}}" height="fill">{{VALUE}}</Box>
+  </Row>
+  <Box width="fill" height="{{TRACK_HEIGHT}}" color="{{TRACK_COLOR}}" padding="1">
+    <Box width="{{FILL_PERCENT}}" height="fill" at="left" color="{{FILL_COLOR}}"/>
+  </Box>
+</Col>]]
 
-Templates["SignedValue"] = [[<Text fontSize="{{FONT_SIZE}}" alignment="MiddleCenter" color="{{COLOR}}">{{VALUE}}</Text>]]
+Templates["TextLine"] = [[<Text width="{{WIDTH}}" height="{{HEIGHT}}" fontSize="{{FONT_SIZE}}" alignment="{{ALIGNMENT}}"
+      color="{{COLOR}}" horizontalOverflow="{{OVERFLOW}}">{{CONTENT}}</Text>]]
 
-Templates["Slot"] = [[<Box width="{{WIDTH}}" height="{{HEIGHT}}" color="{{COLOR}}">
-  <Stack padding="6 6 2 2" spacing="0">{{CONTENT}}</Stack>
-</Box>]]
-
-Templates["Stack"] = [[<VerticalLayout padding="{{PADDING}}" spacing="{{SPACING}}" childAlignment="{{CHILD_ALIGNMENT}}">{{CONTENT}}</VerticalLayout>]]
-
-Templates["StackFixed"] = [[<VerticalLayout padding="{{PADDING}}" spacing="{{SPACING}}" childAlignment="{{CHILD_ALIGNMENT}}" childControlWidth="false" childControlHeight="false" childForceExpandWidth="false" childForceExpandHeight="false">{{CONTENT}}</VerticalLayout>]]
-
-Templates["StatBar"] = [[<Box width="{{WIDTH}}" height="{{HEIGHT}}" color="{{COLOR}}">
-  <Stack padding="8 8 8 8" spacing="6">
-    <Caption color="{{TITLE_COLOR}}">{{TITLE}}</Caption>
-    {{VALUE}}
-    <Panel height="12" color="{{TRACK_COLOR}}">
-      <Panel rectAlignment="MiddleLeft" width="{{FILL_WIDTH}}" height="12" color="{{FILL_COLOR}}" />
-    </Panel>
-  </Stack>
-</Box>]]
-
-Templates["TextLine"] = [[<Text fontSize="{{FONT_SIZE}}" alignment="{{ALIGNMENT}}" color="{{COLOR}}">{{CONTENT}}</Text>]]
-
-Templates["Tile"] = [[<Box width="{{WIDTH}}" height="{{HEIGHT}}" color="{{COLOR}}">
-  <Stack padding="4 4 4 4" spacing="0">
-    <Caption fontSize="8" alignment="MiddleCenter" color="{{LABEL_COLOR}}">{{LABEL}}</Caption>
-    {{VALUE}}
-    {{SUB_BLOCK}}
-  </Stack>
-</Box>]]
+Templates["Tile"] = [[<Col width="{{WIDTH}}" height="{{HEIGHT}}" color="{{COLOR}}" padding="{{PADDING}}" gap="1" align="topleft">
+  <Box width="fill" height="{{LABEL_HEIGHT}}">
+    <Caption height="fill" fontSize="{{LABEL_FONT_SIZE}}" alignment="MiddleCenter" color="{{LABEL_COLOR}}">{{LABEL}}</Caption>
+  </Box>
+  <Box width="fill" height="fill">{{VALUE}}</Box>
+  {{SUB_BLOCK}}
+</Col>]]
 
 Templates["AbilityTile"] = [[<Tile label="{{LABEL}}" sub="{{SUB}}" width="{{WIDTH}}" height="{{HEIGHT}}">{{VALUE}}</Tile>]]
 
-Templates["AddCharacterButton"] = [[<Frame width="120" height="120" borderColor="frameAccent">
-  <Button id="create_character" width="114" height="114" color="buttonBg" fontSize="44" onClick="createCharacter">+</Button>
-</Frame>]]
+Templates["AddCharacterButton"] = [[<Box width="{{SIZE}}" height="{{SIZE}}" color="emptySeatBorder" padding="1">
+  <Button id="create_character" width="fill" height="fill" colors="seatStates" textColor="seatText"
+          textAlignment="MiddleCenter" fontSize="30" onClick="createCharacter">+</Button>
+</Box>]]
 
-Templates["AttackEditRow"] = [[<Line fit="fixed" spacing="6">{{NAME}}{{BONUS}}{{DAMAGE}}</Line>]]
+Templates["AttackEditRow"] = [[<Row width="fill" height="{{HEIGHT}}" gap="6" align="left">
+  <Box width="3fr" height="fill">{{NAME}}</Box>
+  <Box width="70" height="fill">{{BONUS}}</Box>
+  <Box width="2fr" height="fill">{{DAMAGE}}</Box>
+</Row>]]
 
 Templates["AttackRow"] = [[<Text fontSize="13" alignment="MiddleLeft" color="textBody">• {{NAME}}   {{BONUS}}   {{DAMAGE}}</Text>]]
 
-Templates["CharacterSheet"] = [[<Sheet width="1320" height="900" color="sheetBg">
-  <Stack padding="16 16 16 16" spacing="10">
+Templates["CharacterSheet"] = [[<Anchor id="character_sheet_root" at="topleft" x="126" y="120" width="1004" height="620" color="brass" padding="2">
+  <Box width="fill" height="fill" color="bgDeepest" padding="4">
+    <Col width="fill" height="fill" color="sheetBg" padding="14" gap="8" align="topleft">
 
-    <Box width="1288" height="60" color="bgPanel">
-      <Line fit="fixed" padding="6 8 6 8" spacing="10" childAlignment="MiddleLeft">
-        <Slot width="46" height="46" color="bgTile">
-          <PortraitLetter/>
-        </Slot>
-
-        <Column width="860" height="46" spacing="2" childAlignment="UpperLeft">
-          <Field name="field_name" fontSize="24" color="goldBright" width="850" height="26"/>
-          <Line fit="fixed" spacing="6" childAlignment="MiddleLeft">
-            <Caption>RACE</Caption>
-            <Field name="field_race" width="160" height="18"/>
-            <Caption>AGE</Caption>
-            <Field name="field_age" width="70" height="18"/>
-          </Line>
-        </Column>
-
-        <Column fit="fixed" width="132" height="46" spacing="2">
+      <Row width="fill" height="40" gap="12" align="left">
+        <Box width="fill" height="fill" color="brass" padding="1">
+          <Box width="fill" height="fill" color="bgPanelLight" padding="8 8 0 0">
+            <Field name="field_name" fontSize="24" color="goldPale" alignment="MiddleLeft" height="fill"/>
+          </Box>
+        </Box>
+        <Box width="150" height="fill">
           <ViewOnly>
-            <SheetButton id="sheet_edit" label="Edit" onClick="startWizard"/>
+            <SheetButton id="sheet_edit" label="Редактировать" tone="gold"/>
           </ViewOnly>
           <WizardOnly>
-            <SheetButton id="sheet_finish" label="Done" color="gold" onClick="finishWizard"/>
+            <SheetButton id="sheet_finish" label="Готово" tone="gold"/>
           </WizardOnly>
-          <SheetButton id="sheet_close" label="Close" color="gold" onClick="closeSheet"/>
-        </Column>
-
+        </Box>
+        <Box width="96" height="fill">
+          <SheetButton id="sheet_close" label="Закрыть" tone="quiet"/>
+        </Box>
         <WizardOnly>
-          <Column fit="fixed" width="120" height="46" spacing="2">
-            <SheetButton id="sheet_delete" label="Delete" color="dangerRed" onClick="deleteCharacter"/>
-          </Column>
+          <Box width="120" height="fill">
+            <SheetButton id="sheet_delete" label="Удалить" tone="danger"/>
+          </Box>
         </WizardOnly>
-      </Line>
-    </Box>
+      </Row>
 
-    <Line fit="fixed" spacing="10" childAlignment="UpperLeft">
+      <Row width="fill" height="34" gap="8" align="left">
+        <HeaderChip label="РАСА" name="field_race" width="2fr"/>
+        <HeaderChip label="КЛАСС" name="field_class" width="2fr"/>
+        <HeaderChip label="УРОВЕНЬ" name="field_level" width="1fr"/>
+        <HeaderChip label="ВОЗРАСТ" name="field_age" width="1fr"/>
+        <HeaderChip label="МИРОВОЗЗРЕНИЕ" name="field_alignment" width="2fr"/>
+        <HeaderChip label="ИГРОК" name="field_player_name" width="2fr"/>
+      </Row>
 
-      <Column fit="fixed" width="290" height="760" spacing="8">
-        <Section title="ATTRIBUTES" width="290" height="300" spacing="3">
-          <Box width="278" height="84" color="transparent">
-            <Line fit="fixed" spacing="6">
-              <AbilityTile label="Strength" name="field_ability_STR" width="136" height="84"/>
-              <AbilityTile label="Dexterity" name="field_ability_DEX" width="136" height="84"/>
-            </Line>
+      <Box width="fill" height="1" color="divider"/>
+
+      <Row width="fill" height="fill" gap="14" align="topleft">
+
+        <Row width="304" height="fill" gap="10" align="topleft">
+          <Col width="82" height="fill" gap="6" align="topleft">
+            <AbilityTile label="СИЛА" name="field_ability_STR"/>
+            <AbilityTile label="ЛОВКОСТЬ" name="field_ability_DEX"/>
+            <AbilityTile label="ТЕЛОСЛОЖ." name="field_ability_CON"/>
+            <AbilityTile label="ИНТЕЛЛЕКТ" name="field_ability_INT"/>
+            <AbilityTile label="МУДРОСТЬ" name="field_ability_WIS"/>
+            <AbilityTile label="ХАРИЗМА" name="field_ability_CHA"/>
+          </Col>
+
+          <Col width="fill" height="fill" gap="10" align="topleft">
+            <Section title="НАВЫКИ" titleAt="bottom" height="fill">
+              <Scroll width="fill" height="fill" gap="1">
+                <SkillList/>
+              </Scroll>
+            </Section>
+            <WizardOnly>
+              <Col width="fill" height="98" gap="6" align="topleft">
+                <LabeledField label="Спасброски (CSV)" name="field_saves_csv"/>
+                <LabeledField label="Владение навыками (CSV)" name="field_skills_csv"/>
+              </Col>
+            </WizardOnly>
+          </Col>
+        </Row>
+
+        <Col width="250" height="fill" gap="12" align="topleft">
+          <Box width="fill" height="fill" color="borderDim" padding="1">
+            <Col width="fill" height="fill" color="bgPanel" padding="8" gap="6" align="topleft">
+
+              <Row width="fill" height="fill" gap="6" align="topleft">
+                <Col width="44" height="fill" gap="5" align="topleft">
+                  <EquipSlot slot="helm" label="ШЛЕМ"/>
+                  <EquipSlot slot="cloak" label="ПЛАЩ"/>
+                  <EquipSlot slot="mail" label="ДОСПЕХ"/>
+                  <EquipSlot slot="glove" label="ПЕРЧ."/>
+                  <EquipSlot slot="boot" label="САПОГИ"/>
+                </Col>
+
+                <Box width="fill" height="fill" color="brassDim" padding="1">
+                  <Box width="fill" height="fill" color="bgTileDeep">
+                    <PortraitLetter fontSize="44"/>
+                  </Box>
+                </Box>
+
+                <Col width="44" height="fill" gap="5" align="topleft">
+                  <EquipSlot slot="amulet" label="АМУЛЕТ"/>
+                  <EquipSlot slot="ring1" label="КОЛЬЦО"/>
+                  <EquipSlot slot="ring2" label="КОЛЬЦО"/>
+                  <EquipSlot slot="belt" label="ПОЯС"/>
+                  <EquipSlot slot="charm" label="ОБЕРЕГ"/>
+                </Col>
+              </Row>
+
+              <Row width="fill" height="72" gap="10" align="bottom">
+                <CombatTile label="БЛИЖНИЙ" name="field_melee_bonus" signed="true" width="56" height="56"/>
+                <CombatTile label="БРОНЯ" name="field_armor_class" width="66" height="72" tone="gold"/>
+                <CombatTile label="ДАЛЬНИЙ" name="field_ranged_bonus" signed="true" width="56" height="56"/>
+              </Row>
+            </Col>
           </Box>
-          <Box width="278" height="84" color="transparent">
-            <Line fit="fixed" spacing="6">
-              <AbilityTile label="Constitution" name="field_ability_CON" width="136" height="84"/>
-              <AbilityTile label="Intelligence" name="field_ability_INT" width="136" height="84"/>
-            </Line>
-          </Box>
-          <Box width="278" height="84" color="transparent">
-            <Line fit="fixed" spacing="6">
-              <AbilityTile label="Wisdom" name="field_ability_WIS" width="136" height="84"/>
-              <AbilityTile label="Charisma" name="field_ability_CHA" width="136" height="84"/>
-            </Line>
-          </Box>
-          <WizardOnly>
-            <LabeledField label="Saves (CSV)" name="field_saves_csv" width="250"/>
-          </WizardOnly>
-        </Section>
 
-        <Section title="SKILLS" width="290" height="452" spacing="4">
-          <SkillList/>
-          <WizardOnly>
-            <LabeledField label="Proficiencies (CSV)" name="field_skills_csv" width="250"/>
-          </WizardOnly>
-        </Section>
-      </Column>
+          <Col width="fill" height="auto" gap="6" align="topleft">
+            <Resource title="ХИТЫ" current="field_hp_current" max="field_hp_max" height="46"/>
+            <Resource title="ВЫНОСЛИВОСТЬ" current="field_stamina_current" max="field_stamina_max" height="46"
+                      fillColor="staminaGold"/>
+            <Resource title="МАНА" current="field_mana_current" max="field_mana_max" height="46"
+                      fillColor="manaBlue"/>
+            <ViewOnly>
+              <Row width="fill" height="26" gap="8" align="left">
+                <HeaderChip label="ВРЕМ. ХИТЫ" name="field_hp_temp" width="1fr" fontSize="12"/>
+                <HeaderChip label="КОСТИ ХИТОВ" name="field_hit_dice" width="1fr" fontSize="12"/>
+                <HeaderChip label="СКОРОСТЬ" name="field_speed" width="1fr" fontSize="12"/>
+              </Row>
+            </ViewOnly>
+            <WizardOnly>
+              <Row width="fill" height="44" gap="6" align="left">
+                <LabeledField label="Врем. хиты" name="field_hp_temp"/>
+                <LabeledField label="Кости хитов" name="field_hit_dice"/>
+                <LabeledField label="Скорость" name="field_speed"/>
+              </Row>
+            </WizardOnly>
+          </Col>
+        </Col>
 
-      <Column fit="fixed" width="478" height="760" spacing="8">
-        <Section title="CHARACTER &amp; EQUIPMENT" width="478" height="540" spacing="4">
-          <Box width="466" height="334" color="transparent">
-            <Line fit="fixed" spacing="8" childAlignment="UpperCenter">
-              <Column fit="fixed" width="112" height="334" spacing="6">
-                <EquipSlot slot="helm" label="Helm" width="112" height="58"/>
-                <EquipSlot slot="cloak" label="Cloak" width="112" height="58"/>
-                <EquipSlot slot="mail" label="Armor" width="112" height="58"/>
-                <EquipSlot slot="glove" label="Gloves" width="112" height="58"/>
-                <EquipSlot slot="boot" label="Boots" width="112" height="58"/>
-              </Column>
-              <Box width="214" height="334" color="bgPanelLight">
-                <Stack padding="8 8 8 8" spacing="6">
-                  <Caption>CHARACTER PREVIEW</Caption>
-                  <Slot width="198" height="288" color="bgDeepest">
-                    <PortraitLetter/>
-                  </Slot>
-                </Stack>
-              </Box>
-              <Column fit="fixed" width="112" height="334" spacing="6">
-                <EquipSlot slot="amulet" label="Amulet" width="112" height="58"/>
-                <EquipSlot slot="ring1" label="Ring I" width="112" height="58"/>
-                <EquipSlot slot="ring2" label="Ring II" width="112" height="58"/>
-                <EquipSlot slot="belt" label="Belt" width="112" height="58"/>
-                <EquipSlot slot="charm" label="Charm" width="112" height="58"/>
-              </Column>
-            </Line>
+        <Col width="fill" height="fill" gap="10" align="topleft">
+          <Box width="fill" height="auto" color="borderDim" padding="1">
+            <Col width="fill" height="auto" color="bgPanel" padding="8" gap="5" align="topleft">
+              <InventoryList/>
+            </Col>
           </Box>
 
-          <Box width="466" height="24" color="transparent"/>
-
-          <Box width="466" height="84" color="transparent">
-            <Line fit="fixed" spacing="8" childAlignment="UpperCenter">
-              <CombatTile label="ARMOR CLASS" name="field_armor_class" width="148" height="84"/>
-              <CombatTile label="MELEE ATTACK" name="field_melee_bonus" signed="true" width="148" height="84"/>
-              <CombatTile label="RANGED ATTACK" name="field_ranged_bonus" signed="true" width="148" height="84"/>
-            </Line>
+          <Box width="fill" height="fill" color="borderDim" padding="1">
+            <Section title="СПОСОБНОСТИ И ОБЕТЫ" color="bgPanel">
+              <Scroll width="fill" height="fill" gap="7">
+                <Features/>
+              </Scroll>
+            </Section>
           </Box>
-        </Section>
 
-        <Section title="RESOURCES" width="478" height="212" spacing="4">
-          <Box width="466" height="132" color="transparent">
-            <Line fit="fixed" spacing="6" childAlignment="UpperCenter">
-              <Resource title="HP" current="field_hp_current" max="field_hp_max" width="152" height="132"/>
-              <Resource title="STAMINA" current="field_stamina_current" max="field_stamina_max" width="152" height="132"
-                        fillColor="positiveGreen" trackColor="bgPanelLight"/>
-              <Resource title="MANA" current="field_mana_current" max="field_mana_max" width="152" height="132"
-                        fillColor="gold" trackColor="bgPanelLight"/>
-            </Line>
-          </Box>
-          <WizardOnly>
-            <Line fit="fixed" spacing="8">
-              <LabeledField label="Временные хиты" name="field_hp_temp" width="145"/>
-              <LabeledField label="Кости хитов" name="field_hit_dice" width="145"/>
-              <LabeledField label="Скорость" name="field_speed" width="145"/>
-            </Line>
-          </WizardOnly>
-        </Section>
-      </Column>
+          <Row width="fill" height="fill" gap="10" align="topleft">
+            <Box width="fill" height="fill" color="borderDim" padding="1">
+              <Section title="ВЛАДЕНИЯ И ЗНАНИЯ" color="bgPanel">
+                <Scroll width="fill" height="fill" gap="6">
+                  <CustomGroups group="lore"/>
+                </Scroll>
+              </Section>
+            </Box>
+            <Box width="fill" height="fill" color="borderDim" padding="1">
+              <Section title="ЗАМЕТКИ ЗА СТОЛОМ" color="bgPanel">
+                <Scroll width="fill" height="fill" gap="6">
+                  <CustomGroups group="notes"/>
+                </Scroll>
+              </Section>
+            </Box>
+          </Row>
+        </Col>
 
-      <Column fit="fixed" width="500" height="760" spacing="8">
-        <Section title="INVENTORY" width="500" height="272" spacing="4">
-          <InventoryList/>
-        </Section>
-
-        <Section title="ABILITIES" width="500" height="230" spacing="4">
-          <VerticalScrollView width="488" height="198">
-            <Stack fit="fixed" spacing="4" childAlignment="UpperLeft">
-              <Features/>
-            </Stack>
-          </VerticalScrollView>
-        </Section>
-
-        <Section title="EXTRA NOTES" width="500" height="242" spacing="4">
-          <VerticalScrollView width="488" height="210">
-            <Stack fit="fixed" spacing="6" childAlignment="UpperLeft">
-              <CustomGroups/>
-            </Stack>
-          </VerticalScrollView>
-        </Section>
-      </Column>
-
-    </Line>
-  </Stack>
-</Sheet>]]
+      </Row>
+    </Col>
+  </Box>
+</Anchor>]]
 
 Templates["ClassLine"] = [[<Text fontSize="{{FONT_SIZE}}" alignment="MiddleCenter" color="{{COLOR}}">{{RACE}} • {{CLASS}} {{LEVEL}}</Text>]]
 
 Templates["CombatSummary"] = [[<Text fontSize="{{FONT_SIZE}}" alignment="MiddleCenter" color="textMuted">Временные хиты: {{TEMP}}   •   Кости хитов: {{DICE}}</Text>]]
 
-Templates["CombatTile"] = [[<Tile label="{{LABEL}}" width="{{WIDTH}}" height="{{HEIGHT}}">{{VALUE}}</Tile>]]
+Templates["CombatTile"] = [[<Box width="{{WIDTH}}" height="{{HEIGHT}}" color="{{BORDER_COLOR}}" padding="1">
+  <Tile label="{{LABEL}}" color="{{COLOR}}" padding="2 2 3 3">{{VALUE}}</Tile>
+</Box>]]
 
-Templates["CustomGroupEditRow"] = [[<Line fit="fixed" spacing="6">
-  {{TITLE_FIELD}}
-  {{DESC_FIELD}}
-</Line>]]
+Templates["CustomGroupEditRow"] = [[<Col width="fill" height="{{HEIGHT}}" gap="1" align="topleft">
+  <Box width="fill" height="12">{{TITLE_FIELD}}</Box>
+  <Box width="fill" height="fill">{{DESC_FIELD}}</Box>
+</Col>]]
 
-Templates["CustomGroupRow"] = [[<Column fit="fixed" width="460" height="56" spacing="1">
-  <Caption alignment="MiddleLeft" color="goldDim">{{TITLE}}</Caption>
-  <Text fontSize="12" alignment="UpperLeft" color="textBody">{{DESCRIPTION}}</Text>
-</Column>]]
+Templates["CustomGroupRow"] = [[<Col width="fill" height="auto" gap="1" align="topleft">
+  <Box width="fill" height="13">
+    <Caption height="fill" alignment="MiddleLeft" fontSize="9" color="textMuted">{{TITLE}}</Caption>
+  </Box>
+  <Box width="fill" height="{{TEXT_HEIGHT}}">
+    <Note height="fill" fontSize="12" alignment="UpperLeft" color="textBody" wrap="true">{{DESCRIPTION}}</Note>
+  </Box>
+</Col>]]
 
-Templates["EquipSlot"] = [[<Slot width="{{WIDTH}}" height="{{HEIGHT}}">
-  <Caption fontSize="9" alignment="MiddleLeft" color="textMuted2">{{LABEL}}</Caption>
-  {{VALUE}}
-</Slot>]]
+Templates["EquipSlot"] = [[<Box width="{{WIDTH}}" height="{{HEIGHT}}" color="{{BORDER_COLOR}}" padding="1">
+  <Col width="fill" height="fill" color="{{COLOR}}" padding="3" gap="0" align="topleft">
+    <Box width="fill" height="10">
+      <Caption height="fill" fontSize="8" alignment="MiddleCenter" color="slotLabel">{{LABEL}}</Caption>
+    </Box>
+    <Box width="fill" height="fill">{{VALUE}}</Box>
+  </Col>
+</Box>]]
 
 Templates["Experience"] = [[<Text fontSize="{{FONT_SIZE}}" alignment="MiddleCenter" color="{{COLOR}}">{{CURRENT}} / {{NEXT}}</Text>]]
 
-Templates["FeatureEditRow"] = [[<Stack fit="fixed" spacing="3">
-  <Line fit="fixed" spacing="6">{{NAME}}{{TYPE}}</Line>
-  {{DESC}}
-</Stack>]]
+Templates["FeatureEditRow"] = [[<Col width="fill" height="{{HEIGHT}}" gap="3" align="topleft">
+  <Row width="fill" height="fill" gap="6" align="left">
+    <Box width="2fr" height="fill">{{NAME}}</Box>
+    <Box width="110" height="fill">{{TYPE}}</Box>
+  </Row>
+  <Box width="fill" height="fill">{{DESC}}</Box>
+</Col>]]
 
-Templates["FeatureRow"] = [[<Stack fit="fixed" spacing="1">
-  <Text fontSize="13" alignment="MiddleLeft" color="textCream">• {{NAME}}</Text>
-  <Text fontSize="11" alignment="MiddleLeft" color="textMuted">{{DESC}}</Text>
-</Stack>]]
+Templates["FeatureRow"] = [[<Row width="fill" height="{{HEIGHT}}" gap="9" align="topleft">
+  <Box width="30" height="30" color="brass" padding="1">
+    <Box width="fill" height="fill" color="bgTile">
+      <Caption height="fill" fontSize="8" color="slotLabel">{{ICON}}</Caption>
+    </Box>
+  </Box>
+  <Col width="fill" height="fill" gap="1" align="topleft">
+    <Box width="fill" height="16">
+      <Note height="fill" fontSize="14" alignment="MiddleLeft" color="textName">{{NAME}}</Note>
+    </Box>
+    <Box width="fill" height="fill">
+      <Note height="fill" fontSize="11" alignment="UpperLeft" color="textBody" wrap="true">{{DESC}}</Note>
+    </Box>
+  </Col>
+</Row>]]
 
-Templates["InventoryCell"] = [[<Box width="{{WIDTH}}" height="{{HEIGHT}}" color="bgDeepest">
-  <Stack fit="fixed" padding="4 4 4 4" spacing="2" childAlignment="UpperLeft">
-    {{VALUE}}
-  </Stack>
+Templates["HeaderChip"] = [[<Col width="{{WIDTH}}" height="fill" color="{{COLOR}}" padding="6 6 3 3" gap="0" align="topleft">
+  <Box width="fill" height="11">
+    <Caption height="fill" fontSize="8" alignment="MiddleLeft" color="labelGold">{{LABEL}}</Caption>
+  </Box>
+  <Box width="fill" height="fill">{{VALUE}}</Box>
+</Col>]]
+
+Templates["InventoryCell"] = [[<Box width="{{WIDTH}}" height="{{HEIGHT}}" color="{{BORDER_COLOR}}" padding="1">
+  <Col width="fill" height="fill" color="{{COLOR}}" padding="3" gap="1" align="topleft">{{VALUE}}</Col>
 </Box>]]
 
-Templates["InventoryEditRow"] = [[<Line fit="fixed" spacing="6">{{NAME}}{{QTY}}</Line>]]
+Templates["InventoryGridRow"] = [[<Row width="fill" height="{{HEIGHT}}" gap="{{GAP}}" align="topleft">{{CELLS}}</Row>]]
 
 Templates["InventoryRow"] = [[<Text fontSize="13" alignment="MiddleLeft" color="textBody">• {{NAME}} ×{{QTY}}</Text>]]
 
-Templates["MainUI"] = [[<Panel>
-  <Anchor alignment="MiddleLeft" offset="90 0" width="140" height="800">
+Templates["MainUI"] = [[<Box width="fill" height="fill">
+  <Defaults>
+    <Text color="textBody" horizontalOverflow="Overflow" verticalOverflow="Truncate"/>
+    <Button colors="buttonStates" textColor="buttonText" textAlignment="MiddleCenter" transition="ColorTint"/>
+    <InputField colors="inputStates" textColor="inputText" caretColor="caret"/>
+  </Defaults>
+
+  <Anchor at="topleft" x="22" y="130" width="100" height="auto">
     <PartyRail/>
   </Anchor>
-  <CharacterSheet/>
-</Panel>]]
 
-Templates["PartyRail"] = [[<Box width="{{WIDTH}}" height="{{HEIGHT}}" color="{{COLOR}}">
-  <Stack fit="fixed" padding="10 10 10 10" spacing="10" childAlignment="UpperCenter">
-    {{PORTRAITS}}
-    <AddCharacterButton/>
-  </Stack>
+  <CharacterSheet/>
 </Box>]]
 
-Templates["PortraitButton"] = [[<Frame width="120" height="120" borderColor="{{BORDER_COLOR}}">
-  <Button id="{{ID}}" width="114" height="114" color="{{BG_COLOR}}" fontSize="14" onClick="{{ON_CLICK}}">
-    <PortraitContent initial="{{INITIAL}}" hp="{{HP}}"/>
-  </Button>
-</Frame>]]
+Templates["PartyRail"] = [[<Col width="fill" height="auto" color="{{COLOR}}" padding="10" gap="12" align="top">
+  {{PORTRAITS}}
+  <AddCharacterButton size="{{SEAT_SIZE}}"/>
+</Col>]]
 
-Templates["PortraitContent"] = [[<Stack padding="4 4 4 4" spacing="2">
-  <Text alignment="UpperCenter" fontSize="40" color="{{INITIAL_COLOR}}">{{INITIAL}}</Text>
-  <Text alignment="LowerCenter" fontSize="14" color="{{HP_COLOR}}">{{HP}}</Text>
-</Stack>]]
+Templates["PortraitButton"] = [[<Col width="{{SIZE}}" height="auto" gap="0" align="top">
+  <Box width="{{SIZE}}" height="{{SIZE}}" color="{{BORDER_COLOR}}" padding="{{BORDER}}">
+    <Button id="{{ID}}" width="fill" height="fill" colors="{{COLORS}}" textColor="{{INITIAL_COLOR}}"
+            textAlignment="MiddleCenter" fontSize="{{INITIAL_FONT_SIZE}}" onClick="{{ON_CLICK}}">{{INITIAL}}</Button>
+  </Box>
+  <Box width="{{SIZE}}" height="18" color="{{HP_BORDER_COLOR}}" padding="1">
+    <Box width="fill" height="fill" color="bgWindow">
+      <Note height="fill" fontSize="11" color="{{HP_COLOR}}">{{HP}}</Note>
+    </Box>
+  </Box>
+</Col>]]
 
 Templates["PortraitLetter"] = [[<Text fontSize="{{FONT_SIZE}}" alignment="MiddleCenter" color="{{COLOR}}">{{LETTER}}</Text>]]
 
 Templates["Resource"] = [[<StatBar title="{{TITLE}}" width="{{WIDTH}}" height="{{HEIGHT}}" ratio="{{RATIO}}" fillColor="{{FILL_COLOR}}" trackColor="{{TRACK_COLOR}}">{{VALUE}}</StatBar>]]
 
+Templates["ResourceEditRow"] = [[<Row width="fill" height="fill" gap="4" align="center">
+  <Box width="fill" height="{{FIELD_HEIGHT}}">{{CURRENT}}</Box>
+  <Box width="fill" height="{{FIELD_HEIGHT}}">{{MAX}}</Box>
+</Row>]]
+
 Templates["SaveRow"] = [[<Text fontSize="{{FONT_SIZE}}" alignment="MiddleLeft" color="{{COLOR}}">{{MARK}} {{BONUS}} {{LABEL}}</Text>]]
 
-Templates["Sheet"] = [[<Panel id="character_sheet_root" rectAlignment="MiddleCenter" width="{{WIDTH}}" height="{{HEIGHT}}" color="{{COLOR}}">{{CONTENT}}</Panel>]]
+Templates["SheetButton"] = [[<Button id="{{ID}}" width="{{WIDTH}}" height="{{HEIGHT}}" colors="{{COLORS}}"
+        textColor="{{TEXT_COLOR}}" textAlignment="MiddleCenter" fontSize="{{FONT_SIZE}}"
+        onClick="{{ON_CLICK}}">{{LABEL}}</Button>]]
 
-Templates["SheetButton"] = [[<Button id="{{ID}}" width="{{WIDTH}}" height="{{HEIGHT}}" color="{{COLOR}}" fontSize="14" onClick="{{ON_CLICK}}">{{LABEL}}</Button>]]
-
-Templates["SkillRow"] = [[<Box width="272" height="24" color="transparent">
-  <Line fit="fixed" spacing="6" childAlignment="MiddleLeft">
-    <Text fontSize="12" alignment="MiddleLeft" color="goldBright" width="34">{{BONUS}}</Text>
-    <Text fontSize="12" alignment="MiddleLeft" color="textCream" width="194">{{NAME}}</Text>
-    <Text fontSize="11" alignment="MiddleRight" color="textMuted" width="32">{{ABILITY}}</Text>
-  </Line>
-</Box>]]
+Templates["SkillRow"] = [[<Row width="fill" height="{{HEIGHT}}" gap="6" align="left">
+  <Box width="9" height="9" color="{{DOT_BORDER}}" padding="1" at="center">
+    <Box width="fill" height="fill" color="{{DOT_COLOR}}"/>
+  </Box>
+  <Box width="26" height="fill">
+    <Note height="fill" fontSize="13" alignment="MiddleRight" color="{{BONUS_COLOR}}">{{BONUS}}</Note>
+  </Box>
+  <Box width="fill" height="fill">
+    <Note height="fill" fontSize="12" alignment="MiddleLeft" color="{{NAME_COLOR}}">{{NAME}}</Note>
+  </Box>
+  <Box width="30" height="fill">
+    <Note height="fill" fontSize="10" alignment="MiddleRight" color="{{ABILITY_COLOR}}">{{ABILITY}}</Note>
+  </Box>
+</Row>]]
 
 Templates["WeightLine"] = [[<Text fontSize="11" alignment="MiddleLeft" color="textMuted2">Вес: {{CURRENT}} / {{MAX}}</Text>]]
 

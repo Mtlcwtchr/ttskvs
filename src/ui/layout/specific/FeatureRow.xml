@@ -1,4 +1,17 @@
-<Stack fit="fixed" spacing="1">
-  <Text fontSize="13" alignment="MiddleLeft" color="textCream">• {{NAME}}</Text>
-  <Text fontSize="11" alignment="MiddleLeft" color="textMuted">{{DESC}}</Text>
-</Stack>
+<!-- Строка способности (4A, ABILITIES & OATHS): значок-квадрат слева,
+     название и описание справа. -->
+<Row width="fill" height="{{HEIGHT}}" gap="9" align="topleft">
+  <Box width="30" height="30" color="brass" padding="1">
+    <Box width="fill" height="fill" color="bgTile">
+      <Caption height="fill" fontSize="8" color="slotLabel">{{ICON}}</Caption>
+    </Box>
+  </Box>
+  <Col width="fill" height="fill" gap="1" align="topleft">
+    <Box width="fill" height="16">
+      <Note height="fill" fontSize="14" alignment="MiddleLeft" color="textName">{{NAME}}</Note>
+    </Box>
+    <Box width="fill" height="fill">
+      <Note height="fill" fontSize="11" alignment="UpperLeft" color="textBody" wrap="true">{{DESC}}</Note>
+    </Box>
+  </Col>
+</Row>

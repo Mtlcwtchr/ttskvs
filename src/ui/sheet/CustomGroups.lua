@@ -1,3 +1,6 @@
+-- Заметки листа. В 4A это два блока рядом: PROFICIENCIES & LORE (владения,
+-- языки, происхождение) и TABLE NOTES (характер и заметки за столом), поэтому
+-- тег принимает group="lore"|"notes" и отдаёт только свою половину.
 local Common = require("ui.sheet.Common")
 local Component = require("ui.Component")
 local Field = require("ui.sheet.Field")
@@ -6,72 +9,92 @@ local Templates = require("ui.generated.Templates")
 
 local CustomGroups = {}
 
-CustomGroups.defaults = {}
+CustomGroups.defaults = { group = "notes" }
 
-local function push(rows, title, description)
-  local text = tostring(description or "")
-  if text == "" then
-    return
-  end
-  table.insert(rows, Component.render(Templates.CustomGroupRow, {
+-- Порядок и подписи — лейаут, поэтому живут здесь, а не в реестре полей.
+local GROUPS = {
+  lore = {
+    { title = "ЯЗЫКИ И ВЛАДЕНИЯ", field = nil, source = "otherProficiencies" },
+    { title = "ПРОИСХОЖДЕНИЕ", field = "field_background" },
+  },
+  notes = {
+    { title = "ЧЕРТЫ", field = "field_traits" },
+    { title = "ИДЕАЛЫ", field = "field_ideals" },
+    { title = "ПРИВЯЗАННОСТИ", field = "field_bonds" },
+    { title = "СЛАБОСТИ", field = "field_flaws" },
+  },
+}
+
+-- В колонке заметок ~26 символов в строке при кегле 12 — отсюда высота блока.
+local CHARS_PER_LINE = 22
+local LINE_HEIGHT = 15
+
+local function row(title, text)
+  return Component.render(Templates.CustomGroupRow, {
     TITLE = Component.escape(title),
     DESCRIPTION = Component.escape(text),
-  }))
+    TEXT_HEIGHT = LINE_HEIGHT * math.min(6, Common.textLines(text, CHARS_PER_LINE)),
+  })
 end
 
-function CustomGroups.render()
+function CustomGroups.render(props)
+  local p = Component.props(CustomGroups.defaults, props)
   local character = Common.character()
+  local entries = GROUPS[p.group]
+  if entries == nil then
+    error("CustomGroups: неизвестная группа '" .. tostring(p.group) .. "' (lore/notes)", 0)
+  end
   local rows = {}
 
   if Common.isWizard() then
-    table.insert(rows, Component.render(Templates.CustomGroupEditRow, {
-      TITLE_FIELD = Label.render({ text = "LORE", alignment = "MiddleLeft", color = "goldDim" }),
-      DESC_FIELD = Field.render({ name = "field_background", width = 260, height = 24 }),
-    }))
-    table.insert(rows, Component.render(Templates.CustomGroupEditRow, {
-      TITLE_FIELD = Label.render({ text = "LANGUAGES", alignment = "MiddleLeft", color = "goldDim" }),
-      DESC_FIELD = Field.render({ name = "field_other_proficiencies", width = 260, height = 24 }),
-    }))
-    table.insert(rows, Component.render(Templates.CustomGroupEditRow, {
-      TITLE_FIELD = Label.render({ text = "TRAITS", alignment = "MiddleLeft", color = "goldDim" }),
-      DESC_FIELD = Field.render({ name = "field_traits", width = 260, height = 24 }),
-    }))
-    table.insert(rows, Component.render(Templates.CustomGroupEditRow, {
-      TITLE_FIELD = Label.render({ text = "IDEALS", alignment = "MiddleLeft", color = "goldDim" }),
-      DESC_FIELD = Field.render({ name = "field_ideals", width = 260, height = 24 }),
-    }))
-    table.insert(rows, Component.render(Templates.CustomGroupEditRow, {
-      TITLE_FIELD = Label.render({ text = "BONDS", alignment = "MiddleLeft", color = "goldDim" }),
-      DESC_FIELD = Field.render({ name = "field_bonds", width = 260, height = 24 }),
-    }))
-    table.insert(rows, Component.render(Templates.CustomGroupEditRow, {
-      TITLE_FIELD = Label.render({ text = "FLAWS", alignment = "MiddleLeft", color = "goldDim" }),
-      DESC_FIELD = Field.render({ name = "field_flaws", width = 260, height = 24 }),
-    }))
-
-    local custom = character.customGroups or {}
-    for index = 1, #custom + 1 do
-      table.insert(rows, Component.render(Templates.CustomGroupEditRow, {
-        TITLE_FIELD = Field.render({ name = "field_custom_" .. index .. "_title", width = 160, height = 24 }),
-        DESC_FIELD = Field.render({ name = "field_custom_" .. index .. "_desc", width = 260, height = 24 }),
-      }))
+    for _, entry in ipairs(entries) do
+      if entry.field ~= nil then
+        table.insert(rows, Component.render(Templates.CustomGroupEditRow, {
+          HEIGHT = 42,
+          TITLE_FIELD = Label.render({
+            text = Component.escape(entry.title), alignment = "MiddleLeft",
+            fontSize = 9, color = "textMuted", height = "fill",
+          }),
+          DESC_FIELD = Field.render({ name = entry.field, height = "fill", fontSize = 11 }),
+        }))
+      end
+    end
+    if p.group == "notes" then
+      local custom = character.customGroups or {}
+      for index = 1, #custom + 1 do
+        table.insert(rows, Component.render(Templates.CustomGroupEditRow, {
+          HEIGHT = 42,
+          TITLE_FIELD = Field.render({ name = "field_custom_" .. index .. "_title", height = "fill", fontSize = 10 }),
+          DESC_FIELD = Field.render({ name = "field_custom_" .. index .. "_desc", height = "fill", fontSize = 11 }),
+        }))
+      end
     end
     return Component.join(rows)
   end
 
-  push(rows, "LORE", Common.value("field_background"))
-  push(rows, "LANGUAGES", table.concat(character.otherProficiencies or {}, ", "))
-  push(rows, "TRAITS", Common.value("field_traits"))
-  push(rows, "IDEALS", Common.value("field_ideals"))
-  push(rows, "BONDS", Common.value("field_bonds"))
-  push(rows, "FLAWS", Common.value("field_flaws"))
+  for _, entry in ipairs(entries) do
+    local text
+    if entry.source == "otherProficiencies" then
+      text = table.concat(character.otherProficiencies or {}, ", ")
+    else
+      text = tostring(Common.value(entry.field) or "")
+    end
+    if text ~= "" then
+      table.insert(rows, row(entry.title, text))
+    end
+  end
 
-  for _, item in ipairs(character.customGroups or {}) do
-    push(rows, item.title or "ЗАМЕТКА", item.description or "")
+  if p.group == "notes" then
+    for _, item in ipairs(character.customGroups or {}) do
+      local text = tostring(item.description or "")
+      if text ~= "" then
+        table.insert(rows, row(item.title or "ЗАМЕТКА", text))
+      end
+    end
   end
 
   if #rows == 0 then
-    return Label.render({ text = "—", fontSize = 12, color = "textMuted" })
+    return Label.render({ text = "—", fontSize = 12, color = "textFaint", height = 20 })
   end
   return Component.join(rows)
 end

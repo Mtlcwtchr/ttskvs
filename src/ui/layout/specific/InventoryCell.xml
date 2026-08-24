@@ -1,5 +1,4 @@
-<Box width="{{WIDTH}}" height="{{HEIGHT}}" color="bgDeepest">
-  <Stack fit="fixed" padding="4 4 4 4" spacing="2" childAlignment="UpperLeft">
-    {{VALUE}}
-  </Stack>
+<!-- Ячейка сумки (4A: сетка 7 в ряд, латунная рамка, тёмная заливка). -->
+<Box width="{{WIDTH}}" height="{{HEIGHT}}" color="{{BORDER_COLOR}}" padding="1">
+  <Col width="fill" height="fill" color="{{COLOR}}" padding="3" gap="1" align="topleft">{{VALUE}}</Col>
 </Box>

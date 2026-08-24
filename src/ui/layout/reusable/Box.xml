@@ -1,4 +1,0 @@
-<!-- Прямоугольник с размером и фоном. Размеры в TTS живут на Panel, а не на
-     layout-группе: VerticalLayout с width — как раз то, из-за чего лист
-     развалился (CLAUDE.md, api.tabletopsimulator.com/ui/layoutgrouping). -->
-<Panel width="{{WIDTH}}" height="{{HEIGHT}}" color="{{COLOR}}">{{CONTENT}}</Panel>

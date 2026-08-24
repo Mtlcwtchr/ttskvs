@@ -1,4 +1,9 @@
-<Slot width="{{WIDTH}}" height="{{HEIGHT}}">
-  <Caption fontSize="9" alignment="MiddleLeft" color="textMuted2">{{LABEL}}</Caption>
-  {{VALUE}}
-</Slot>
+<!-- Слот экипировки (4A: квадрат 42×42 с латунной рамкой, подпись капсом). -->
+<Box width="{{WIDTH}}" height="{{HEIGHT}}" color="{{BORDER_COLOR}}" padding="1">
+  <Col width="fill" height="fill" color="{{COLOR}}" padding="3" gap="0" align="topleft">
+    <Box width="fill" height="10">
+      <Caption height="fill" fontSize="8" alignment="MiddleCenter" color="slotLabel">{{LABEL}}</Caption>
+    </Box>
+    <Box width="fill" height="fill">{{VALUE}}</Box>
+  </Col>
+</Box>

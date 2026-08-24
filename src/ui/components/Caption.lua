@@ -11,6 +11,11 @@ Caption.defaults = {
   alignment = "MiddleCenter",
   fontSize = 10,
   color = Theme.labelGold,
+  width = "fill",
+  height = "auto",
+  -- true — длинный текст переносится по словам (описания способностей,
+  -- заметки). false — одна строка; влезть ей помогает автоподбор кегля.
+  wrap = false,
 }
 
 function Caption.render(props)
@@ -20,6 +25,9 @@ function Caption.render(props)
     ALIGNMENT = p.alignment,
     FONT_SIZE = p.fontSize,
     COLOR = Component.color(p.color),
+    WIDTH = p.width,
+    HEIGHT = p.height,
+    OVERFLOW = (p.wrap == true or p.wrap == "true") and "Wrap" or "Overflow",
   })
 end
 

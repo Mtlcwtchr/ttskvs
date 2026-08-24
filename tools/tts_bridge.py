@@ -14,7 +14,9 @@ Commands:
 import argparse
 import json
 import re
+import shutil
 import socket
+import subprocess
 import sys
 import threading
 import time
@@ -84,47 +86,83 @@ LAYOUT_DIR = "layout"      # .xml-исходники, которые прави�
 GENERATED_DIR = "generated"  # .lua-обёртки, которые пишет этот скрипт
 
 
-LAYOUT_GROUPS = ("VerticalLayout", "HorizontalLayout", "GridLayout", "TableLayout")
-# Сырые layout-группы разрешены только в разметке самих раскладочных
-# компонентов: там ровно две проверенные в TTS конфигурации — «fluid» (только
-# padding/spacing/childAlignment) и «fixed» (плюс все четыре child*-флага
-# false). Любая третья комбинация ломает вёрстку: childControlWidth по
-# умолчанию true, и группа переопределяет width/height детей.
-LAYOUT_COMPONENTS = {"Stack", "StackFixed", "Line", "LineFixed", "Column", "ColumnFixed", "Anchor"}
-RAW_GROUP_RE = re.compile(r"<(" + "|".join(("VerticalLayout", "HorizontalLayout")) + r")\b")
-SIZED_GROUP_RE = re.compile(
-    r"<(" + "|".join(LAYOUT_GROUPS) + r")\b[^>]*\b(width|height|color)\s*=",
-    re.S,
-)
+# Раскладка описывается пятью примитивами, которые разбирает src/ui/Layout.lua:
+# <Row> (строка), <Col> (столбец), <Box> (блок), <Scroll> (окно прокрутки) и
+# <Anchor> (единственное абсолютное позиционирование). Сырые layout-группы и
+# сырой <Panel> в разметке запрещены: размеры считает решатель, а руками
+# написанная группа снова начнёт переопределять размеры детей.
+PRIMITIVE_ATTRS = {
+    "Row": {"id", "width", "height", "color", "at", "padding", "gap", "align",
+            "active", "visibility", "tooltip", "raycastTarget"},
+    "Col": {"id", "width", "height", "color", "at", "padding", "gap", "align",
+            "active", "visibility", "tooltip", "raycastTarget"},
+    "Scroll": {"id", "width", "height", "color", "at", "padding", "gap", "align",
+               "active", "visibility", "tooltip", "raycastTarget"},
+    "Box": {"id", "width", "height", "color", "at", "padding",
+            "active", "visibility", "tooltip", "raycastTarget"},
+    "Anchor": {"id", "width", "height", "color", "at", "padding", "x", "y",
+               "active", "visibility", "tooltip", "raycastTarget"},
+}
+SIZE_RE = re.compile(r"^(?:\d+(?:\.\d+)?(?:fr|%)?|fill|auto)$")
+
+BANNED_TAGS = {
+    "VerticalLayout": "<Col>",
+    "HorizontalLayout": "<Row>",
+    "GridLayout": "<Row>/<Col>",
+    "TableLayout": "<Row>/<Col>",
+    "Panel": "<Box>",
+    "VerticalScrollView": "<Scroll>",
+    "HorizontalScrollView": "<Scroll>",
+}
+BANNED_RE = re.compile(r"<(" + "|".join(BANNED_TAGS) + r")\b")
+BANNED_ATTR_RE = re.compile(r"\b(fit|offsetXY|offsetX|offsetY|childControl\w+|childForceExpand\w+|spacing|childAlignment)\s*=")
+TAG_RE = re.compile(r"<(" + "|".join(PRIMITIVE_ATTRS) + r")\b([^>]*)>")
+ATTR_RE = re.compile(r'([A-Za-z_][A-Za-z0-9_]*)\s*=\s*"([^"]*)"')
 
 
 def lint_layout(path: Path, markup: str) -> int:
-    """Ругается на размер/цвет, повешенный прямо на layout-группу.
+    """Проверяет разметку до сборки: примитивы, их атрибуты и запрещённые теги.
 
-    Из документации TTS (api.tabletopsimulator.com/ui/layoutgrouping) у групп
-    есть только padding/spacing/childAlignment: color рисуется ПОВЕРХ детей, а
-    width на <VerticalLayout> — то, из-за чего лист персонажа развалился.
-    Размер и фон живут на Panel (компоненты Box/Column/Section)."""
+    Размеры и позиции считает src/ui/Layout.lua по всему дереву, поэтому здесь
+    ловится только то, что видно в одном файле: сырая layout-группа (она снова
+    начнёт переопределять размеры детей), сырой <Panel> (у него нет ни потока,
+    ни отступов) и опечатка в атрибуте примитива."""
     problems = 0
 
-    if path.stem not in LAYOUT_COMPONENTS:
-        for match in RAW_GROUP_RE.finditer(markup):
-            line = markup[: match.start()].count("\n") + 1
-            print(
-                f"  ERROR: {path.relative_to(ROOT)}:{line} — сырой <{match.group(1)}>: "
-                "используйте <Stack>/<Line>/<Column> (fit=\"fixed\" для детей со своим размером)",
-                file=sys.stderr,
-            )
-            problems += 1
-
-    for match in SIZED_GROUP_RE.finditer(markup):
-        line = markup[: match.start()].count("\n") + 1
-        print(
-            f"  ERROR: {path.relative_to(ROOT)}:{line} — <{match.group(1)} {match.group(2)}=...>: "
-            "размер и фон только на Panel (Box/Column/Section)",
-            file=sys.stderr,
-        )
+    def complain(offset: int, message: str) -> None:
+        nonlocal problems
+        line = markup[:offset].count("\n") + 1
+        print(f"  ERROR: {path.relative_to(ROOT)}:{line} — {message}", file=sys.stderr)
         problems += 1
+
+    for match in BANNED_RE.finditer(markup):
+        tag = match.group(1)
+        complain(match.start(), f"сырой <{tag}>: используйте {BANNED_TAGS[tag]}")
+
+    for match in BANNED_ATTR_RE.finditer(markup):
+        complain(
+            match.start(),
+            f"атрибут {match.group(1)}=... больше не нужен: поток и размеры задают "
+            "width/height/padding/gap/align, остальное дописывает Layout",
+        )
+
+    for match in TAG_RE.finditer(markup):
+        tag, chunk = match.group(1), match.group(2)
+        allowed = PRIMITIVE_ATTRS[tag]
+        for attr in ATTR_RE.finditer(chunk):
+            name, value = attr.group(1), attr.group(2)
+            if name not in allowed:
+                complain(
+                    match.start(),
+                    f"<{tag} {name}=...>: неизвестный атрибут "
+                    f"(можно: {', '.join(sorted(allowed))})",
+                )
+            elif name in ("width", "height") and "{{" not in value and not SIZE_RE.match(value):
+                complain(
+                    match.start(),
+                    f'<{tag} {name}="{value}">: размер — число, fill, Nfr, N% или auto',
+                )
+
     return problems
 
 
@@ -212,17 +250,42 @@ def sync_xml_templates(_args=None) -> int:
     return changed
 
 
+def check_layout(_args=None) -> int:
+    """Считает геометрию всего UI без запуска TTS (tools/layout_check.lua).
+
+    Это второй уровень проверки после lint_layout: там — один файл, здесь —
+    всё дерево целиком, с реальными размерами. Ловит наезды, вылеты за
+    родителя и нулевые размеры, то есть ровно те отказы, которые в игре
+    выглядят как «поехала вёрстка»."""
+    lua = None
+    for candidate in ("lua", "lua5.4", "lua5.3", "luajit"):
+        lua = shutil.which(candidate)
+        if lua:
+            break
+    if lua is None:
+        print(
+            "  WARNING: lua не найден — проверка геометрии пропущена "
+            "(brew install lua)",
+            file=sys.stderr,
+        )
+        return 0
+    result = subprocess.run([lua, "tools/layout_check.lua"], cwd=ROOT)
+    return result.returncode
+
+
 def watch_xml(_args=None) -> None:
-    """Poll src/**/*.xml and keep the generated .lua wrappers in sync.
+    """Poll src/**/*.xml, rebuild Templates.lua and re-check the geometry.
 
     Touches no sockets, so it is safe to run alongside the VS Code extension
     (unlike `watch`/`push`, which fight it for port 39998)."""
-    print("Watching src/**/*.xml -> .lua wrappers (Ctrl+C to stop)...")
+    print("Watching src/**/*.xml -> Templates.lua + проверка геометрии (Ctrl+C to stop)...")
     sync_xml_templates()
+    check_layout()
     try:
         while True:
             time.sleep(0.5)
-            sync_xml_templates()
+            if sync_xml_templates():
+                check_layout()
     except KeyboardInterrupt:
         pass
 
@@ -413,6 +476,12 @@ def push(args) -> None:
     if args.sync_mock:
         sync_mock_data()
     sync_xml_templates()
+    if check_layout() != 0:
+        print(
+            "  WARNING: геометрия не сходится (см. выше) — отправляю как есть, "
+            "но в игре это и будет выглядеть криво",
+            file=sys.stderr,
+        )
 
     manifest = json.loads(MANIFEST.read_text(encoding="utf-8"))
     script_states = []
@@ -493,16 +562,20 @@ def main():
     sub.add_parser("sync-mock", help="regenerate src/data/MockData.lua from data/characters/*.json")
     sub.add_parser("sync-xml", help="rebuild ui/generated/Templates.lua from ui/layout/**/*.xml")
     sub.add_parser("watch-xml", help="keep Templates.lua in sync while you edit layout/**/*.xml")
+    sub.add_parser("check-layout", help="посчитать геометрию UI без TTS и проверить её")
 
     args = parser.parse_args()
-    {
+    exit_code = {
         "pull": pull,
         "push": push,
         "watch": watch,
         "sync-mock": sync_mock_data,
         "sync-xml": sync_xml_templates,
         "watch-xml": watch_xml,
+        "check-layout": check_layout,
     }[args.command](args)
+    if args.command == "check-layout" and exit_code:
+        sys.exit(exit_code)
 
 
 if __name__ == "__main__":

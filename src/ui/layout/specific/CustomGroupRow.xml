@@ -1,4 +1,9 @@
-<Column fit="fixed" width="460" height="56" spacing="1">
-  <Caption alignment="MiddleLeft" color="goldDim">{{TITLE}}</Caption>
-  <Text fontSize="12" alignment="UpperLeft" color="textBody">{{DESCRIPTION}}</Text>
-</Column>
+<!-- Заметка (4A: PROFICIENCIES & LORE / TABLE NOTES) — подпись и текст. -->
+<Col width="fill" height="auto" gap="1" align="topleft">
+  <Box width="fill" height="13">
+    <Caption height="fill" alignment="MiddleLeft" fontSize="9" color="textMuted">{{TITLE}}</Caption>
+  </Box>
+  <Box width="fill" height="{{TEXT_HEIGHT}}">
+    <Note height="fill" fontSize="12" alignment="UpperLeft" color="textBody" wrap="true">{{DESCRIPTION}}</Note>
+  </Box>
+</Col>

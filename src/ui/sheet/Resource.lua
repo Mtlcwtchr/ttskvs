@@ -1,8 +1,9 @@
+-- Ресурс полоской (4A, блок HIT POINTS): подпись слева, значение справа,
+-- полоска под ними. Стамина и мана — тем же компонентом, другой цвет заливки.
 local Common = require("ui.sheet.Common")
 local Component = require("ui.Component")
 local Field = require("ui.sheet.Field")
 local Label = require("ui.components.Label")
-local Line = require("ui.components.Line")
 local Templates = require("ui.generated.Templates")
 
 local Resource = {}
@@ -11,10 +12,10 @@ Resource.defaults = {
   title = "",
   current = "",
   max = "",
-  width = 195,
-  height = 110,
+  width = "fill",
+  height = 46,
   fillColor = "hpRed",
-  trackColor = "hpRedDark",
+  trackColor = "bgTrack",
 }
 
 function Resource.render(props)
@@ -24,18 +25,19 @@ function Resource.render(props)
   local value
 
   if Common.isWizard() then
-    value = Line.render({
-      fit = "fixed",
-      spacing = 4,
-      content = Component.join({
-        Field.render({ name = p.current, width = 80, height = 24 }),
-        Field.render({ name = p.max, width = 80, height = 24 }),
-      }),
+    value = Component.render(Templates.ResourceEditRow, {
+      FIELD_HEIGHT = "fill",
+      CURRENT = Field.render({ name = p.current, height = "fill", fontSize = 12, alignment = "MiddleCenter" }),
+      MAX = Field.render({ name = p.max, height = "fill", fontSize = 12, alignment = "MiddleCenter" }),
     })
-  elseif max <= 0 then
-    value = Label.render({ text = "—", fontSize = 18, color = "textMuted" })
   else
-    value = Label.render({ text = current .. " / " .. max, fontSize = 18, color = "textBright" })
+    value = Label.render({
+      text = (max > 0) and (current .. " / " .. max) or "—",
+      fontSize = 15,
+      alignment = "MiddleRight",
+      color = (max > 0) and "textCream" or "textMuted",
+      height = "fill",
+    })
   end
 
   return Component.render(Templates.Resource, {

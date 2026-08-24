@@ -1,0 +1,8 @@
+<!-- Ячейка шапки: подпись капсом и значение под ней. Ширину задаёт шапка
+     долями (2fr/1fr), поэтому чипы всегда делят строку без наездов. -->
+<Col width="{{WIDTH}}" height="fill" color="{{COLOR}}" padding="6 6 3 3" gap="0" align="topleft">
+  <Box width="fill" height="11">
+    <Caption height="fill" fontSize="8" alignment="MiddleLeft" color="labelGold">{{LABEL}}</Caption>
+  </Box>
+  <Box width="fill" height="fill">{{VALUE}}</Box>
+</Col>

@@ -1,2 +1,0 @@
-<!-- Корень листа персонажа. -->
-<Panel id="character_sheet_root" rectAlignment="MiddleCenter" width="{{WIDTH}}" height="{{HEIGHT}}" color="{{COLOR}}">{{CONTENT}}</Panel>

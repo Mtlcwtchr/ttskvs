@@ -1,84 +1,70 @@
--- Абилки и заклинания: в просмотре сгруппированы по типу действия, в визарде —
--- строки «название + тип» плюс пустая для добавления.
-local Caption = require("ui.components.Caption")
+-- Способности и обеты (4A, блок ABILITIES & OATHS): значок, название,
+-- описание. В визарде — строки правки, на одну больше числа способностей:
+-- заполнили пустую — появилась новая.
 local Common = require("ui.sheet.Common")
 local Component = require("ui.Component")
 local Field = require("ui.sheet.Field")
-local Label = require("ui.components.Label")
 local Templates = require("ui.generated.Templates")
 
 local Features = {}
 
-local GROUPS = {
-  { caption = "ДЕЙСТВИЕ", types = { action = true } },
-  { caption = "БОНУС", types = { bonus = true, bonus_action = true } },
-  { caption = "РЕАКЦИЯ", types = { reaction = true } },
-}
-
 Features.defaults = {}
 
-local function groupOf(actionType)
-  for index, group in ipairs(GROUPS) do
-    if group.types[actionType] then
-      return index
+-- Значок в 4A — трёхбуквенная метка на плитке. Берём первые буквы названия:
+-- строка в Lua — байты, поэтому символы отбираем по ведущему байту.
+local function iconOf(name)
+  local text = tostring(name or "")
+  local letters = {}
+  for character in text:gmatch("[\1-\127\194-\244][\128-\191]*") do
+    if character:match("%s") == nil then
+      table.insert(letters, character)
+    end
+    if #letters == 3 then
+      break
     end
   end
-  return #GROUPS + 1
+  if #letters == 0 then
+    return "—"
+  end
+  return table.concat(letters):upper()
 end
 
 function Features.render()
-  local character = Common.character()
-  local features = character.abilities or {}
+  local features = Common.character().abilities or {}
   local rows = {}
 
   if Common.isWizard() then
     for index = 1, #features + 1 do
       table.insert(rows, Component.render(Templates.FeatureEditRow, {
-        NAME = Field.render({ name = "field_feat_" .. index .. "_name", width = 220, height = 24 }),
-        TYPE = Field.render({ name = "field_feat_" .. index .. "_type", width = 110, height = 24 }),
-        DESC = Field.render({ name = "field_feat_" .. index .. "_desc", width = 340, height = 24 }),
+        HEIGHT = 58,
+        NAME = Field.render({ name = "field_feat_" .. index .. "_name", height = "fill", fontSize = 12 }),
+        TYPE = Field.render({ name = "field_feat_" .. index .. "_type", height = "fill", fontSize = 12 }),
+        DESC = Field.render({ name = "field_feat_" .. index .. "_desc", height = "fill", fontSize = 11 }),
       }))
     end
     return Component.join(rows)
   end
 
-  local buckets = {}
-  for index = 1, #GROUPS + 1 do
-    buckets[index] = {}
+  if #features == 0 then
+    return Component.render(Templates.FeatureRow, {
+      HEIGHT = 30,
+      ICON = "—",
+      NAME = "Способностей нет",
+      DESC = "",
+    })
   end
+
+  -- В блоке способностей ~52 символа в строке при кегле 11.
   for _, feature in ipairs(features) do
-    local bucket = buckets[groupOf(feature.actionType or "action")]
-    table.insert(bucket, feature.name or feature.id or "")
+    local name = feature.name or feature.id or ""
+    local lines = math.min(4, Common.textLines(feature.description, 52))
+    table.insert(rows, Component.render(Templates.FeatureRow, {
+      HEIGHT = math.max(30, 18 + lines * 14),
+      ICON = Component.escape(iconOf(name)),
+      NAME = Component.escape(name),
+      DESC = Component.escape(feature.description or ""),
+    }))
   end
-
-  for index = 1, #GROUPS + 1 do
-    local names = buckets[index]
-    if #names > 0 then
-      local caption = (index <= #GROUPS) and GROUPS[index].caption or "ПРОЧЕЕ"
-      table.insert(rows, Caption.render({ text = caption }))
-      for _, name in ipairs(names) do
-        local description = ""
-        for _, feature in ipairs(features) do
-          if (feature.name or feature.id or "") == name then
-            description = feature.description or ""
-            break
-          end
-        end
-        table.insert(rows, Component.render(Templates.FeatureRow, {
-          NAME = Component.escape(name),
-          DESC = Component.escape(description),
-        }))
-      end
-    end
-  end
-
-  table.insert(rows, Caption.render({ text = "ЯЧЕЙКИ ЗАКЛИНАНИЙ" }))
-  local slots = character.spellSlots or {}
-  table.insert(rows, Label.render({
-    text = #slots > 0 and tostring(#slots) or "—",
-    fontSize = 12,
-    color = "textMuted",
-  }))
   return Component.join(rows)
 end
 

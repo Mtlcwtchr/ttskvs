@@ -19,9 +19,10 @@ function Attacks.render()
   if Common.isWizard() then
     for index = 1, #attacks + 1 do
       table.insert(rows, Component.render(Templates.AttackEditRow, {
-        NAME = Field.render({ name = "field_attack_" .. index .. "_name", width = 260, height = 24 }),
-        BONUS = Field.render({ name = "field_attack_" .. index .. "_bonus", width = 70, height = 24 }),
-        DAMAGE = Field.render({ name = "field_attack_" .. index .. "_damage", width = 240, height = 24 }),
+        HEIGHT = 28,
+        NAME = Field.render({ name = "field_attack_" .. index .. "_name", height = "fill" }),
+        BONUS = Field.render({ name = "field_attack_" .. index .. "_bonus", height = "fill" }),
+        DAMAGE = Field.render({ name = "field_attack_" .. index .. "_damage", height = "fill" }),
       }))
     end
     return Component.join(rows)

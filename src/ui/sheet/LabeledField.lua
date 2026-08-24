@@ -1,39 +1,36 @@
--- Подпись + поле. Обёрнуто в Column с собственной шириной: без обёртки подпись
--- и поле — два соседних элемента, и внутри горизонтального ряда они
--- выстраивались в линию [подпись][поле][подпись][поле] вместо двух пар.
-local Column = require("ui.components.Column")
+-- Подпись + поле. Обёрнуто в Col (разметка LabeledField.xml): без обёртки
+-- подпись и поле — два соседних элемента, и внутри Row они выстроились бы в
+-- линию [подпись][поле][подпись][поле] вместо двух пар.
 local Component = require("ui.Component")
 local Field = require("ui.sheet.Field")
-local Label = require("ui.components.Label")
+local Templates = require("ui.generated.Templates")
 
 local LabeledField = {}
 
 LabeledField.defaults = {
   label = "",
   name = "",
-  width = 180,
-  height = 24,
+  width = "fill",
+  height = "auto",
+  fieldHeight = 26,
+  fieldColor = "bgPanelLight",
+  labelHeight = 12,
   labelFontSize = 10,
   labelColor = "textMuted",
 }
 
 function LabeledField.render(props)
   local p = Component.props(LabeledField.defaults, props)
-  return Column.render({
-    width = p.width,
-    -- подпись + зазор + поле
-    height = p.height + 18,
-    spacing = 2,
-    childAlignment = "UpperLeft",
-    content = Component.join({
-      Label.render({
-        text = Component.escape(p.label),
-        alignment = "MiddleLeft",
-        fontSize = p.labelFontSize,
-        color = p.labelColor,
-      }),
-      Field.render({ name = p.name, width = p.width, height = p.height }),
-    }),
+  return Component.render(Templates.LabeledField, {
+    LABEL = Component.escape(p.label),
+    WIDTH = p.width,
+    HEIGHT = p.height,
+    LABEL_HEIGHT = p.labelHeight,
+    LABEL_FONT_SIZE = p.labelFontSize,
+    LABEL_COLOR = Component.color(p.labelColor),
+    FIELD_HEIGHT = p.fieldHeight,
+    FIELD_COLOR = Component.color(p.fieldColor),
+    FIELD = Field.render({ name = p.name, height = "fill" }),
   })
 end
 

@@ -1,0 +1,7 @@
+<!-- Пилюля со значением: модификатор характеристики под плиткой (4A рисует её
+     кружком на золотой обводке; скругления в TTS нет — остаётся рамка). -->
+<Box width="{{WIDTH}}" height="{{HEIGHT}}" color="{{BORDER_COLOR}}" padding="1" at="{{AT}}">
+  <Box width="fill" height="fill" color="{{COLOR}}">
+    <Note height="fill" fontSize="{{FONT_SIZE}}" color="{{TEXT_COLOR}}">{{VALUE}}</Note>
+  </Box>
+</Box>

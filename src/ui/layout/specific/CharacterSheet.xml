@@ -1,157 +1,184 @@
-<Sheet width="1320" height="900" color="sheetBg">
-  <Stack padding="16 16 16 16" spacing="10">
+<!-- Лист персонажа — окно «Ashgrave Codex» из референса 4A.
+     Место и размер окна те же, что в мокапе: 1004×620 при отступе 126/120 от
+     левого верхнего угла (сверху остаётся полоса под «порядок хода», справа —
+     под панель броска и лог; этих элементов у нас пока нет).
 
-    <Box width="1288" height="60" color="bgPanel">
-      <Line fit="fixed" padding="6 8 6 8" spacing="10" childAlignment="MiddleLeft">
-        <Slot width="46" height="46" color="bgTile">
-          <PortraitLetter/>
-        </Slot>
+     Единственные абсолютные числа страницы — width/height у <Anchor>. Всё
+     внутри выражено через fill/Nfr/% и пересчитывается само.
 
-        <Column width="860" height="46" spacing="2" childAlignment="UpperLeft">
-          <Field name="field_name" fontSize="24" color="goldBright" width="850" height="26"/>
-          <Line fit="fixed" spacing="6" childAlignment="MiddleLeft">
-            <Caption>RACE</Caption>
-            <Field name="field_race" width="160" height="18"/>
-            <Caption>AGE</Caption>
-            <Field name="field_age" width="70" height="18"/>
-          </Line>
-        </Column>
+     Обрамление окна как в 4A: латунный кант 2px, за ним тёмная фаска 4px,
+     внутри сама страница. -->
+<Anchor id="character_sheet_root" at="topleft" x="126" y="120" width="1004" height="620" color="brass" padding="2">
+  <Box width="fill" height="fill" color="bgDeepest" padding="4">
+    <Col width="fill" height="fill" color="sheetBg" padding="14" gap="8" align="topleft">
 
-        <Column fit="fixed" width="132" height="46" spacing="2">
+      <!-- ШАПКА. Первая строка: табличка имени и кнопки листа. -->
+      <Row width="fill" height="40" gap="12" align="left">
+        <Box width="fill" height="fill" color="brass" padding="1">
+          <Box width="fill" height="fill" color="bgPanelLight" padding="8 8 0 0">
+            <Field name="field_name" fontSize="24" color="goldPale" alignment="MiddleLeft" height="fill"/>
+          </Box>
+        </Box>
+        <Box width="150" height="fill">
           <ViewOnly>
-            <SheetButton id="sheet_edit" label="Edit" onClick="startWizard"/>
+            <SheetButton id="sheet_edit" label="Редактировать" tone="gold"/>
           </ViewOnly>
           <WizardOnly>
-            <SheetButton id="sheet_finish" label="Done" color="gold" onClick="finishWizard"/>
+            <SheetButton id="sheet_finish" label="Готово" tone="gold"/>
           </WizardOnly>
-          <SheetButton id="sheet_close" label="Close" color="gold" onClick="closeSheet"/>
-        </Column>
-
+        </Box>
+        <Box width="96" height="fill">
+          <SheetButton id="sheet_close" label="Закрыть" tone="quiet"/>
+        </Box>
         <WizardOnly>
-          <Column fit="fixed" width="120" height="46" spacing="2">
-            <SheetButton id="sheet_delete" label="Delete" color="dangerRed" onClick="deleteCharacter"/>
-          </Column>
+          <Box width="120" height="fill">
+            <SheetButton id="sheet_delete" label="Удалить" tone="danger"/>
+          </Box>
         </WizardOnly>
-      </Line>
-    </Box>
+      </Row>
 
-    <Line fit="fixed" spacing="10" childAlignment="UpperLeft">
+      <!-- Вторая строка шапки: сведения о персонаже. -->
+      <Row width="fill" height="34" gap="8" align="left">
+        <HeaderChip label="РАСА" name="field_race" width="2fr"/>
+        <HeaderChip label="КЛАСС" name="field_class" width="2fr"/>
+        <HeaderChip label="УРОВЕНЬ" name="field_level" width="1fr"/>
+        <HeaderChip label="ВОЗРАСТ" name="field_age" width="1fr"/>
+        <HeaderChip label="МИРОВОЗЗРЕНИЕ" name="field_alignment" width="2fr"/>
+        <HeaderChip label="ИГРОК" name="field_player_name" width="2fr"/>
+      </Row>
 
-      <Column fit="fixed" width="290" height="760" spacing="8">
-        <Section title="ATTRIBUTES" width="290" height="300" spacing="3">
-          <Box width="278" height="84" color="transparent">
-            <Line fit="fixed" spacing="6">
-              <AbilityTile label="Strength" name="field_ability_STR" width="136" height="84"/>
-              <AbilityTile label="Dexterity" name="field_ability_DEX" width="136" height="84"/>
-            </Line>
+      <Box width="fill" height="1" color="divider"/>
+
+      <!-- ТЕЛО ОКНА: три колонки 4A — характеристики, кукла, сумка. -->
+      <Row width="fill" height="fill" gap="14" align="topleft">
+
+        <!-- КОЛОНКА 1: столбик характеристик + список навыков -->
+        <Row width="304" height="fill" gap="10" align="topleft">
+          <Col width="82" height="fill" gap="6" align="topleft">
+            <AbilityTile label="СИЛА" name="field_ability_STR"/>
+            <AbilityTile label="ЛОВКОСТЬ" name="field_ability_DEX"/>
+            <AbilityTile label="ТЕЛОСЛОЖ." name="field_ability_CON"/>
+            <AbilityTile label="ИНТЕЛЛЕКТ" name="field_ability_INT"/>
+            <AbilityTile label="МУДРОСТЬ" name="field_ability_WIS"/>
+            <AbilityTile label="ХАРИЗМА" name="field_ability_CHA"/>
+          </Col>
+
+          <Col width="fill" height="fill" gap="10" align="topleft">
+            <Section title="НАВЫКИ" titleAt="bottom" height="fill">
+              <Scroll width="fill" height="fill" gap="1">
+                <SkillList/>
+              </Scroll>
+            </Section>
+            <WizardOnly>
+              <Col width="fill" height="98" gap="6" align="topleft">
+                <LabeledField label="Спасброски (CSV)" name="field_saves_csv"/>
+                <LabeledField label="Владение навыками (CSV)" name="field_skills_csv"/>
+              </Col>
+            </WizardOnly>
+          </Col>
+        </Row>
+
+        <!-- КОЛОНКА 2: кукла со снаряжением + ресурсы -->
+        <Col width="250" height="fill" gap="12" align="topleft">
+          <Box width="fill" height="fill" color="borderDim" padding="1">
+            <Col width="fill" height="fill" color="bgPanel" padding="8" gap="6" align="topleft">
+
+              <!-- Кукла: слоты слева, портрет посередине, слоты справа.
+                   Высоту слоты делят сами (height="fill"), поэтому кукла
+                   сжимается и растягивается вместе с окном. -->
+              <Row width="fill" height="fill" gap="6" align="topleft">
+                <Col width="44" height="fill" gap="5" align="topleft">
+                  <EquipSlot slot="helm" label="ШЛЕМ"/>
+                  <EquipSlot slot="cloak" label="ПЛАЩ"/>
+                  <EquipSlot slot="mail" label="ДОСПЕХ"/>
+                  <EquipSlot slot="glove" label="ПЕРЧ."/>
+                  <EquipSlot slot="boot" label="САПОГИ"/>
+                </Col>
+
+                <Box width="fill" height="fill" color="brassDim" padding="1">
+                  <Box width="fill" height="fill" color="bgTileDeep">
+                    <PortraitLetter fontSize="44"/>
+                  </Box>
+                </Box>
+
+                <Col width="44" height="fill" gap="5" align="topleft">
+                  <EquipSlot slot="amulet" label="АМУЛЕТ"/>
+                  <EquipSlot slot="ring1" label="КОЛЬЦО"/>
+                  <EquipSlot slot="ring2" label="КОЛЬЦО"/>
+                  <EquipSlot slot="belt" label="ПОЯС"/>
+                  <EquipSlot slot="charm" label="ОБЕРЕГ"/>
+                </Col>
+              </Row>
+
+              <!-- Ближний бой / броня / дальний бой — как в 4A, под куклой. -->
+              <Row width="fill" height="72" gap="10" align="bottom">
+                <CombatTile label="БЛИЖНИЙ" name="field_melee_bonus" signed="true" width="56" height="56"/>
+                <CombatTile label="БРОНЯ" name="field_armor_class" width="66" height="72" tone="gold"/>
+                <CombatTile label="ДАЛЬНИЙ" name="field_ranged_bonus" signed="true" width="56" height="56"/>
+              </Row>
+            </Col>
           </Box>
-          <Box width="278" height="84" color="transparent">
-            <Line fit="fixed" spacing="6">
-              <AbilityTile label="Constitution" name="field_ability_CON" width="136" height="84"/>
-              <AbilityTile label="Intelligence" name="field_ability_INT" width="136" height="84"/>
-            </Line>
-          </Box>
-          <Box width="278" height="84" color="transparent">
-            <Line fit="fixed" spacing="6">
-              <AbilityTile label="Wisdom" name="field_ability_WIS" width="136" height="84"/>
-              <AbilityTile label="Charisma" name="field_ability_CHA" width="136" height="84"/>
-            </Line>
-          </Box>
-          <WizardOnly>
-            <LabeledField label="Saves (CSV)" name="field_saves_csv" width="250"/>
-          </WizardOnly>
-        </Section>
 
-        <Section title="SKILLS" width="290" height="452" spacing="4">
-          <SkillList/>
-          <WizardOnly>
-            <LabeledField label="Proficiencies (CSV)" name="field_skills_csv" width="250"/>
-          </WizardOnly>
-        </Section>
-      </Column>
+          <Col width="fill" height="auto" gap="6" align="topleft">
+            <Resource title="ХИТЫ" current="field_hp_current" max="field_hp_max" height="46"/>
+            <Resource title="ВЫНОСЛИВОСТЬ" current="field_stamina_current" max="field_stamina_max" height="46"
+                      fillColor="staminaGold"/>
+            <Resource title="МАНА" current="field_mana_current" max="field_mana_max" height="46"
+                      fillColor="manaBlue"/>
+            <ViewOnly>
+              <Row width="fill" height="26" gap="8" align="left">
+                <HeaderChip label="ВРЕМ. ХИТЫ" name="field_hp_temp" width="1fr" fontSize="12"/>
+                <HeaderChip label="КОСТИ ХИТОВ" name="field_hit_dice" width="1fr" fontSize="12"/>
+                <HeaderChip label="СКОРОСТЬ" name="field_speed" width="1fr" fontSize="12"/>
+              </Row>
+            </ViewOnly>
+            <WizardOnly>
+              <Row width="fill" height="44" gap="6" align="left">
+                <LabeledField label="Врем. хиты" name="field_hp_temp"/>
+                <LabeledField label="Кости хитов" name="field_hit_dice"/>
+                <LabeledField label="Скорость" name="field_speed"/>
+              </Row>
+            </WizardOnly>
+          </Col>
+        </Col>
 
-      <Column fit="fixed" width="478" height="760" spacing="8">
-        <Section title="CHARACTER &amp; EQUIPMENT" width="478" height="540" spacing="4">
-          <Box width="466" height="334" color="transparent">
-            <Line fit="fixed" spacing="8" childAlignment="UpperCenter">
-              <Column fit="fixed" width="112" height="334" spacing="6">
-                <EquipSlot slot="helm" label="Helm" width="112" height="58"/>
-                <EquipSlot slot="cloak" label="Cloak" width="112" height="58"/>
-                <EquipSlot slot="mail" label="Armor" width="112" height="58"/>
-                <EquipSlot slot="glove" label="Gloves" width="112" height="58"/>
-                <EquipSlot slot="boot" label="Boots" width="112" height="58"/>
-              </Column>
-              <Box width="214" height="334" color="bgPanelLight">
-                <Stack padding="8 8 8 8" spacing="6">
-                  <Caption>CHARACTER PREVIEW</Caption>
-                  <Slot width="198" height="288" color="bgDeepest">
-                    <PortraitLetter/>
-                  </Slot>
-                </Stack>
-              </Box>
-              <Column fit="fixed" width="112" height="334" spacing="6">
-                <EquipSlot slot="amulet" label="Amulet" width="112" height="58"/>
-                <EquipSlot slot="ring1" label="Ring I" width="112" height="58"/>
-                <EquipSlot slot="ring2" label="Ring II" width="112" height="58"/>
-                <EquipSlot slot="belt" label="Belt" width="112" height="58"/>
-                <EquipSlot slot="charm" label="Charm" width="112" height="58"/>
-              </Column>
-            </Line>
+        <!-- КОЛОНКА 3: сумка, способности, заметки -->
+        <Col width="fill" height="fill" gap="10" align="topleft">
+          <!-- Сумка: сетка 7 в ряд (4A). Строки — это <Col>, а не <Box>:
+               в блоке без потока дети легли бы друг на друга. -->
+          <Box width="fill" height="auto" color="borderDim" padding="1">
+            <Col width="fill" height="auto" color="bgPanel" padding="8" gap="5" align="topleft">
+              <InventoryList/>
+            </Col>
           </Box>
 
-          <Box width="466" height="24" color="transparent"/>
-
-          <Box width="466" height="84" color="transparent">
-            <Line fit="fixed" spacing="8" childAlignment="UpperCenter">
-              <CombatTile label="ARMOR CLASS" name="field_armor_class" width="148" height="84"/>
-              <CombatTile label="MELEE ATTACK" name="field_melee_bonus" signed="true" width="148" height="84"/>
-              <CombatTile label="RANGED ATTACK" name="field_ranged_bonus" signed="true" width="148" height="84"/>
-            </Line>
+          <Box width="fill" height="fill" color="borderDim" padding="1">
+            <Section title="СПОСОБНОСТИ И ОБЕТЫ" color="bgPanel">
+              <Scroll width="fill" height="fill" gap="7">
+                <Features/>
+              </Scroll>
+            </Section>
           </Box>
-        </Section>
 
-        <Section title="RESOURCES" width="478" height="212" spacing="4">
-          <Box width="466" height="132" color="transparent">
-            <Line fit="fixed" spacing="6" childAlignment="UpperCenter">
-              <Resource title="HP" current="field_hp_current" max="field_hp_max" width="152" height="132"/>
-              <Resource title="STAMINA" current="field_stamina_current" max="field_stamina_max" width="152" height="132"
-                        fillColor="positiveGreen" trackColor="bgPanelLight"/>
-              <Resource title="MANA" current="field_mana_current" max="field_mana_max" width="152" height="132"
-                        fillColor="gold" trackColor="bgPanelLight"/>
-            </Line>
-          </Box>
-          <WizardOnly>
-            <Line fit="fixed" spacing="8">
-              <LabeledField label="Временные хиты" name="field_hp_temp" width="145"/>
-              <LabeledField label="Кости хитов" name="field_hit_dice" width="145"/>
-              <LabeledField label="Скорость" name="field_speed" width="145"/>
-            </Line>
-          </WizardOnly>
-        </Section>
-      </Column>
+          <Row width="fill" height="fill" gap="10" align="topleft">
+            <Box width="fill" height="fill" color="borderDim" padding="1">
+              <Section title="ВЛАДЕНИЯ И ЗНАНИЯ" color="bgPanel">
+                <Scroll width="fill" height="fill" gap="6">
+                  <CustomGroups group="lore"/>
+                </Scroll>
+              </Section>
+            </Box>
+            <Box width="fill" height="fill" color="borderDim" padding="1">
+              <Section title="ЗАМЕТКИ ЗА СТОЛОМ" color="bgPanel">
+                <Scroll width="fill" height="fill" gap="6">
+                  <CustomGroups group="notes"/>
+                </Scroll>
+              </Section>
+            </Box>
+          </Row>
+        </Col>
 
-      <Column fit="fixed" width="500" height="760" spacing="8">
-        <Section title="INVENTORY" width="500" height="272" spacing="4">
-          <InventoryList/>
-        </Section>
-
-        <Section title="ABILITIES" width="500" height="230" spacing="4">
-          <VerticalScrollView width="488" height="198">
-            <Stack fit="fixed" spacing="4" childAlignment="UpperLeft">
-              <Features/>
-            </Stack>
-          </VerticalScrollView>
-        </Section>
-
-        <Section title="EXTRA NOTES" width="500" height="242" spacing="4">
-          <VerticalScrollView width="488" height="210">
-            <Stack fit="fixed" spacing="6" childAlignment="UpperLeft">
-              <CustomGroups/>
-            </Stack>
-          </VerticalScrollView>
-        </Section>
-      </Column>
-
-    </Line>
-  </Stack>
-</Sheet>
+      </Row>
+    </Col>
+  </Box>
+</Anchor>

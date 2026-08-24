@@ -15,26 +15,25 @@ local Markup = {}
 -- require со строковым литералом. Динамический вызов по строке из таблицы
 -- собрался бы без этих модулей, и в игре тег падал бы на module not found.
 -- Ленивость при этом сохраняется: цикла загрузки нет.
+-- Примитивов раскладки (<Row>, <Col>, <Box>, <Scroll>, <Anchor>) здесь нет
+-- намеренно: их разбирает ui/Layout.lua уже по готовому дереву, когда у него
+-- на руках все дети и можно посчитать размеры. Компонент так не может —
+-- содержимое раскрывается ДО родителя, поэтому раньше каждый размер и
+-- приходилось писать руками на каждом уровне.
 local REGISTRY = {
   -- структурные
-  Sheet = function() return require("ui.components.Sheet") end,
-  Box = function() return require("ui.components.Box") end,
-  Column = function() return require("ui.components.Column") end,
-  Stack = function() return require("ui.components.Stack") end,
-  Line = function() return require("ui.components.Line") end,
   Section = function() return require("ui.components.Section") end,
   Caption = function() return require("ui.components.Caption") end,
   Note = function() return require("ui.components.Note") end,
   Tile = function() return require("ui.components.Tile") end,
   Slot = function() return require("ui.components.Slot") end,
   StatBar = function() return require("ui.components.StatBar") end,
-  Anchor = function() return require("ui.components.Anchor") end,
   Frame = function() return require("ui.components.Frame") end,
+  Badge = function() return require("ui.components.Badge") end,
 
   -- HUD
   PartyRail = function() return require("ui.components.PartyRail") end,
   PortraitButton = function() return require("ui.components.PortraitButton") end,
-  PortraitContent = function() return require("ui.components.PortraitContent") end,
   AddCharacterButton = function() return require("ui.components.AddCharacterButton") end,
   CharacterSheet = function() return require("ui.components.CharacterSheet") end,
 
@@ -45,6 +44,7 @@ local REGISTRY = {
   -- привязанные к данным: берут персонажа и режим из контекста рендера
   Field = function() return require("ui.sheet.Field") end,
   LabeledField = function() return require("ui.sheet.LabeledField") end,
+  HeaderChip = function() return require("ui.sheet.HeaderChip") end,
   SignedValue = function() return require("ui.sheet.SignedValue") end,
   PortraitLetter = function() return require("ui.sheet.PortraitLetter") end,
   ClassLine = function() return require("ui.sheet.ClassLine") end,
@@ -71,25 +71,35 @@ local contextStack = {}
 -- Цвет в разметке можно назвать ролью Theme (color="sheetBg") даже на сырых
 -- тегах TTS: разрешаем роли одним проходом по готовому XML. Литералы (#hex,
 -- rgba(...)) под шаблон не подходят и проходят мимо.
+--
+-- Ищем любой атрибут, в имени которого есть "color": кроме color это ещё
+-- colors (четыре состояния кнопки), textColor, caretColor, iconColor. Роль
+-- может разворачиваться в строку с "|" — так заданы состояния кнопок.
 local function resolveColorRoles(xml)
   local Theme = require("ui.Theme")
-  return (xml:gsub('(color=")(%a[%w]*)(")', function(prefix, name, suffix)
+  return (xml:gsub('([%a][%w]*)="(%a[%w]*)"', function(attribute, name)
+    if attribute:lower():find("color", 1, true) == nil then
+      return attribute .. '="' .. name .. '"'
+    end
     local resolved = Theme[name]
     if type(resolved) ~= "string" then
-      return prefix .. name .. suffix
+      return attribute .. '="' .. name .. '"'
     end
-    return prefix .. resolved .. suffix
+    return attribute .. '="' .. resolved .. '"'
   end))
 end
 
-function Markup.render(template, context)
+-- Раскрытие кастомных тегов БЕЗ раскладки: результат — дерево из примитивов
+-- (<Row>/<Col>/<Box>/<Scroll>/<Anchor>) с объявленными размерами. Отдельно от
+-- render, чтобы тесты (tools/layout_check.lua) могли посмотреть на дерево до
+-- того, как оно превратилось в плоский XML.
+function Markup.compose(template, context)
   table.insert(contextStack, context)
   local ok, result = pcall(Markup.expand, template)
   table.remove(contextStack)
   if not ok then
     error(result, 0)
   end
-  result = resolveColorRoles(result)
 
   -- Страховка от самого коварного отказа: если разметка не раскрылась (устарел
   -- Templates.lua, опечатка в имени тега), TTS молча проигнорирует незнакомые
@@ -105,6 +115,16 @@ function Markup.render(template, context)
   end
 
   return result
+end
+
+function Markup.render(template, context)
+  -- Три шага, каждый со своей задачей: раскрыть теги -> посчитать размеры ->
+  -- разрешить роли цветов. Раскладка идёт по дереву целиком, поэтому размер
+  -- ребёнка может зависеть от размера родителя — из-за отсутствия этого шага
+  -- каждое число раньше и жило в разметке руками.
+  local composed = Markup.compose(template, context)
+  local solved = require("ui.Layout").solve(composed)
+  return resolveColorRoles(solved)
 end
 
 function Markup.context()
@@ -196,8 +216,15 @@ local function parseAttributes(chunk)
   -- не подхватывал случайные кириллические байты как отдельные имена props.
   for name, value in chunk:gmatch('([A-Za-z_][A-Za-z0-9_]*)%s*=%s*"([^"]*)"') do
     -- Числа приводим к числам: компоненты считают на них арифметику
-    -- (StatBar.ratio), а из XML всё приходит строками.
-    props[name] = tonumber(value) or value
+    -- (StatBar.ratio), а из XML всё приходит строками. Но только если запись
+    -- числа не теряется: tonumber("+2") = 2, и модификатор характеристики
+    -- уезжал в разметку без плюса (наступали — «+2» превращалось в «2»).
+    local number = tonumber(value)
+    if number ~= nil and tostring(number) == value then
+      props[name] = number
+    else
+      props[name] = value
+    end
   end
   return props
 end
